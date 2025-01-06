@@ -1,0 +1,23 @@
+# General Python files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.DS_Store
+
+# LangChain specific files
+.env
+*.pickle
+*.pkl
+*.joblib
+*.bin
+*.index
+
+# Virtual environment files
+venv/
+.venv/
+env/
+
+# IDE-specific files
+.idea/
+.vscode/
