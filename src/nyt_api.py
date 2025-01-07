@@ -4,14 +4,11 @@ from typing import TypedDict, List
 import requests
 
 @dataclass
-class ArchiveQuery:
+class ArchiveQuery(TypedDict):
     '''Class for keeping track of an item in inventory.'''
     topic: str
-    start_date: int
-    start_month: int
-    end_date: int
-    end_month: int
-
+    start_date: str
+    end_date: str
 
 
 class ArchiveItem(TypedDict):
@@ -30,6 +27,7 @@ class ArchiveResponse:
 
 def nyt_archive_wrapper(query: ArchiveQuery) -> List[ArchiveItem]:
     '''This function wraps the nyt_archive_api function and returns the response.'''
+    print(f"** nyt_archive_wrapper: query={query}")
     return [
         {
             "name": "Test",
