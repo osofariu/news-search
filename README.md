@@ -10,14 +10,14 @@
 
 Some are parallel some are not:
 
-1. parse natural language to extract topic and date range
+### 1. parse natural language to extract topic and date range
     - in: text
     - out: 
     ```
       {
         topic,
-        start_date:,
-        end_date: 
+        start_date,
+        end_date:
       }
       ```
 
@@ -26,12 +26,12 @@ Some are parallel some are not:
     - (maybe later) may ask an LLM to judge whether the results extracted are sufficient to deduce whether
       those fields were extracted correctly and return a confidence score
 
-2.  search New York times Archive to get summary and url by date range
+### 2.  search New York times Archive to get summary and url by date range
     - input: from 1.topic
     - output:
 ```
       [{
-        - pub_date
+        - pub_date,
         - archive,
         - snippet,
         - web_url,
@@ -41,27 +41,27 @@ Some are parallel some are not:
   - need a start / end year and month (can assume 1 if not present)
   - download the date with multiple calls (add caching later so we don't get duplicates)
 
-3.  use the search results to find interesting articles (filter)
+### 3.  use the search results to find interesting articles (filter)
   - input: 1.topic, 2.output (array)
   - output: same as 2.output
 
-4.  given list of article from above, find stories related to the user topic
+### 4.  given list of article from above, find stories related to the user topic
   - input: 1.topic, 2.output (array)
   - output: 2.output (array), having been filtered by topic, confidence score for each match
 
-5.  for each match: prompt user for interest
+### 5.  for each match: prompt user for interest
   - input: 4.output
   - output: keep ? download content : END
 
-6.  for each interest: download the article (TBD how) and save it
+### 6.  for each interest: download the article (TBD how) and save it
   - input: URL
   - output: HTML content of the article
 
-7.  for each article saved: ask an LLM for a summary
+### 7.  for each article saved: ask an LLM for a summary
   - input: list of article details 
   - output: list of summaries for input details
 
-## NYT Archive API
+## NYT Archive API notes
 
 Sample queries to experiment with the API:
 
