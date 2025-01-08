@@ -24,7 +24,6 @@ class ArchiveQuery(BaseModel):
         description="The end of the time period you want to know about. This must be in this format: YYYY-MM"
     )
 
-
 @tool("nyt_archive_search", args_schema=ArchiveQuery, return_direct=True, parse_docstring=True)
 def nyt_archive_search(topic: str, start_date: str, end_date: str) -> str:
     """Call the NYT Archive API with topic, start_date, end_date to search the NYT archive on a topic for a date range.
@@ -38,29 +37,6 @@ def nyt_archive_search(topic: str, start_date: str, end_date: str) -> str:
     response = nyt_archive_wrapper(topic, start_date, end_date)
     return {"messages": [AIMessage(content=response)]}
 
-@tool
-def multiply(a: int, b: int) -> int:
-    """Multiplies a and b."""
-    return a * b
-
-
-tools = [multiply, nyt_archive_search]
-tool_node = ToolNode(tools)
-
-model = (
-    ChatOpenAI(model="gpt-4o-mini", temperature=0)
-    .bind_tools(tools)
-    #.with_structured_output(ArchiveQuery)
-)
-
-
-def call_model(state: MessagesState):
-    messages = state["messages"]
-    response = model.invoke(messages)
-    last_message = messages[-1]
-    print(f"* call_model: LL respose  -> {response}")
-    return response
-
 
 def should_continue(state: MessagesState):
     print(f"*continue: state['messages'] before deciding ->{state}")
@@ -71,36 +47,50 @@ def should_continue(state: MessagesState):
     return END
 
 
-@traceable
-def invoke_workflow(user_input):
-    workflow = StateGraph(MessagesState)
-    workflow.add_node("agent", call_model)
-    workflow.add_node("tools", tool_node)
-
-    workflow.add_edge(START, "agent")
-    workflow.add_edge("tools", END)
-    workflow.add_conditional_edges("agent", should_continue)
+class NewsSearch:
     
-    # query = "What is 3 * 12? Also, what is 11 + 49?"
-    # user_messages =  [HumanMessage(content=query)]
-    # llm = ChatOpenAI(model="gpt-4o-mini")
-    # llm_with_tools = llm.bind_tools(tools)
-    # ai_msg = model.invoke(user_messages)
+    def __init__(self):
+        tools = [nyt_archive_search]
+        self.tool_node = ToolNode(tools)
 
-    # print(ai_msg.tool_calls)
+        self.model = (
+            ChatOpenAI(model="gpt-4o-mini", temperature=0)
+            .bind_tools(tools)
+            #.with_structured_output(ArchiveQuery)
+        )
 
-    checkpointer = MemorySaver()
-    app = workflow.compile(checkpointer=checkpointer)
+    def call_model(self, state: MessagesState):
+        messages = state["messages"]
+        response = self.model.invoke(messages)
+        last_message = messages[-1]
+        print(f"* call_model: LL respose  -> {response}")
+        return response
 
-    final_state = app.invoke(
-        {"messages": [HumanMessage(content=user_input)]},
-        config={"configurable": {"thread_id": 1}, "recursion_limit": 5},
-    )
+    @traceable
+    def invoke_workflow(self, user_input):
+        workflow = StateGraph(MessagesState)
+        workflow.add_node("agent", self.call_model)
+        workflow.add_node("tools", self.tool_node)
 
-    print(f'* Final message: {final_state["messages"][-1].content}')
-    print(f"* Final state: {final_state}")
+        workflow.add_edge(START, "agent")
+        workflow.add_edge("tools", END)
+        workflow.add_conditional_edges("agent", should_continue)
 
-    print(nyt_archive_search.args_schema.model_json_schema())
-invoke_workflow(
+        checkpointer = MemorySaver()
+        app = workflow.compile(checkpointer=checkpointer)
+
+        final_state = app.invoke(
+            {"messages": [HumanMessage(content=user_input)]},
+            config={"configurable": {"thread_id": 1}, "recursion_limit": 5},
+        )
+
+        print(f'* Final message: {final_state["messages"][-1].content}')
+        print(f"* Final state: {final_state}")
+
+        print(self.nyt_archive_search.args_schema.model_json_schema())
+        return final_state
+    
+news_search = NewsSearch()
+news_search.invoke_workflow(
     "I want to know about the news from NYT archive about climate change from 2020 through 2021"
 )
