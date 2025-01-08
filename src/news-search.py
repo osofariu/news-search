@@ -64,6 +64,7 @@ class NewsSearch:
         response = self.model.invoke(messages)
         last_message = messages[-1]
         print(f"* call_model: LL respose  -> {response}")
+        return {"messages": [response]}
         return response
 
     @traceable
@@ -87,7 +88,6 @@ class NewsSearch:
         print(f'* Final message: {final_state["messages"][-1].content}')
         print(f"* Final state: {final_state}")
 
-        print(self.nyt_archive_search.args_schema.model_json_schema())
         return final_state
     
 news_search = NewsSearch()
