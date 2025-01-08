@@ -5,7 +5,7 @@ from langchain_core.tools import tool
 from langgraph.prebuilt import ToolNode
 from langgraph.graph import END, START, StateGraph, MessagesState
 from langgraph.checkpoint.memory import MemorySaver
-from langsmith import wrappers, traceable
+from langsmith import traceable
 from nyt_api import nyt_archive_wrapper
 from dotenv import load_dotenv
 
@@ -34,7 +34,6 @@ class NewsSearch:
         self.model = (
             ChatOpenAI(model="gpt-4o-mini", temperature=0)
             .bind_tools(tools)
-            #.with_structured_output(ArchiveQuery)
         )
 
     def call_model(self, state: MessagesState):

@@ -16,27 +16,22 @@ Some are parallel some are not:
     ```
       {
         topic,
-        start_date: {
-          year: number,
-          month: number
-        },
-        end_date: {
-          year: number,
-          month: number
-        }
+        start_date:,
+        end_date: 
       }
       ```
 
-    - may ask an LLM to judge whether the results extracted are sufficient to deduce whether
-    those fields were extracted correctly and retur a confidence score
-    - output is in JSON format
+    - create some tests that evaluate some typical inputs, to make sure it does well enough
+    - determine how to handle errors -- such as when it can't extract key info to call the function.
+    - (maybe later) may ask an LLM to judge whether the results extracted are sufficient to deduce whether
+      those fields were extracted correctly and return a confidence score
 
 2.  search New York times Archive to get summary and url by date range
     - input: from 1.topic
     - output:
 ```
       [{
-        - date??
+        - pub_date
         - archive,
         - snippet,
         - web_url,
@@ -67,6 +62,8 @@ Some are parallel some are not:
   - output: list of summaries for input details
 
 ## NYT Archive API
+
+Sample queries to experiment with the API:
 
 Download archives:
 
