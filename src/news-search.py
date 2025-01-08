@@ -1,26 +1,15 @@
-from langchain_core.tools import tool
 from pydantic import BaseModel, Field
-
-from langchain_core.tools import tool
-from langchain_core.messages import HumanMessage, AIMessage, ToolMessage
+from langchain_core.messages import HumanMessage, AIMessage
 from langchain_openai import ChatOpenAI
-
-from langchain.tools import Tool
-from langchain.prompts import PromptTemplate
-
+from langchain_core.tools import tool
 from langgraph.prebuilt import ToolNode
 from langgraph.graph import END, START, StateGraph, MessagesState
 from langgraph.checkpoint.memory import MemorySaver
-
 from langsmith import wrappers, traceable
-
-from nyt_api import (
-    nyt_archive_wrapper,
-)  # Import nyt_archive_api from the appropriate module
+from nyt_api import nyt_archive_wrapper
 from dotenv import load_dotenv
 
 load_dotenv()
-
 
 class ArchiveQuery(BaseModel):
     """Inputs to the nyt_archive tool."""
@@ -36,57 +25,48 @@ class ArchiveQuery(BaseModel):
     )
 
 
-@tool()
-def nyt_archive_api(state: MessagesState):
-    """Call the NYT Archive API with the given parameters when someone wants to know about a topic in the past."""
-    print(f"* tool: state before calling -> {state}") 
-    last_message = state["messages"][-1]
-    args = last_message.additional_kwargs
-    response = nyt_archive_wrapper(args)
+@tool("nyt_archive_search", args_schema=ArchiveQuery, return_direct=True, parse_docstring=True)
+def nyt_archive_search(topic: str, start_date: str, end_date: str) -> str:
+    """Call the NYT Archive API with topic, start_date, end_date to search the NYT archive on a topic for a date range.
+    
+    Args:
+        topic: a search query for in the NYT archive.
+        start_date: the beginning of the date range with format YYYY.MM.
+        end_date: the beginning of the date range with format YYYY.MM.
+        """
+    print(f"********** tool")
+    response = nyt_archive_wrapper(topic, start_date, end_date)
     return {"messages": [AIMessage(content=response)]}
 
-tools = [
-    Tool(
-        name="New York Times Archive API",
-        func=nyt_archive_api,
-        description="Use this tool when someone wants to know about a topic in the past.",
-    )
-]
-# tools = [nyt_archive_api]
+@tool
+def multiply(a: int, b: int) -> int:
+    """Multiplies a and b."""
+    return a * b
+
+
+tools = [multiply, nyt_archive_search]
 tool_node = ToolNode(tools)
 
-model = ChatOpenAI(model="gpt-4o-mini", temperature=0).bind_tools(tools).with_structured_output(ArchiveQuery)
+model = (
+    ChatOpenAI(model="gpt-4o-mini", temperature=0)
+    .bind_tools(tools)
+    #.with_structured_output(ArchiveQuery)
+)
+
 
 def call_model(state: MessagesState):
     messages = state["messages"]
     response = model.invoke(messages)
     last_message = messages[-1]
-    last_message.additional_kwargs = {
-        "topic": response.topic,
-        "start_date": response.start_date,
-        "end_date": response.end_date,
-    }
     print(f"* call_model: LL respose  -> {response}")
-    return {
-        "messages": [
-            AIMessage(
-                content="I will look up news on the topic of climate change from 2020 through 2021.",
-                additional_kwargs={
-                    "tool_name": "nyt_archive_api",
-                    "topic": response.topic,
-                    "start_date": response.start_date,
-                    "end_date": response.end_date,
-                },
-            )
-        ]
-    }
+    return response
 
 
 def should_continue(state: MessagesState):
     print(f"*continue: state['messages'] before deciding ->{state}")
     last_message = state["messages"][-1]
     args = last_message.additional_kwargs
-    if args["topic"]:
+    if args["tool_calls"]:
         return "tools"
     return END
 
@@ -100,18 +80,27 @@ def invoke_workflow(user_input):
     workflow.add_edge(START, "agent")
     workflow.add_edge("tools", END)
     workflow.add_conditional_edges("agent", should_continue)
+    
+    # query = "What is 3 * 12? Also, what is 11 + 49?"
+    # user_messages =  [HumanMessage(content=query)]
+    # llm = ChatOpenAI(model="gpt-4o-mini")
+    # llm_with_tools = llm.bind_tools(tools)
+    # ai_msg = model.invoke(user_messages)
+
+    # print(ai_msg.tool_calls)
 
     checkpointer = MemorySaver()
     app = workflow.compile(checkpointer=checkpointer)
-    
+
     final_state = app.invoke(
         {"messages": [HumanMessage(content=user_input)]},
-        config={"configurable": {"thread_id": 1},  "recursion_limit": 5}
+        config={"configurable": {"thread_id": 1}, "recursion_limit": 5},
     )
 
     print(f'* Final message: {final_state["messages"][-1].content}')
-    print(f'* Final state: {final_state}')
-    
+    print(f"* Final state: {final_state}")
+
+    print(nyt_archive_search.args_schema.model_json_schema())
 invoke_workflow(
-    "I want to know about the news on the topic of climate change from 2020 through 2021"
+    "I want to know about the news from NYT archive about climate change from 2020 through 2021"
 )
