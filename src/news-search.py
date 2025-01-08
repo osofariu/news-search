@@ -33,16 +33,14 @@ def nyt_archive_search(topic: str, start_date: str, end_date: str) -> str:
         start_date: the beginning of the date range with format YYYY.MM.
         end_date: the beginning of the date range with format YYYY.MM.
         """
-    print(f"********** tool")
     response = nyt_archive_wrapper(topic, start_date, end_date)
     return {"messages": [AIMessage(content=response)]}
 
 
 def should_continue(state: MessagesState):
-    print(f"*continue: state['messages'] before deciding ->{state}")
     last_message = state["messages"][-1]
     args = last_message.additional_kwargs
-    if args["tool_calls"]:
+    if args.get("tool_calls"):
         return "tools"
     return END
 
@@ -63,9 +61,7 @@ class NewsSearch:
         messages = state["messages"]
         response = self.model.invoke(messages)
         last_message = messages[-1]
-        print(f"* call_model: LL respose  -> {response}")
         return {"messages": [response]}
-        return response
 
     @traceable
     def invoke_workflow(self, user_input):
@@ -74,7 +70,7 @@ class NewsSearch:
         workflow.add_node("tools", self.tool_node)
 
         workflow.add_edge(START, "agent")
-        workflow.add_edge("tools", END)
+        workflow.add_edge("tools", "agent")
         workflow.add_conditional_edges("agent", should_continue)
 
         checkpointer = MemorySaver()
@@ -85,12 +81,13 @@ class NewsSearch:
             config={"configurable": {"thread_id": 1}, "recursion_limit": 5},
         )
 
-        print(f'* Final message: {final_state["messages"][-1].content}')
-        print(f"* Final state: {final_state}")
-
-        return final_state
+        messages = final_state.get("messages", [])
+        if messages:
+            return messages[-1].content
+        return "No response"
     
 news_search = NewsSearch()
-news_search.invoke_workflow(
+response = news_search.invoke_workflow(
     "I want to know about the news from NYT archive about climate change from 2020 through 2021"
 )
+print(response)
