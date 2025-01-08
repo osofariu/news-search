@@ -24,31 +24,11 @@ class ArchiveQuery(BaseModel):
         description="The end of the time period you want to know about. This must be in this format: YYYY-MM"
     )
 
-@tool("nyt_archive_search", args_schema=ArchiveQuery, return_direct=True, parse_docstring=True)
-def nyt_archive_search(topic: str, start_date: str, end_date: str) -> str:
-    """Call the NYT Archive API with topic, start_date, end_date to search the NYT archive on a topic for a date range.
-    
-    Args:
-        topic: a search query for in the NYT archive.
-        start_date: the beginning of the date range with format YYYY.MM.
-        end_date: the beginning of the date range with format YYYY.MM.
-        """
-    response = nyt_archive_wrapper(topic, start_date, end_date)
-    return {"messages": [AIMessage(content=response)]}
-
-
-def should_continue(state: MessagesState):
-    last_message = state["messages"][-1]
-    args = last_message.additional_kwargs
-    if args.get("tool_calls"):
-        return "tools"
-    return END
-
 
 class NewsSearch:
     
     def __init__(self):
-        tools = [nyt_archive_search]
+        tools = [self.nyt_archive_search]
         self.tool_node = ToolNode(tools)
 
         self.model = (
@@ -63,6 +43,26 @@ class NewsSearch:
         last_message = messages[-1]
         return {"messages": [response]}
 
+    @tool("nyt_archive_search", args_schema=ArchiveQuery, return_direct=True, parse_docstring=True)
+    def nyt_archive_search(topic: str, start_date: str, end_date: str) -> str:
+        """Call the NYT Archive API with topic, start_date, end_date to search the NYT archive on a topic for a date range.
+        
+        Args:
+            topic: a search query for in the NYT archive.
+            start_date: the beginning of the date range with format YYYY.MM.
+            end_date: the beginning of the date range with format YYYY.MM.
+            """
+        response = nyt_archive_wrapper(topic, start_date, end_date)
+        return {"messages": [AIMessage(content=response)]}
+
+
+    def should_continue(self, state: MessagesState):
+        last_message = state["messages"][-1]
+        args = last_message.additional_kwargs
+        if args.get("tool_calls"):
+            return "tools"
+        return END
+
     @traceable
     def invoke_workflow(self, user_input):
         workflow = StateGraph(MessagesState)
@@ -71,7 +71,7 @@ class NewsSearch:
 
         workflow.add_edge(START, "agent")
         workflow.add_edge("tools", "agent")
-        workflow.add_conditional_edges("agent", should_continue)
+        workflow.add_conditional_edges("agent", self.should_continue)
 
         checkpointer = MemorySaver()
         app = workflow.compile(checkpointer=checkpointer)
