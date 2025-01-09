@@ -6,11 +6,13 @@ from langgraph.prebuilt import ToolNode
 from langgraph.graph import END, START, StateGraph, MessagesState
 from langgraph.checkpoint.memory import MemorySaver
 from langsmith import traceable
-from nyt_api import NYTNews
+from nyt_api import NYTNews, ArchiveResponse
+import os
 from dotenv import load_dotenv
 
 load_dotenv()
 
+nyt_news = NYTNews(os.getenv("NYT_API_KEY"))
 class ArchiveQuery(BaseModel):
     """Inputs to the nyt_archive tool."""
 
@@ -24,13 +26,24 @@ class ArchiveQuery(BaseModel):
         description="The end of the time period you want to know about. This must be in this format: YYYY-MM"
     )
 
+@tool("nyt_archive_search", args_schema=ArchiveQuery, return_direct=True, parse_docstring=True)
+def nyt_archive_search(topic: str, start_date: str, end_date: str) -> ArchiveResponse:
+    """Call the NYT Archive API with topic, start_date, end_date to search the NYT archive on a topic for a date range.
+    
+    Args:
+        topic: a search query for in the NYT archive.
+        start_date: the beginning of the date range with format YYYY.MM.
+        end_date: the beginning of the date range with format YYYY.MM.
+        """
+    response = nyt_news.get_archives(topic, start_date, end_date)
+    return {"messages": [AIMessage(content=str(response))]}
+
 class NewsSearch:
     
     def __init__(self):
-        tools = [self.nyt_archive_search]
+        tools = [nyt_archive_search]
         self.tool_node = ToolNode(tools)
-        api_key = os.getenv("NYT_API_KEY")
-        self.nyt_news = NYTNews(api_key)
+        self.nyt_news = NYTNews(os.getenv("NYT_API_KEY"))
 
         self.model = (
             ChatOpenAI(model="gpt-4o-mini", temperature=0)
@@ -42,18 +55,6 @@ class NewsSearch:
         response = self.model.invoke(messages)
         last_message = messages[-1]
         return {"messages": [response]}
-
-    @tool("nyt_archive_search", args_schema=ArchiveQuery, return_direct=True, parse_docstring=True)
-    def nyt_archive_search(self, topic: str, start_date: str, end_date: str) -> str:
-        """Call the NYT Archive API with topic, start_date, end_date to search the NYT archive on a topic for a date range.
-        
-        Args:
-            topic: a search query for in the NYT archive.
-            start_date: the beginning of the date range with format YYYY.MM.
-            end_date: the beginning of the date range with format YYYY.MM.
-            """
-        response = self.nyt_news.get_archives(topic, start_date, end_date)
-        return {"messages": [AIMessage(content=response)]}
 
 
     def should_continue(self, state: MessagesState):
@@ -88,6 +89,6 @@ class NewsSearch:
     
 news_search = NewsSearch()
 response = news_search.invoke_workflow(
-    "I want to know about the news from NYT archive about climate change from 2020 through 2021"
+    "I want to know about the news from NYT archive about climate change from November 2024"
 )
 print(response)

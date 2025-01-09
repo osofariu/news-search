@@ -14,7 +14,7 @@ class ArchiveQuery(TypedDict):
     end_date: str
 
 class ArchiveItem(TypedDict):
-    name: str
+    source: str
     pub_date: str
     headline: str
     abstract: str
@@ -54,7 +54,6 @@ class NYTNews:
         archiveItems = []
         for year, month in months_to_query:
             api_response = self.call_archive_api(year, month)
-            
             archiveItems.extend(self.map_to_archive_item(api_response))
         
         # TODO: each API returns a status code; this status should be a higher-level status
@@ -67,8 +66,17 @@ class NYTNews:
         url = f'https://api.nytimes.com/svc/archive/v1/{year}/{month}.json?api-key={self.api_key}'
         response = requests.get(url)
         json_response = response.json()
-        return json_response
+        return self.top_responses(json_response)
   
+  
+    def top_responses(self, json_response, count=5):
+        '''This function returns the top responses from the API response.'''
+        response = json_response.get('response', {})
+        docs = response.get('docs', [])   
+        response["docs"] = docs[:count]
+        json_response["response"] = response
+        return json_response
+
 
     def map_to_archive_item(self, api_response) -> List[ArchiveItem]:
         '''This function maps the API response to an ArchiveItem.'''
@@ -76,7 +84,7 @@ class NYTNews:
         if not docs:
             return []
         return [ArchiveItem(
-            name=doc.get('source', ''),
+            source=doc.get('source', ''),
             pub_date=doc.get('pub_date', ''),
             headline=doc.get('headline', {}).get('main', ''),
             abstract=doc.get('abstract', ''),
