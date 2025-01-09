@@ -13,6 +13,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 nyt_news = NYTNews(os.getenv("NYT_API_KEY"))
+
 class ArchiveQuery(BaseModel):
     """Inputs to the nyt_archive tool."""
 
@@ -39,7 +40,6 @@ def nyt_archive_search(topic: str, start_date: str, end_date: str) -> ArchiveRes
     return {"messages": [AIMessage(content=str(response))]}
 
 class NewsSearch:
-    
     def __init__(self):
         tools = [nyt_archive_search]
         self.tool_node = ToolNode(tools)
