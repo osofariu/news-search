@@ -6,7 +6,7 @@ from langgraph.prebuilt import ToolNode
 from langgraph.graph import END, START, StateGraph, MessagesState
 from langgraph.checkpoint.memory import MemorySaver
 from langsmith import traceable
-from nyt_api import nyt_archive_wrapper
+from nyt_api import NYTNews
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -24,12 +24,13 @@ class ArchiveQuery(BaseModel):
         description="The end of the time period you want to know about. This must be in this format: YYYY-MM"
     )
 
-
 class NewsSearch:
     
     def __init__(self):
         tools = [self.nyt_archive_search]
         self.tool_node = ToolNode(tools)
+        api_key = os.getenv("NYT_API_KEY")
+        self.nyt_news = NYTNews(api_key)
 
         self.model = (
             ChatOpenAI(model="gpt-4o-mini", temperature=0)
@@ -43,7 +44,7 @@ class NewsSearch:
         return {"messages": [response]}
 
     @tool("nyt_archive_search", args_schema=ArchiveQuery, return_direct=True, parse_docstring=True)
-    def nyt_archive_search(topic: str, start_date: str, end_date: str) -> str:
+    def nyt_archive_search(self, topic: str, start_date: str, end_date: str) -> str:
         """Call the NYT Archive API with topic, start_date, end_date to search the NYT archive on a topic for a date range.
         
         Args:
@@ -51,7 +52,7 @@ class NewsSearch:
             start_date: the beginning of the date range with format YYYY.MM.
             end_date: the beginning of the date range with format YYYY.MM.
             """
-        response = nyt_archive_wrapper(topic, start_date, end_date)
+        response = self.nyt_news.get_archives(topic, start_date, end_date)
         return {"messages": [AIMessage(content=response)]}
 
 

@@ -13,7 +13,6 @@ class ArchiveQuery(TypedDict):
     start_date: str
     end_date: str
 
-
 class ArchiveItem(TypedDict):
     name: str
     pub_date: str
@@ -23,12 +22,11 @@ class ArchiveItem(TypedDict):
     snippet: str
     lead_paragraph: str
     
-@dataclass
-class ArchiveResponse:
-    '''Class for keeping track of an item in inventory.'''
-    response: List[ArchiveItem]
-    
-  
+class ArchiveResponse(TypedDict):
+    status: int
+    responses: List[ArchiveItem]
+
+ 
 """ PLANS 
 
 - turn the wrapper into a class
@@ -38,12 +36,12 @@ class ArchiveResponse:
 
 """
 
-class NYTimesArchive:
+class NYTNews:
     
-    def __init__(self):
-        self.api_key = os.getenv("NYT_API_KEY")
+    def __init__(self, api_key):
+        self.api_key = api_key
 
-    def nyt_archive_wrapper(topic: str, start_date: str, end_date: str) -> str: # List[ArchiveItem]:
+    def get_archives(self, topic: str, start_date: str, end_date: str) -> ArchiveResponse:
         '''This function wraps the nyt_archive_api function and returns the response.
         
         Args:
@@ -52,29 +50,42 @@ class NYTimesArchive:
             end_date: the beginning of the date range with format YYYY.MM.            
         '''
         
-        months_to_query = generateMonths(start_date, end_date)
+        months_to_query = self.generateMonths(start_date, end_date)
+        archiveItems = []
+        for year, month in months_to_query:
+            api_response = self.call_archive_api(year, month)
+            
+            archiveItems.extend(self.map_to_archive_item(api_response))
         
-        return [
-            {
-                "name": "Test",
-                "pub_date": "2022-01-01",
-                "headline": "Test Headline",
-                "abstract": "Test Abstract",
-                "web_url": "https://www.nytimes.com",
-                "snippet": "Test Snippet",
-                "lead_paragraph": "Test Lead Paragraph"
-            }
-        ]
+        # TODO: each API returns a status code; this status should be a higher-level status
+        #        maybe something like "OK" or "ERROR".. or just throw an exception.
+        return {"status": 200, "responses": archiveItems}
 
 
-    def nyt_archive_api(year, month):
+    def call_archive_api(self, year, month):
         '''This function returns the NYT Archive API response for a given year and month.'''
         url = f'https://api.nytimes.com/svc/archive/v1/{year}/{month}.json?api-key={self.api_key}'
         response = requests.get(url)
-        return response.json()
+        json_response = response.json()
+        return json_response
   
 
-    def generateMonths(self, start_date, end_date):
+    def map_to_archive_item(self, api_response) -> List[ArchiveItem]:
+        '''This function maps the API response to an ArchiveItem.'''
+        docs = api_response.get('response', {}).get('docs', [])
+        if not docs:
+            return []
+        return [ArchiveItem(
+            name=doc.get('source', ''),
+            pub_date=doc.get('pub_date', ''),
+            headline=doc.get('headline', {}).get('main', ''),
+            abstract=doc.get('abstract', ''),
+            web_url=doc.get('web_url', ''),
+            snippet=doc.get('snippet', ''),
+            lead_paragraph=doc.get('lead_paragraph', '')
+        ) for doc in docs]
+
+    def generateMonths(self, start_date: str, end_date: str) -> List[str]:
         """_summary_
 
         Args:

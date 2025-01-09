@@ -12,6 +12,7 @@ langchain = "*"
 
 [dev-packages]
 pytest = "*"
+responses = "*"
 
 [requires]
 python_version = "3.12"
