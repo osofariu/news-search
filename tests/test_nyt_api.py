@@ -40,7 +40,7 @@ def test_loading_yaml_works():
 
 
 @responses.activate
-def test_get_archives(nyt_api):
+def test_get_archives_field_mapping(nyt_api):
     responses._add_from_file(file_path="tests/data/nyt_api_responses_2024-11.yaml")
 
     ny_times_response = nyt_api.get_archives(None, "2024-11", "2024-11")
