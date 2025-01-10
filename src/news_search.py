@@ -6,14 +6,15 @@ from langgraph.prebuilt import ToolNode
 from langgraph.graph import END, START, StateGraph, MessagesState
 from langgraph.checkpoint.memory import MemorySaver
 from langsmith import traceable
-from nyt_api import NYTNews, ArchiveResponse
+from nyt_api import NYTNewsApi, ArchiveResponse
 import os
 import sys
+import logging
 from dotenv import load_dotenv
 
 load_dotenv()
-
-nyt_news = NYTNews(os.getenv("NYT_API_KEY"))
+logger = logging.getLogger(__name__)
+nyt_news = NYTNewsApi(os.getenv("NYT_API_KEY"))
 
 class ArchiveQuery(BaseModel):
     """Inputs to the nyt_archive tool."""
@@ -45,19 +46,16 @@ class NewsSearch:
     def __init__(self):
         tools = [nyt_archive_search]
         self.tool_node = ToolNode(tools)
-        self.nyt_news = NYTNews(os.getenv("NYT_API_KEY"))
-
-        print("Init model")
+        self.nyt_news = NYTNewsApi(os.getenv("NYT_API_KEY"))
         self.model = (
             ChatOpenAI(model="gpt-4o-mini", temperature=0)
             .bind_tools(tools)
         )
 
     def call_model(self, state: MessagesState):
-        print("Calling model")
+        logger.debug("Calling model")
         messages = state["messages"]
         response = self.model.invoke(messages)
-        last_message = messages[-1]
         return {"messages": [response]}
 
 
@@ -92,14 +90,16 @@ class NewsSearch:
         return "No response"
     
 
-if __name__ == "__main__":
-    
+def main(): 
+    logging.basicConfig(filename="logs/news_search.log", level=logging.INFO)
     query = "I want to know about the news from NYT archive about Romania from September 2024 through December 2024"
     if sys.argv[1:]:
         query = " ".join(sys.argv[1:])
         
-    print("Running the NYT API search")
+    print(f"Running the NYT API search with query: {query}\n")
     news_search = NewsSearch()
     response = news_search.invoke_workflow(query)
-    print("# Response:\n")
-    print(response)
+    print(f"# Response:\n{response}")
+
+if __name__ == "__main__":
+    main()

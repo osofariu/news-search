@@ -21,7 +21,7 @@ class ArchiveResponse(TypedDict):
     status: int
     responses: List[ArchiveItem]
 
-class NYTNews:
+class NYTNewsApi:
     def __init__(self, api_key):
         self.api_key = api_key
         self.cache = NewsCache()
@@ -141,7 +141,7 @@ def main():
     logger.info(f"Searching NYT archive for {topic} from {start_date} to {end_date}.")
     
     api_key = os.getenv("NYT_API_KEY")
-    news_api = NYTNews(api_key)
+    news_api = NYTNewsApi(api_key)
     response = news_api.get_archives(topic, start_date, end_date)    
     print(f"\n# Response:\n{response}")   
     

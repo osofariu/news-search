@@ -1,9 +1,9 @@
 import pytest
-from nyt_api import NYTNews
+from nyt_api import NYTNewsApi
 
 @pytest.fixture
 def nytimes():
-    return NYTNews("fake_key") 
+    return NYTNewsApi("fake_key") 
 
 @pytest.mark.parametrize("start_date, end_date, expected", [
     ("2020-01", "2020-01", [("2020", "01")]), 

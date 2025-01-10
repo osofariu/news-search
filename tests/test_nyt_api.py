@@ -1,12 +1,12 @@
 import pytest
-from nyt_api import NYTNews
+from nyt_api import NYTNewsApi
 import responses
 import requests
 
 
 @pytest.fixture
 def nytimes():
-    return NYTNews(api_key="1234567890")
+    return NYTNewsApi(api_key="1234567890")
 
 
 @responses.activate
