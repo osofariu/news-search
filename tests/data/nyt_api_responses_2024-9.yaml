@@ -1,0 +1,242 @@
+responses:
+- response:
+    auto_calculate_content_length: false
+    body: "{\"copyright\":\"Copyright (c) 2024 The New York Times Company. All Rights\
+      \ Reserved.\",\"response\":{\"docs\":[{\"abstract\":\"Wrestling with age and\
+      \ a case of idea theft.\",\"web_url\":\"https://www.nytimes.com/2024/09/01/business/help-im-older-and-on-the-job-hunt.html\"\
+      ,\"snippet\":\"Wrestling with age and a case of idea theft.\",\"lead_paragraph\"\
+      :\"Send questions about the office, money, careers and work-life balance to\
+      \ workfriend@nytimes.com. Include your name and location, or a request to remain\
+      \ anonymous. Letters may be edited.\",\"print_section\":\"BU\",\"print_page\"\
+      :\"3\",\"source\":\"The New York Times\",\"multimedia\":[{\"rank\":0,\"subtype\"\
+      :\"xlarge\",\"caption\":null,\"credit\":null,\"type\":\"image\",\"url\":\"images/2024/09/01/multimedia/01WorkFriend-fbmg/01WorkFriend-fbmg-articleLarge.jpg\"\
+      ,\"height\":750,\"width\":600,\"subType\":\"xlarge\",\"crop_name\":\"articleLarge\"\
+      ,\"legacy\":{\"xlarge\":\"images/2024/09/01/multimedia/01WorkFriend-fbmg/01WorkFriend-fbmg-articleLarge.jpg\"\
+      ,\"xlargewidth\":600,\"xlargeheight\":750}},{\"rank\":0,\"subtype\":\"jumbo\"\
+      ,\"caption\":null,\"credit\":null,\"type\":\"image\",\"url\":\"images/2024/09/01/multimedia/01WorkFriend-fbmg/01WorkFriend-fbmg-jumbo.jpg\"\
+      ,\"height\":1024,\"width\":820,\"subType\":\"jumbo\",\"crop_name\":\"jumbo\"\
+      ,\"legacy\":{}},{\"rank\":0,\"subtype\":\"superJumbo\",\"caption\":null,\"credit\"\
+      :null,\"type\":\"image\",\"url\":\"images/2024/09/01/multimedia/01WorkFriend-fbmg/01WorkFriend-fbmg-superJumbo.jpg\"\
+      ,\"height\":2048,\"width\":1639,\"subType\":\"superJumbo\",\"crop_name\":\"\
+      superJumbo\",\"legacy\":{}},{\"rank\":0,\"subtype\":\"thumbnail\",\"caption\"\
+      :null,\"credit\":null,\"type\":\"image\",\"url\":\"images/2024/09/01/multimedia/01WorkFriend-fbmg/01WorkFriend-fbmg-thumbStandard.jpg\"\
+      ,\"height\":75,\"width\":75,\"subType\":\"thumbnail\",\"crop_name\":\"thumbStandard\"\
+      ,\"legacy\":{\"thumbnail\":\"images/2024/09/01/multimedia/01WorkFriend-fbmg/01WorkFriend-fbmg-thumbStandard.jpg\"\
+      ,\"thumbnailwidth\":75,\"thumbnailheight\":75}},{\"rank\":0,\"subtype\":\"thumbLarge\"\
+      ,\"caption\":null,\"credit\":null,\"type\":\"image\",\"url\":\"images/2024/09/01/multimedia/01WorkFriend-fbmg/01WorkFriend-fbmg-thumbLarge.jpg\"\
+      ,\"height\":150,\"width\":150,\"subType\":\"thumbLarge\",\"crop_name\":\"thumbLarge\"\
+      ,\"legacy\":{}}],\"headline\":{\"main\":\"Help! I\u2019m \u2018Older\u2019 and\
+      \ on the Job Hunt.\",\"kicker\":\"work Friend\",\"content_kicker\":null,\"print_headline\"\
+      :\"Tech Job Recruiters Think I\u2019m a Dinosaur\",\"name\":null,\"seo\":null,\"\
+      sub\":null},\"keywords\":[{\"name\":\"subject\",\"value\":\"Careers and Professions\"\
+      ,\"rank\":1,\"major\":\"N\"},{\"name\":\"subject\",\"value\":\"Hiring and Promotion\"\
+      ,\"rank\":2,\"major\":\"N\"},{\"name\":\"subject\",\"value\":\"Content Type:\
+      \ Service\",\"rank\":3,\"major\":\"N\"},{\"name\":\"subject\",\"value\":\"Workplace\
+      \ Environment\",\"rank\":4,\"major\":\"N\"},{\"name\":\"subject\",\"value\"\
+      :\"your-feed-selfcare\",\"rank\":5,\"major\":\"N\"}],\"pub_date\":\"2024-09-01T04:01:07+0000\"\
+      ,\"document_type\":\"article\",\"news_desk\":\"SundayBusiness\",\"section_name\"\
+      :\"Business Day\",\"byline\":{\"original\":\"By Anna Holmes\",\"person\":[{\"\
+      firstname\":\"Anna\",\"middlename\":null,\"lastname\":\"Holmes\",\"qualifier\"\
+      :null,\"title\":null,\"role\":\"reported\",\"organization\":\"\",\"rank\":1}],\"\
+      organization\":null},\"type_of_material\":\"News\",\"_id\":\"nyt://article/da8532bd-f9bd-5ca3-9e7e-afef6e9f76d9\"\
+      ,\"word_count\":1280,\"uri\":\"nyt://article/da8532bd-f9bd-5ca3-9e7e-afef6e9f76d9\"\
+      },{\"abstract\":\"Grueling shifts, abuse from the public and subpar security\
+      \ are nothing new to medical workers in India, where a ghastly killing has put\
+      \ a spotlight on their plight.\",\"web_url\":\"https://www.nytimes.com/2024/09/01/world/asia/india-doctors-safety.html\"\
+      ,\"snippet\":\"Grueling shifts, abuse from the public and subpar security are\
+      \ nothing new to medical workers in India, where a ghastly killing has put a\
+      \ spotlight on their plight.\",\"lead_paragraph\":\"Exhausted doctors resting\
+      \ in crowded on-call rooms with no locks, two to a single bed. Frustrated relatives\
+      \ of patients angrily challenging a physician\u2019s diagnosis. Too few security\
+      \ guards to keep the peace.\",\"print_section\":\"A\",\"print_page\":\"4\",\"\
+      source\":\"The New York Times\",\"multimedia\":[{\"rank\":0,\"subtype\":\"xlarge\"\
+      ,\"caption\":null,\"credit\":null,\"type\":\"image\",\"url\":\"images/2024/09/01/multimedia/01india-doctors-01-gzjq/01india-doctors-01-gzjq-articleLarge.jpg\"\
+      ,\"height\":399,\"width\":600,\"subType\":\"xlarge\",\"crop_name\":\"articleLarge\"\
+      ,\"legacy\":{\"xlarge\":\"images/2024/09/01/multimedia/01india-doctors-01-gzjq/01india-doctors-01-gzjq-articleLarge.jpg\"\
+      ,\"xlargewidth\":600,\"xlargeheight\":399}},{\"rank\":0,\"subtype\":\"jumbo\"\
+      ,\"caption\":null,\"credit\":null,\"type\":\"image\",\"url\":\"images/2024/09/01/multimedia/01india-doctors-01-gzjq/01india-doctors-01-gzjq-jumbo.jpg\"\
+      ,\"height\":681,\"width\":1024,\"subType\":\"jumbo\",\"crop_name\":\"jumbo\"\
+      ,\"legacy\":{}},{\"rank\":0,\"subtype\":\"superJumbo\",\"caption\":null,\"credit\"\
+      :null,\"type\":\"image\",\"url\":\"images/2024/09/01/multimedia/01india-doctors-01-gzjq/01india-doctors-01-gzjq-superJumbo.jpg\"\
+      ,\"height\":1363,\"width\":2048,\"subType\":\"superJumbo\",\"crop_name\":\"\
+      superJumbo\",\"legacy\":{}},{\"rank\":0,\"subtype\":\"thumbnail\",\"caption\"\
+      :null,\"credit\":null,\"type\":\"image\",\"url\":\"images/2024/09/01/multimedia/01india-doctors-01-gzjq/01india-doctors-01-gzjq-thumbStandard.jpg\"\
+      ,\"height\":75,\"width\":75,\"subType\":\"thumbnail\",\"crop_name\":\"thumbStandard\"\
+      ,\"legacy\":{\"thumbnail\":\"images/2024/09/01/multimedia/01india-doctors-01-gzjq/01india-doctors-01-gzjq-thumbStandard.jpg\"\
+      ,\"thumbnailwidth\":75,\"thumbnailheight\":75}},{\"rank\":0,\"subtype\":\"thumbLarge\"\
+      ,\"caption\":null,\"credit\":null,\"type\":\"image\",\"url\":\"images/2024/09/01/multimedia/01india-doctors-01-gzjq/01india-doctors-01-gzjq-thumbLarge.jpg\"\
+      ,\"height\":150,\"width\":150,\"subType\":\"thumbLarge\",\"crop_name\":\"thumbLarge\"\
+      ,\"legacy\":{}}],\"headline\":{\"main\":\"Worked to the Bone, India\u2019s Doctors\
+      \ Fear for Their Safety, Too\",\"kicker\":null,\"content_kicker\":null,\"print_headline\"\
+      :\"India\u2019s Exhausted Medical Workers Are Fearing for Their Safety\",\"\
+      name\":null,\"seo\":null,\"sub\":null},\"keywords\":[{\"name\":\"glocations\"\
+      ,\"value\":\"India\",\"rank\":1,\"major\":\"N\"},{\"name\":\"subject\",\"value\"\
+      :\"Hospitals\",\"rank\":2,\"major\":\"N\"},{\"name\":\"subject\",\"value\":\"\
+      Workplace Hazards and Violations\",\"rank\":3,\"major\":\"N\"},{\"name\":\"\
+      subject\",\"value\":\"Doctors\",\"rank\":4,\"major\":\"N\"},{\"name\":\"subject\"\
+      ,\"value\":\"Medical Schools\",\"rank\":5,\"major\":\"N\"},{\"name\":\"subject\"\
+      ,\"value\":\"Murders, Attempted Murders and Homicides\",\"rank\":6,\"major\"\
+      :\"N\"},{\"name\":\"subject\",\"value\":\"Health Care Workers\",\"rank\":7,\"\
+      major\":\"N\"}],\"pub_date\":\"2024-09-01T04:01:25+0000\",\"document_type\"\
+      :\"article\",\"news_desk\":\"Foreign\",\"section_name\":\"World\",\"subsection_name\"\
+      :\"Asia Pacific\",\"byline\":{\"original\":\"By Anupreeta Das and Pragati K.B\"\
+      ,\"person\":[{\"firstname\":\"Anupreeta\",\"middlename\":null,\"lastname\":\"\
+      Das\",\"qualifier\":null,\"title\":null,\"role\":\"reported\",\"organization\"\
+      :\"\",\"rank\":1},{\"firstname\":\"Pragati\",\"middlename\":\"K.\",\"lastname\"\
+      :\"B\",\"qualifier\":null,\"title\":null,\"role\":\"reported\",\"organization\"\
+      :\"\",\"rank\":2}],\"organization\":null},\"type_of_material\":\"News\",\"_id\"\
+      :\"nyt://article/aeabc262-aeb0-5423-a7ac-8bb664cb983b\",\"word_count\":1310,\"\
+      uri\":\"nyt://article/aeabc262-aeb0-5423-a7ac-8bb664cb983b\"},{\"abstract\"\
+      :\"About a quarter of the residents of Maracaibo, Venezuela\u2019s second-largest\
+      \ city, have moved away \u2014 and more are expected to soon follow.\",\"web_url\"\
+      :\"https://www.nytimes.com/2024/09/01/world/americas/venezuela-maracaibo-migration.html\"\
+      ,\"snippet\":\"About a quarter of the residents of Maracaibo, Venezuela\u2019\
+      s second-largest city, have moved away \u2014 and more are expected to soon\
+      \ follow.\",\"lead_paragraph\":\"It was once a thriving metropolis in the heart\
+      \ of oil country in Venezuela.\",\"print_section\":\"A\",\"print_page\":\"1\"\
+      ,\"source\":\"The New York Times\",\"multimedia\":[{\"rank\":0,\"subtype\":\"\
+      xlarge\",\"caption\":null,\"credit\":null,\"type\":\"image\",\"url\":\"images/2024/09/01/multimedia/01venezuela-migration-promo/01venezuela-migration-top-pjfl-articleLarge.jpg\"\
+      ,\"height\":400,\"width\":600,\"subType\":\"xlarge\",\"crop_name\":\"articleLarge\"\
+      ,\"legacy\":{\"xlarge\":\"images/2024/09/01/multimedia/01venezuela-migration-promo/01venezuela-migration-top-pjfl-articleLarge.jpg\"\
+      ,\"xlargewidth\":600,\"xlargeheight\":400}},{\"rank\":0,\"subtype\":\"jumbo\"\
+      ,\"caption\":null,\"credit\":null,\"type\":\"image\",\"url\":\"images/2024/09/01/multimedia/01venezuela-migration-promo/01venezuela-migration-top-pjfl-jumbo.jpg\"\
+      ,\"height\":683,\"width\":1024,\"subType\":\"jumbo\",\"crop_name\":\"jumbo\"\
+      ,\"legacy\":{}},{\"rank\":0,\"subtype\":\"superJumbo\",\"caption\":null,\"credit\"\
+      :null,\"type\":\"image\",\"url\":\"images/2024/09/01/multimedia/01venezuela-migration-promo/01venezuela-migration-top-pjfl-superJumbo.jpg\"\
+      ,\"height\":1365,\"width\":2048,\"subType\":\"superJumbo\",\"crop_name\":\"\
+      superJumbo\",\"legacy\":{}},{\"rank\":0,\"subtype\":\"thumbnail\",\"caption\"\
+      :null,\"credit\":null,\"type\":\"image\",\"url\":\"images/2024/09/01/multimedia/01venezuela-migration-promo/01venezuela-migration-top-pjfl-thumbStandard.jpg\"\
+      ,\"height\":75,\"width\":75,\"subType\":\"thumbnail\",\"crop_name\":\"thumbStandard\"\
+      ,\"legacy\":{\"thumbnail\":\"images/2024/09/01/multimedia/01venezuela-migration-promo/01venezuela-migration-top-pjfl-thumbStandard.jpg\"\
+      ,\"thumbnailwidth\":75,\"thumbnailheight\":75}},{\"rank\":0,\"subtype\":\"thumbLarge\"\
+      ,\"caption\":null,\"credit\":null,\"type\":\"image\",\"url\":\"images/2024/09/01/multimedia/01venezuela-migration-promo/01venezuela-migration-top-pjfl-thumbLarge.jpg\"\
+      ,\"height\":150,\"width\":150,\"subType\":\"thumbLarge\",\"crop_name\":\"thumbLarge\"\
+      ,\"legacy\":{}}],\"headline\":{\"main\":\"What Happens When Half a Million People\
+      \ Abandon Their City\",\"kicker\":\"Maracaibo dispatch\",\"content_kicker\"\
+      :null,\"print_headline\":\"In Maracaibo, People Leave, Misery Doesn\u2019t \
+      \  \",\"name\":null,\"seo\":null,\"sub\":null},\"keywords\":[{\"name\":\"glocations\"\
+      ,\"value\":\"Maracaibo (Venezuela)\",\"rank\":1,\"major\":\"N\"},{\"name\":\"\
+      subject\",\"value\":\"Population\",\"rank\":2,\"major\":\"N\"},{\"name\":\"\
+      subject\",\"value\":\"Immigration and Emigration\",\"rank\":3,\"major\":\"N\"\
+      },{\"name\":\"glocations\",\"value\":\"Venezuela\",\"rank\":4,\"major\":\"N\"\
+      },{\"name\":\"subject\",\"value\":\"Politics and Government\",\"rank\":5,\"\
+      major\":\"N\"},{\"name\":\"subject\",\"value\":\"Economic Conditions and Trends\"\
+      ,\"rank\":6,\"major\":\"N\"},{\"name\":\"subject\",\"value\":\"Shortages\",\"\
+      rank\":7,\"major\":\"N\"},{\"name\":\"subject\",\"value\":\"Embargoes and Sanctions\"\
+      ,\"rank\":8,\"major\":\"N\"},{\"name\":\"subject\",\"value\":\"Labor and Jobs\"\
+      ,\"rank\":9,\"major\":\"N\"},{\"name\":\"persons\",\"value\":\"Maduro, Nicolas\"\
+      ,\"rank\":10,\"major\":\"N\"},{\"name\":\"persons\",\"value\":\"Gonzalez, Edmundo\
+      \ (1949- )\",\"rank\":11,\"major\":\"N\"},{\"name\":\"persons\",\"value\":\"\
+      Machado, Maria Corina\",\"rank\":12,\"major\":\"N\"}],\"pub_date\":\"2024-09-01T04:01:27+0000\"\
+      ,\"document_type\":\"article\",\"news_desk\":\"Foreign\",\"section_name\":\"\
+      World\",\"subsection_name\":\"Americas\",\"byline\":{\"original\":\"By Frances\
+      \ Robles and Marian Carrasquero\",\"person\":[{\"firstname\":\"Frances\",\"\
+      middlename\":null,\"lastname\":\"Robles\",\"qualifier\":null,\"title\":null,\"\
+      role\":\"reported\",\"organization\":\"\",\"rank\":1},{\"firstname\":\"Marian\"\
+      ,\"middlename\":null,\"lastname\":\"Carrasquero\",\"qualifier\":null,\"title\"\
+      :null,\"role\":\"reported\",\"organization\":\"\",\"rank\":2}],\"organization\"\
+      :null},\"type_of_material\":\"News\",\"_id\":\"nyt://article/42c0d0f2-ea62-5d2b-8eba-baa04180adea\"\
+      ,\"word_count\":1460,\"uri\":\"nyt://article/42c0d0f2-ea62-5d2b-8eba-baa04180adea\"\
+      },{\"abstract\":\"Israel and Hamas agreed to pause the war to permit the vaccination\
+      \ of 640,000 children in Gaza, a daunting effort for health workers.\",\"web_url\"\
+      :\"https://www.nytimes.com/2024/09/01/world/middleeast/gaza-polio-vaccine.html\"\
+      ,\"snippet\":\"Israel and Hamas agreed to pause the war to permit the vaccination\
+      \ of 640,000 children in Gaza, a daunting effort for health workers.\",\"lead_paragraph\"\
+      :\"Health workers on Sunday began a polio vaccination drive in Gaza aimed at\
+      \ preventing an outbreak of the quick-spreading disease \u2014 a daunting challenge\
+      \ in a besieged enclave shattered by 10 months of war and dependent on commitments\
+      \ by Israel and Hamas to abide by pledged \u201Chumanitarian pauses.\u201D\"\
+      ,\"print_section\":\"A\",\"print_page\":\"1\",\"source\":\"The New York Times\"\
+      ,\"multimedia\":[],\"headline\":{\"main\":\"In Race Against Polio, Gaza Begins\
+      \ Vaccination Drive\",\"kicker\":null,\"content_kicker\":null,\"print_headline\"\
+      :\"In Gaza, a Race to Halt Polio\u2019s Spread in the War\u2019s Fleeting Pauses\"\
+      ,\"name\":null,\"seo\":null,\"sub\":null},\"keywords\":[{\"name\":\"subject\"\
+      ,\"value\":\"Israel-Gaza War (2023- )\",\"rank\":1,\"major\":\"N\"},{\"name\"\
+      :\"subject\",\"value\":\"Vaccination and Immunization\",\"rank\":2,\"major\"\
+      :\"N\"},{\"name\":\"subject\",\"value\":\"Palestinians\",\"rank\":3,\"major\"\
+      :\"N\"},{\"name\":\"organizations\",\"value\":\"World Health Organization\"\
+      ,\"rank\":4,\"major\":\"N\"},{\"name\":\"organizations\",\"value\":\"United\
+      \ Nations\",\"rank\":5,\"major\":\"N\"},{\"name\":\"organizations\",\"value\"\
+      :\"Hamas\",\"rank\":6,\"major\":\"N\"},{\"name\":\"glocations\",\"value\":\"\
+      Israel\",\"rank\":7,\"major\":\"N\"},{\"name\":\"subject\",\"value\":\"Poliomyelitis\"\
+      ,\"rank\":8,\"major\":\"N\"},{\"name\":\"subject\",\"value\":\"Children and\
+      \ Childhood\",\"rank\":9,\"major\":\"N\"}],\"pub_date\":\"2024-09-01T04:01:43+0000\"\
+      ,\"document_type\":\"article\",\"news_desk\":\"Foreign\",\"section_name\":\"\
+      World\",\"subsection_name\":\"Middle East\",\"byline\":{\"original\":\"By Bilal\
+      \ Shbair, Erika Solomon and Hiba Yazbek\",\"person\":[{\"firstname\":\"Bilal\"\
+      ,\"middlename\":null,\"lastname\":\"Shbair\",\"qualifier\":null,\"title\":null,\"\
+      role\":\"reported\",\"organization\":\"\",\"rank\":1},{\"firstname\":\"Erika\"\
+      ,\"middlename\":null,\"lastname\":\"Solomon\",\"qualifier\":null,\"title\":null,\"\
+      role\":\"reported\",\"organization\":\"\",\"rank\":2},{\"firstname\":\"Hiba\"\
+      ,\"middlename\":null,\"lastname\":\"Yazbek\",\"qualifier\":null,\"title\":null,\"\
+      role\":\"reported\",\"organization\":\"\",\"rank\":3}],\"organization\":null},\"\
+      type_of_material\":\"News\",\"_id\":\"nyt://article/6393c6c3-0e1f-5494-925d-165e7aafdefa\"\
+      ,\"word_count\":1473,\"uri\":\"nyt://article/6393c6c3-0e1f-5494-925d-165e7aafdefa\"\
+      },{\"abstract\":\"The prospect of a strong performance by the far-right Alternative\
+      \ for Germany party in two state elections is only one of the problems for Chancellor\
+      \ Olaf Scholz.\",\"web_url\":\"https://www.nytimes.com/2024/09/01/world/europe/east-german-state-elections.html\"\
+      ,\"snippet\":\"The prospect of a strong performance by the far-right Alternative\
+      \ for Germany party in two state elections is only one of the problems for Chancellor\
+      \ Olaf Scholz.\",\"lead_paragraph\":\"On Sunday, voters in the eastern German\
+      \ states of Saxony and Thuringia go to the polls in elections that are being\
+      \ carefully watched in Berlin and across Europe, in part because the far-right\
+      \ Alternative for Germany party is poised to do well in one or both elections.\"\
+      ,\"source\":\"The New York Times\",\"multimedia\":[{\"rank\":0,\"subtype\":\"\
+      xlarge\",\"caption\":null,\"credit\":null,\"type\":\"image\",\"url\":\"images/2024/09/01/multimedia/01germany-election-explainer-1-fhqz/01germany-election-explainer-1-fhqz-articleLarge.jpg\"\
+      ,\"height\":399,\"width\":600,\"subType\":\"xlarge\",\"crop_name\":\"articleLarge\"\
+      ,\"legacy\":{\"xlarge\":\"images/2024/09/01/multimedia/01germany-election-explainer-1-fhqz/01germany-election-explainer-1-fhqz-articleLarge.jpg\"\
+      ,\"xlargewidth\":600,\"xlargeheight\":399}},{\"rank\":0,\"subtype\":\"jumbo\"\
+      ,\"caption\":null,\"credit\":null,\"type\":\"image\",\"url\":\"images/2024/09/01/multimedia/01germany-election-explainer-1-fhqz/01germany-election-explainer-1-fhqz-jumbo.jpg\"\
+      ,\"height\":681,\"width\":1024,\"subType\":\"jumbo\",\"crop_name\":\"jumbo\"\
+      ,\"legacy\":{}},{\"rank\":0,\"subtype\":\"superJumbo\",\"caption\":null,\"credit\"\
+      :null,\"type\":\"image\",\"url\":\"images/2024/09/01/multimedia/01germany-election-explainer-1-fhqz/01germany-election-explainer-1-fhqz-superJumbo.jpg\"\
+      ,\"height\":1363,\"width\":2048,\"subType\":\"superJumbo\",\"crop_name\":\"\
+      superJumbo\",\"legacy\":{}},{\"rank\":0,\"subtype\":\"thumbnail\",\"caption\"\
+      :null,\"credit\":null,\"type\":\"image\",\"url\":\"images/2024/09/01/multimedia/01germany-election-explainer-1-fhqz/01germany-election-explainer-1-fhqz-thumbStandard.jpg\"\
+      ,\"height\":75,\"width\":75,\"subType\":\"thumbnail\",\"crop_name\":\"thumbStandard\"\
+      ,\"legacy\":{\"thumbnail\":\"images/2024/09/01/multimedia/01germany-election-explainer-1-fhqz/01germany-election-explainer-1-fhqz-thumbStandard.jpg\"\
+      ,\"thumbnailwidth\":75,\"thumbnailheight\":75}},{\"rank\":0,\"subtype\":\"thumbLarge\"\
+      ,\"caption\":null,\"credit\":null,\"type\":\"image\",\"url\":\"images/2024/09/01/multimedia/01germany-election-explainer-1-fhqz/01germany-election-explainer-1-fhqz-thumbLarge.jpg\"\
+      ,\"height\":150,\"width\":150,\"subType\":\"thumbLarge\",\"crop_name\":\"thumbLarge\"\
+      ,\"legacy\":{}}],\"headline\":{\"main\":\"What to Watch For in East German State\
+      \ Elections on Sunday\",\"kicker\":null,\"content_kicker\":null,\"print_headline\"\
+      :\"\",\"name\":null,\"seo\":null,\"sub\":null},\"keywords\":[{\"name\":\"glocations\"\
+      ,\"value\":\"Germany\",\"rank\":1,\"major\":\"N\"},{\"name\":\"subject\",\"\
+      value\":\"Elections, State Legislature\",\"rank\":2,\"major\":\"N\"},{\"name\"\
+      :\"glocations\",\"value\":\"SAXONY (GERMANY)\",\"rank\":3,\"major\":\"N\"},{\"\
+      name\":\"glocations\",\"value\":\"THURINGIA (GERMANY)\",\"rank\":4,\"major\"\
+      :\"N\"},{\"name\":\"organizations\",\"value\":\"Alternative for Germany\",\"\
+      rank\":5,\"major\":\"N\"},{\"name\":\"organizations\",\"value\":\"Christian\
+      \ Democratic Union (Germany)\",\"rank\":6,\"major\":\"N\"},{\"name\":\"organizations\"\
+      ,\"value\":\"Sahra Wagenknecht Alliance (BSW)\",\"rank\":7,\"major\":\"N\"},{\"\
+      name\":\"subject\",\"value\":\"Right-Wing Extremism and Alt-Right\",\"rank\"\
+      :8,\"major\":\"N\"},{\"name\":\"subject\",\"value\":\"Politics and Government\"\
+      ,\"rank\":9,\"major\":\"N\"},{\"name\":\"persons\",\"value\":\"Scholz, Olaf\
+      \ (1958- )\",\"rank\":10,\"major\":\"N\"},{\"name\":\"subject\",\"value\":\"\
+      Elections\",\"rank\":11,\"major\":\"N\"}],\"pub_date\":\"2024-09-01T04:01:43+0000\"\
+      ,\"document_type\":\"article\",\"news_desk\":\"Foreign\",\"section_name\":\"\
+      World\",\"subsection_name\":\"Europe\",\"byline\":{\"original\":\"By Christopher\
+      \ F. Schuetze\",\"person\":[{\"firstname\":\"Christopher\",\"middlename\":\"\
+      F.\",\"lastname\":\"Schuetze\",\"qualifier\":null,\"title\":null,\"role\":\"\
+      reported\",\"organization\":\"\",\"rank\":1}],\"organization\":null},\"type_of_material\"\
+      :\"News\",\"_id\":\"nyt://article/fe046102-78e5-530d-89e0-59ff09c0e2e4\",\"\
+      word_count\":812,\"uri\":\"nyt://article/fe046102-78e5-530d-89e0-59ff09c0e2e4\"\
+      }],\"meta\":{\"hits\":4054}}}"
+    content_type: text/plain; charset=utf-8
+    headers:
+      Accept-Ranges: bytes
+      Alt-Svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+      Cache-Control: max-age=43200
+      ETag: '"c0d5f6930f6b2c3aeb4bc8414bd1faca"'
+      Expires: Fri, 10 Jan 2025 14:42:41 GMT
+      Last-Modified: Mon, 30 Sep 2024 16:04:52 GMT
+      X-GUploader-UploadID: AFiumC4VQQ5ZX3QospquSUE-d9JMrFP_kAURwLwM2vGQl9EdY_1LuCEZuxXsNDSaWvNtIMmnj0L9yrI
+      x-goog-generation: '1727712291943188'
+      x-goog-hash: crc32c=jbkuSw==, md5=wNX2kw9rLDrrS8hBS9H6yg==
+      x-goog-metageneration: '2'
+      x-goog-storage-class: MULTI_REGIONAL
+      x-goog-stored-content-encoding: identity
+      x-goog-stored-content-length: '14058618'
+    method: GET
+    status: 200
+    url: https://api.nytimes.com/svc/archive/v1/2024/9.json?api-key=1234567890

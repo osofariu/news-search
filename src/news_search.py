@@ -6,7 +6,7 @@ from langgraph.prebuilt import ToolNode
 from langgraph.graph import END, START, StateGraph, MessagesState
 from langgraph.checkpoint.memory import MemorySaver
 from langsmith import traceable
-from nyt_api import NYTNewsApi, ArchiveResponse
+from nyt_api import NYTApi, ArchiveResponse
 import os
 import sys
 import logging
@@ -14,7 +14,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 logger = logging.getLogger(__name__)
-nyt_news = NYTNewsApi(os.getenv("NYT_API_KEY"))
+nyt_news = NYTApi(os.getenv("NYT_API_KEY"))
 
 class ArchiveQuery(BaseModel):
     """Inputs to the nyt_archive tool."""
@@ -46,7 +46,7 @@ class NewsSearch:
     def __init__(self):
         tools = [nyt_archive_search]
         self.tool_node = ToolNode(tools)
-        self.nyt_news = NYTNewsApi(os.getenv("NYT_API_KEY"))
+        self.nyt_news = NYTApi(os.getenv("NYT_API_KEY"))
         self.model = (
             ChatOpenAI(model="gpt-4o-mini", temperature=0)
             .bind_tools(tools)

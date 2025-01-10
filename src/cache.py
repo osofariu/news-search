@@ -2,7 +2,7 @@ import json
 
 class NewsCache:
     def __init__(self):
-        pass
+        self.cache_path = "cache"
     
     def get_by_date(self, year, month):
         key = f"{year}-{month}"
@@ -10,16 +10,14 @@ class NewsCache:
     
     def get(self, key):
         """get item from cache
-    
         Args:
             key (str): "YYYY-MM" formatted date
-            
         Returns:
             - None if cache item not found
             - List[ArchiveItem]: a list of ArchiveItem objects
         """
         try:
-            with open(f'data/{key}.json', 'r') as f:
+            with open(f'{self.cache_path}/{key}.json', 'r') as f:
                 return json.load(f)
         except FileNotFoundError:
             return None
@@ -31,11 +29,10 @@ class NewsCache:
     
     def put(self, key, value):
         """add item to cache if not already present
-
         Args:
             key (str): "YYYY-MM" formatted date
             value (List[ArchiveItem]:): archive items matching the key
         """
 
-        with open(f'data/{key}.json', 'w') as f:
+        with open(f'{self.cache_path}/{key}.json', 'w') as f:
             json.dump(value, f)

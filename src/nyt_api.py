@@ -21,10 +21,10 @@ class ArchiveResponse(TypedDict):
     status: int
     responses: List[ArchiveItem]
 
-class NYTNewsApi:
-    def __init__(self, api_key):
+class NYTApi:
+    def __init__(self, api_key: str, cache: NewsCache = None):
         self.api_key = api_key
-        self.cache = NewsCache()
+        self.cache = cache or NewsCache()
 
     def get_archives(self, topic: str, start_date: str, end_date: str) -> ArchiveResponse:
         '''Given a topic and date range, get all the appropriate archive items and filter
@@ -129,7 +129,7 @@ class NYTNewsApi:
         return dates
 
 def main():
-    logging.basicConfig(filename="logs/nyt_api.log", level=logging.INFO)
+    logging.basicConfig(filename="logs/nyt_api.log", level=logging.DEBUG)
     
     start_date="2024-09"
     end_date="2024-12"
@@ -141,7 +141,7 @@ def main():
     logger.info(f"Searching NYT archive for {topic} from {start_date} to {end_date}.")
     
     api_key = os.getenv("NYT_API_KEY")
-    news_api = NYTNewsApi(api_key)
+    news_api = NYTApi(api_key)
     response = news_api.get_archives(topic, start_date, end_date)    
     print(f"\n# Response:\n{response}")   
     

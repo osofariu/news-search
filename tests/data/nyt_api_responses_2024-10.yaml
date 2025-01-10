@@ -1,0 +1,224 @@
+responses:
+- response:
+    auto_calculate_content_length: false
+    body: "{\"copyright\":\"Copyright (c) 2024 The New York Times Company. All Rights\
+      \ Reserved.\",\"response\":{\"docs\":[{\"abstract\":\"Few people in city government\
+      \ were closer to Mayor Eric Adams than Timothy Pearson, who had a role in handling\
+      \ migrant shelter contracts.\",\"web_url\":\"https://www.nytimes.com/2024/09/30/nyregion/tim-pearson-resigns-adams.html\"\
+      ,\"snippet\":\"Few people in city government were closer to Mayor Eric Adams\
+      \ than Timothy Pearson, who had a role in handling migrant shelter contracts.\"\
+      ,\"lead_paragraph\":\"One of Mayor Eric Adams\u2019s closest aides and confidants\
+      \ resigned on Monday, less than a week after the mayor was indicted on corruption\
+      \ charges \u2014 and nearly a month after federal agents seized the aide\u2019\
+      s phones in a separate corruption inquiry, according to a resignation letter\
+      \ his lawyer said had been sent to the mayor.\",\"source\":\"The New York Times\"\
+      ,\"multimedia\":[{\"rank\":0,\"subtype\":\"xlarge\",\"caption\":null,\"credit\"\
+      :null,\"type\":\"image\",\"url\":\"images/2024/09/30/multimedia/00pearson-resign-01-pkgm/00pearson-resign-01-pkgm-articleLarge.jpg\"\
+      ,\"height\":400,\"width\":600,\"subType\":\"xlarge\",\"crop_name\":\"articleLarge\"\
+      ,\"legacy\":{\"xlarge\":\"images/2024/09/30/multimedia/00pearson-resign-01-pkgm/00pearson-resign-01-pkgm-articleLarge.jpg\"\
+      ,\"xlargewidth\":600,\"xlargeheight\":400}},{\"rank\":0,\"subtype\":\"jumbo\"\
+      ,\"caption\":null,\"credit\":null,\"type\":\"image\",\"url\":\"images/2024/09/30/multimedia/00pearson-resign-01-pkgm/00pearson-resign-01-pkgm-jumbo.jpg\"\
+      ,\"height\":682,\"width\":1024,\"subType\":\"jumbo\",\"crop_name\":\"jumbo\"\
+      ,\"legacy\":{}},{\"rank\":0,\"subtype\":\"superJumbo\",\"caption\":null,\"credit\"\
+      :null,\"type\":\"image\",\"url\":\"images/2024/09/30/multimedia/00pearson-resign-01-pkgm/00pearson-resign-01-pkgm-superJumbo.jpg\"\
+      ,\"height\":1147,\"width\":1721,\"subType\":\"superJumbo\",\"crop_name\":\"\
+      superJumbo\",\"legacy\":{}},{\"rank\":0,\"subtype\":\"thumbnail\",\"caption\"\
+      :null,\"credit\":null,\"type\":\"image\",\"url\":\"images/2024/09/30/multimedia/00pearson-resign-01-pkgm/00pearson-resign-01-pkgm-thumbStandard.jpg\"\
+      ,\"height\":75,\"width\":75,\"subType\":\"thumbnail\",\"crop_name\":\"thumbStandard\"\
+      ,\"legacy\":{\"thumbnail\":\"images/2024/09/30/multimedia/00pearson-resign-01-pkgm/00pearson-resign-01-pkgm-thumbStandard.jpg\"\
+      ,\"thumbnailwidth\":75,\"thumbnailheight\":75}},{\"rank\":0,\"subtype\":\"thumbLarge\"\
+      ,\"caption\":null,\"credit\":null,\"type\":\"image\",\"url\":\"images/2024/09/30/multimedia/00pearson-resign-01-pkgm/00pearson-resign-01-pkgm-thumbLarge.jpg\"\
+      ,\"height\":150,\"width\":150,\"subType\":\"thumbLarge\",\"crop_name\":\"thumbLarge\"\
+      ,\"legacy\":{}}],\"headline\":{\"main\":\"Adams Confidant Steps Down Amid Federal\
+      \ Corruption Investigations\",\"kicker\":null,\"content_kicker\":null,\"print_headline\"\
+      :\"\",\"name\":null,\"seo\":null,\"sub\":null},\"keywords\":[{\"name\":\"persons\"\
+      ,\"value\":\"Pearson, Timothy\",\"rank\":1,\"major\":\"N\"},{\"name\":\"persons\"\
+      ,\"value\":\"Adams, Eric L\",\"rank\":2,\"major\":\"N\"},{\"name\":\"subject\"\
+      ,\"value\":\"Eric Adams Federal Corruption Case (24 CR 556)\",\"rank\":3,\"\
+      major\":\"N\"},{\"name\":\"glocations\",\"value\":\"New York City\",\"rank\"\
+      :4,\"major\":\"N\"}],\"pub_date\":\"2024-10-01T00:01:59+0000\",\"document_type\"\
+      :\"article\",\"news_desk\":\"Metro\",\"section_name\":\"New York\",\"byline\"\
+      :{\"original\":\"By William K. Rashbaum and Dana Rubinstein\",\"person\":[{\"\
+      firstname\":\"William\",\"middlename\":\"K.\",\"lastname\":\"Rashbaum\",\"qualifier\"\
+      :null,\"title\":null,\"role\":\"reported\",\"organization\":\"\",\"rank\":1},{\"\
+      firstname\":\"Dana\",\"middlename\":null,\"lastname\":\"Rubinstein\",\"qualifier\"\
+      :null,\"title\":null,\"role\":\"reported\",\"organization\":\"\",\"rank\":2}],\"\
+      organization\":null},\"type_of_material\":\"News\",\"_id\":\"nyt://article/d8c6c524-9bd0-5d03-97fd-96e13449f740\"\
+      ,\"word_count\":939,\"uri\":\"nyt://article/d8c6c524-9bd0-5d03-97fd-96e13449f740\"\
+      },{\"abstract\":\"While Donald J. Trump has attacked California as too liberal\
+      \ for the nation, Gov. Gavin Newsom has vetoed several bills that could have\
+      \ become political fodder.\",\"web_url\":\"https://www.nytimes.com/2024/09/30/us/newsom-california-bill-politics.html\"\
+      ,\"snippet\":\"While Donald J. Trump has attacked California as too liberal\
+      \ for the nation, Gov. Gavin Newsom has vetoed several bills that could have\
+      \ become political fodder.\",\"lead_paragraph\":\"For much of the past year,\
+      \ conservatives have considered Gov. Gavin Newsom of California a perfect symbol\
+      \ of liberal excess, a well-coifed coastal governor with national aspirations\
+      \ whose state seemed to embrace undocumented immigrants while homeless encampments\
+      \ proliferated on the streets.\",\"source\":\"The New York Times\",\"multimedia\"\
+      :[{\"rank\":0,\"subtype\":\"xlarge\",\"caption\":null,\"credit\":null,\"type\"\
+      :\"image\",\"url\":\"images/2024/09/30/multimedia/30nat-newsom-bills-SWAP-kfzg/30nat-newsom-bills-SWAP-kfzg-articleLarge.jpg\"\
+      ,\"height\":400,\"width\":600,\"subType\":\"xlarge\",\"crop_name\":\"articleLarge\"\
+      ,\"legacy\":{\"xlarge\":\"images/2024/09/30/multimedia/30nat-newsom-bills-SWAP-kfzg/30nat-newsom-bills-SWAP-kfzg-articleLarge.jpg\"\
+      ,\"xlargewidth\":600,\"xlargeheight\":400}},{\"rank\":0,\"subtype\":\"jumbo\"\
+      ,\"caption\":null,\"credit\":null,\"type\":\"image\",\"url\":\"images/2024/09/30/multimedia/30nat-newsom-bills-SWAP-kfzg/30nat-newsom-bills-SWAP-kfzg-jumbo.jpg\"\
+      ,\"height\":683,\"width\":1024,\"subType\":\"jumbo\",\"crop_name\":\"jumbo\"\
+      ,\"legacy\":{}},{\"rank\":0,\"subtype\":\"superJumbo\",\"caption\":null,\"credit\"\
+      :null,\"type\":\"image\",\"url\":\"images/2024/09/30/multimedia/30nat-newsom-bills-SWAP-kfzg/30nat-newsom-bills-SWAP-kfzg-superJumbo.jpg\"\
+      ,\"height\":1365,\"width\":2048,\"subType\":\"superJumbo\",\"crop_name\":\"\
+      superJumbo\",\"legacy\":{}},{\"rank\":0,\"subtype\":\"thumbnail\",\"caption\"\
+      :null,\"credit\":null,\"type\":\"image\",\"url\":\"images/2024/09/30/multimedia/30nat-newsom-bills-SWAP-kfzg/30nat-newsom-bills-SWAP-kfzg-thumbStandard.jpg\"\
+      ,\"height\":75,\"width\":75,\"subType\":\"thumbnail\",\"crop_name\":\"thumbStandard\"\
+      ,\"legacy\":{\"thumbnail\":\"images/2024/09/30/multimedia/30nat-newsom-bills-SWAP-kfzg/30nat-newsom-bills-SWAP-kfzg-thumbStandard.jpg\"\
+      ,\"thumbnailwidth\":75,\"thumbnailheight\":75}},{\"rank\":0,\"subtype\":\"thumbLarge\"\
+      ,\"caption\":null,\"credit\":null,\"type\":\"image\",\"url\":\"images/2024/09/30/multimedia/30nat-newsom-bills-SWAP-kfzg/30nat-newsom-bills-SWAP-kfzg-thumbLarge.jpg\"\
+      ,\"height\":150,\"width\":150,\"subType\":\"thumbLarge\",\"crop_name\":\"thumbLarge\"\
+      ,\"legacy\":{}}],\"headline\":{\"main\":\"Newsom Tacks to the Middle With California\
+      \ in the Spotlight\",\"kicker\":null,\"content_kicker\":null,\"print_headline\"\
+      :\"\",\"name\":null,\"seo\":null,\"sub\":null},\"keywords\":[{\"name\":\"subject\"\
+      ,\"value\":\"United States Politics and Government\",\"rank\":1,\"major\":\"\
+      N\"},{\"name\":\"subject\",\"value\":\"Presidential Election of 2024\",\"rank\"\
+      :2,\"major\":\"N\"},{\"name\":\"subject\",\"value\":\"State Legislatures\",\"\
+      rank\":3,\"major\":\"N\"},{\"name\":\"organizations\",\"value\":\"Democratic\
+      \ Party\",\"rank\":4,\"major\":\"N\"},{\"name\":\"organizations\",\"value\"\
+      :\"Republican Party\",\"rank\":5,\"major\":\"N\"},{\"name\":\"persons\",\"value\"\
+      :\"Newsom, Gavin\",\"rank\":6,\"major\":\"N\"},{\"name\":\"persons\",\"value\"\
+      :\"Harris, Kamala D\",\"rank\":7,\"major\":\"N\"},{\"name\":\"persons\",\"value\"\
+      :\"Trump, Donald J\",\"rank\":8,\"major\":\"N\"},{\"name\":\"glocations\",\"\
+      value\":\"California\",\"rank\":9,\"major\":\"N\"},{\"name\":\"glocations\"\
+      ,\"value\":\"Los Angeles (Calif)\",\"rank\":10,\"major\":\"N\"},{\"name\":\"\
+      subject\",\"value\":\"Law and Legislation\",\"rank\":11,\"major\":\"N\"}],\"\
+      pub_date\":\"2024-10-01T00:21:58+0000\",\"document_type\":\"article\",\"news_desk\"\
+      :\"National\",\"section_name\":\"U.S.\",\"byline\":{\"original\":\"By Shawn\
+      \ Hubler\",\"person\":[{\"firstname\":\"Shawn\",\"middlename\":null,\"lastname\"\
+      :\"Hubler\",\"qualifier\":null,\"title\":null,\"role\":\"reported\",\"organization\"\
+      :\"\",\"rank\":1}],\"organization\":null},\"type_of_material\":\"News\",\"_id\"\
+      :\"nyt://article/a7caa1f1-4daa-5113-9caf-799c7bab8e49\",\"word_count\":1188,\"\
+      uri\":\"nyt://article/a7caa1f1-4daa-5113-9caf-799c7bab8e49\"},{\"abstract\"\
+      :\"Corrections that appeared in print on Tuesday, Oct. 1, 2024.\",\"web_url\"\
+      :\"https://www.nytimes.com/2024/09/30/pageoneplus/corrections-oct-1-2024.html\"\
+      ,\"snippet\":\"Corrections that appeared in print on Tuesday, Oct. 1, 2024.\"\
+      ,\"lead_paragraph\":\"An article on Wednesday about the graft case involving\
+      \ Singapore\u2019s former transport minister, S. Iswaran, misstated one of the\
+      \ charges that Mr. Iswaran faced. He was accused of accepting gifts as a public\
+      \ servant, not of accepting bribes.\",\"print_section\":\"A\",\"print_page\"\
+      :\"19\",\"source\":\"The New York Times\",\"multimedia\":[],\"headline\":{\"\
+      main\":\"Corrections: Oct. 1, 2024\",\"kicker\":null,\"content_kicker\":null,\"\
+      print_headline\":\"Corrections\",\"name\":null,\"seo\":null,\"sub\":null},\"\
+      keywords\":[],\"pub_date\":\"2024-10-01T01:00:02+0000\",\"document_type\":\"\
+      article\",\"news_desk\":\"Corrections\",\"section_name\":\"Corrections\",\"\
+      byline\":{\"original\":\"\",\"person\":[],\"organization\":null},\"type_of_material\"\
+      :\"Correction\",\"_id\":\"nyt://article/50c6bbb6-8fc6-56f4-b0f1-bb6c800217af\"\
+      ,\"word_count\":180,\"uri\":\"nyt://article/50c6bbb6-8fc6-56f4-b0f1-bb6c800217af\"\
+      },{\"abstract\":\"The \u201COppenheimer\u201D star makes his Broadway debut\
+      \ in Ayad Akhtar\u2019s timely new play about a literary lion who gets assistance\
+      \ from A.I.\",\"web_url\":\"https://www.nytimes.com/2024/09/30/theater/mcneal-review-ai-robert-downey-jr.html\"\
+      ,\"snippet\":\"The \u201COppenheimer\u201D star makes his Broadway debut in\
+      \ Ayad Akhtar\u2019s timely new play about a literary lion who gets assistance\
+      \ from A.I.\",\"lead_paragraph\":\"The Vivian Beaumont Theater has, over the\
+      \ years, been memorably transformed into many specific, even exotic, locales:\
+      \ a Maine carousel, a Thai palace, a South Pacific Seabee base. But never has\
+      \ it looked more exotically nowhere than it does right now, as the setting for\
+      \ Ayad Akhtar\u2019s \u201CMcNeal,\u201D a thought experiment about art and\
+      \ A.I. With its softly rounded edges, cool colors and shifting screens, the\
+      \ sleek, vast space is as much an Apple store as a stage.\",\"print_section\"\
+      :\"C\",\"print_page\":\"1\",\"source\":\"The New York Times\",\"multimedia\"\
+      :[{\"rank\":0,\"subtype\":\"xlarge\",\"caption\":null,\"credit\":null,\"type\"\
+      :\"image\",\"url\":\"images/2024/10/01/multimedia/30mcneal-1-gwlv/30mcneal-1-gwlv-articleLarge.jpg\"\
+      ,\"height\":482,\"width\":600,\"subType\":\"xlarge\",\"crop_name\":\"articleLarge\"\
+      ,\"legacy\":{\"xlarge\":\"images/2024/10/01/multimedia/30mcneal-1-gwlv/30mcneal-1-gwlv-articleLarge.jpg\"\
+      ,\"xlargewidth\":600,\"xlargeheight\":482}},{\"rank\":0,\"subtype\":\"jumbo\"\
+      ,\"caption\":null,\"credit\":null,\"type\":\"image\",\"url\":\"images/2024/10/01/multimedia/30mcneal-1-gwlv/30mcneal-1-gwlv-jumbo.jpg\"\
+      ,\"height\":823,\"width\":1024,\"subType\":\"jumbo\",\"crop_name\":\"jumbo\"\
+      ,\"legacy\":{}},{\"rank\":0,\"subtype\":\"superJumbo\",\"caption\":null,\"credit\"\
+      :null,\"type\":\"image\",\"url\":\"images/2024/10/01/multimedia/30mcneal-1-gwlv/30mcneal-1-gwlv-superJumbo.jpg\"\
+      ,\"height\":1647,\"width\":2048,\"subType\":\"superJumbo\",\"crop_name\":\"\
+      superJumbo\",\"legacy\":{}},{\"rank\":0,\"subtype\":\"thumbnail\",\"caption\"\
+      :null,\"credit\":null,\"type\":\"image\",\"url\":\"images/2024/10/01/multimedia/30mcneal-1-gwlv/30mcneal-1-gwlv-thumbStandard.jpg\"\
+      ,\"height\":75,\"width\":75,\"subType\":\"thumbnail\",\"crop_name\":\"thumbStandard\"\
+      ,\"legacy\":{\"thumbnail\":\"images/2024/10/01/multimedia/30mcneal-1-gwlv/30mcneal-1-gwlv-thumbStandard.jpg\"\
+      ,\"thumbnailwidth\":75,\"thumbnailheight\":75}},{\"rank\":0,\"subtype\":\"thumbLarge\"\
+      ,\"caption\":null,\"credit\":null,\"type\":\"image\",\"url\":\"images/2024/10/01/multimedia/30mcneal-1-gwlv/30mcneal-1-gwlv-thumbLarge.jpg\"\
+      ,\"height\":150,\"width\":150,\"subType\":\"thumbLarge\",\"crop_name\":\"thumbLarge\"\
+      ,\"legacy\":{}}],\"headline\":{\"main\":\"Robert Downey Jr. Is a Novelist With\
+      \ a Novel Muse in \u2018McNeal\u2019\",\"kicker\":\"Theater Review\",\"content_kicker\"\
+      :null,\"print_headline\":\"A Troubled Novelist Leans on a New Muse\",\"name\"\
+      :null,\"seo\":null,\"sub\":null},\"keywords\":[{\"name\":\"subject\",\"value\"\
+      :\"Theater\",\"rank\":1,\"major\":\"N\"},{\"name\":\"subject\",\"value\":\"\
+      Theater (Broadway)\",\"rank\":2,\"major\":\"N\"},{\"name\":\"organizations\"\
+      ,\"value\":\"Beaumont, Vivian, Theater\",\"rank\":3,\"major\":\"N\"},{\"name\"\
+      :\"organizations\",\"value\":\"Lincoln Center Theater\",\"rank\":4,\"major\"\
+      :\"N\"},{\"name\":\"creative_works\",\"value\":\"McNeal (Play)\",\"rank\":5,\"\
+      major\":\"N\"},{\"name\":\"persons\",\"value\":\"AKHTAR, AYAD\",\"rank\":6,\"\
+      major\":\"N\"},{\"name\":\"persons\",\"value\":\"Sher, Bartlett\",\"rank\":7,\"\
+      major\":\"N\"},{\"name\":\"persons\",\"value\":\"Downey, Robert Jr\",\"rank\"\
+      :8,\"major\":\"N\"},{\"name\":\"persons\",\"value\":\"Martin, Andrea (1947-\
+      \ )\",\"rank\":9,\"major\":\"N\"}],\"pub_date\":\"2024-10-01T01:00:09+0000\"\
+      ,\"document_type\":\"article\",\"news_desk\":\"Culture\",\"section_name\":\"\
+      Theater\",\"byline\":{\"original\":\"By Jesse Green\",\"person\":[{\"firstname\"\
+      :\"Jesse\",\"middlename\":null,\"lastname\":\"Green\",\"qualifier\":null,\"\
+      title\":null,\"role\":\"reported\",\"organization\":\"\",\"rank\":1}],\"organization\"\
+      :null},\"type_of_material\":\"Review\",\"_id\":\"nyt://article/85ec9d3a-68ef-5e22-b68b-83fb01823323\"\
+      ,\"word_count\":897,\"uri\":\"nyt://article/85ec9d3a-68ef-5e22-b68b-83fb01823323\"\
+      },{\"abstract\":\"Prosecutors said the Montanan illegally used tissue from a\
+      \ sheep from Central Asia and the testicles from a bighorn sheep to make large\
+      \ hybrids that he could sell at premium prices.\",\"web_url\":\"https://www.nytimes.com/2024/09/30/us/montana-man-giant-sheep-sentence.html\"\
+      ,\"snippet\":\"Prosecutors said the Montanan illegally used tissue from a sheep\
+      \ from Central Asia and the testicles from a bighorn sheep to make large hybrids\
+      \ that he could sell at premium prices.\",\"lead_paragraph\":\"An 81-year-old\
+      \ Montana rancher was sentenced to six months in federal prison on Monday for\
+      \ running a nearly decade-long scheme in which he used parts from protected\
+      \ wildlife to create a giant hybrid species of wild sheep to sell at premium\
+      \ prices, federal prosecutors said.\",\"source\":\"The New York Times\",\"multimedia\"\
+      :[{\"rank\":0,\"subtype\":\"xlarge\",\"caption\":null,\"credit\":null,\"type\"\
+      :\"image\",\"url\":\"images/2024/09/30/multimedia/30xp-sheep-wmqp/30xp-sheep-wmqp-articleLarge.jpg\"\
+      ,\"height\":400,\"width\":600,\"subType\":\"xlarge\",\"crop_name\":\"articleLarge\"\
+      ,\"legacy\":{\"xlarge\":\"images/2024/09/30/multimedia/30xp-sheep-wmqp/30xp-sheep-wmqp-articleLarge.jpg\"\
+      ,\"xlargewidth\":600,\"xlargeheight\":400}},{\"rank\":0,\"subtype\":\"jumbo\"\
+      ,\"caption\":null,\"credit\":null,\"type\":\"image\",\"url\":\"images/2024/09/30/multimedia/30xp-sheep-wmqp/30xp-sheep-wmqp-jumbo.jpg\"\
+      ,\"height\":683,\"width\":1024,\"subType\":\"jumbo\",\"crop_name\":\"jumbo\"\
+      ,\"legacy\":{}},{\"rank\":0,\"subtype\":\"superJumbo\",\"caption\":null,\"credit\"\
+      :null,\"type\":\"image\",\"url\":\"images/2024/09/30/multimedia/30xp-sheep-wmqp/30xp-sheep-wmqp-superJumbo.jpg\"\
+      ,\"height\":1365,\"width\":2048,\"subType\":\"superJumbo\",\"crop_name\":\"\
+      superJumbo\",\"legacy\":{}},{\"rank\":0,\"subtype\":\"thumbnail\",\"caption\"\
+      :null,\"credit\":null,\"type\":\"image\",\"url\":\"images/2024/09/30/multimedia/30xp-sheep-wmqp/30xp-sheep-wmqp-thumbStandard.jpg\"\
+      ,\"height\":75,\"width\":75,\"subType\":\"thumbnail\",\"crop_name\":\"thumbStandard\"\
+      ,\"legacy\":{\"thumbnail\":\"images/2024/09/30/multimedia/30xp-sheep-wmqp/30xp-sheep-wmqp-thumbStandard.jpg\"\
+      ,\"thumbnailwidth\":75,\"thumbnailheight\":75}},{\"rank\":0,\"subtype\":\"thumbLarge\"\
+      ,\"caption\":null,\"credit\":null,\"type\":\"image\",\"url\":\"images/2024/09/30/multimedia/30xp-sheep-wmqp/30xp-sheep-wmqp-thumbLarge.jpg\"\
+      ,\"height\":150,\"width\":150,\"subType\":\"thumbLarge\",\"crop_name\":\"thumbLarge\"\
+      ,\"legacy\":{}}],\"headline\":{\"main\":\"Rancher Gets 6 Months in Prison for\
+      \ Scheme to Create Giant Sheep Hybrid\",\"kicker\":null,\"content_kicker\":null,\"\
+      print_headline\":\"\",\"name\":null,\"seo\":null,\"sub\":null},\"keywords\"\
+      :[{\"name\":\"subject\",\"value\":\"Wildlife Trade and Poaching\",\"rank\":1,\"\
+      major\":\"N\"},{\"name\":\"glocations\",\"value\":\"Kyrgyzstan\",\"rank\":2,\"\
+      major\":\"N\"},{\"name\":\"glocations\",\"value\":\"Montana\",\"rank\":3,\"\
+      major\":\"N\"},{\"name\":\"organizations\",\"value\":\"Justice Department\"\
+      ,\"rank\":4,\"major\":\"N\"},{\"name\":\"organizations\",\"value\":\"National\
+      \ Fish and Wildlife Foundation\",\"rank\":5,\"major\":\"N\"},{\"name\":\"glocations\"\
+      ,\"value\":\"United States\",\"rank\":6,\"major\":\"N\"}],\"pub_date\":\"2024-10-01T01:03:43+0000\"\
+      ,\"document_type\":\"article\",\"news_desk\":\"Express\",\"section_name\":\"\
+      U.S.\",\"byline\":{\"original\":\"By Alexandra E. Petri\",\"person\":[{\"firstname\"\
+      :\"Alexandra\",\"middlename\":\"E.\",\"lastname\":\"Petri\",\"qualifier\":null,\"\
+      title\":null,\"role\":\"reported\",\"organization\":\"\",\"rank\":1}],\"organization\"\
+      :null},\"type_of_material\":\"News\",\"_id\":\"nyt://article/77a75ad3-9182-5194-bea3-bd15c1891d9d\"\
+      ,\"word_count\":661,\"uri\":\"nyt://article/77a75ad3-9182-5194-bea3-bd15c1891d9d\"\
+      }],\"meta\":{\"\
+      hits\":4306}}}"
+    content_type: text/plain; charset=utf-8
+    headers:
+      Accept-Ranges: bytes
+      Alt-Svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+      Cache-Control: max-age=43200
+      ETag: '"bc996f4d40693cb2f9a127109c31bc77"'
+      Expires: Sat, 11 Jan 2025 01:25:30 GMT
+      Last-Modified: Thu, 31 Oct 2024 16:04:55 GMT
+      X-GUploader-UploadID: AFIdbgThmLdFIlwXZ7Bk8_PpLN6BRddq_Aldu4yiW3dk3SmpJzuZuAYenjdQKRftwccahABf
+      x-goog-generation: '1730390695018538'
+      x-goog-hash: crc32c=iPbSww==, md5=vJlvTUBpPLL5oScQnDG8dw==
+      x-goog-metageneration: '2'
+      x-goog-storage-class: MULTI_REGIONAL
+      x-goog-stored-content-encoding: identity
+      x-goog-stored-content-length: '15026947'
+    method: GET
+    status: 200
+    url: https://api.nytimes.com/svc/archive/v1/2024/10.json?api-key=1234567890
