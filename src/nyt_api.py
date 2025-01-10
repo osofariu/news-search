@@ -3,19 +3,14 @@ from dataclasses import dataclass
 from typing import TypedDict, List
 import requests
 import os
-import sys
+import logging
 from dotenv import load_dotenv
 
 load_dotenv()
-
-@dataclass
-class ArchiveQuery(TypedDict):
-    '''Class for keeping track of an item in inventory.'''
-    topic: str
-    start_date: str
-    end_date: str
+logger = logging.getLogger(__name__)
 
 class ArchiveItem(TypedDict):
+    '''This class represents an item in the NYT Archive API response.'''
     pub_date: str
     headline: str
     abstract: str
@@ -26,25 +21,14 @@ class ArchiveResponse(TypedDict):
     status: int
     responses: List[ArchiveItem]
 
- 
-""" PLANS 
-
-- turn the wrapper into a class
-- add a method to call the API
-- cache results on each call, saving the results in a file
-- add a method to read the cache on each call
-
-"""
-
 class NYTNews:
-    
     def __init__(self, api_key):
         self.api_key = api_key
         self.cache = NewsCache()
-        print(f"NYTNews initialized with API key {api_key}")
 
     def get_archives(self, topic: str, start_date: str, end_date: str) -> ArchiveResponse:
-        '''This function wraps the nyt_archive_api function and returns the response.
+        '''Given a topic and date range, get all the appropriate archive items and filter
+        them by the topic.  If spanning more than one month make multiple calls.
         
         Args:
             topic: a search query for in the NYT archive.
@@ -55,11 +39,12 @@ class NYTNews:
         months_to_query = self.generateMonths(start_date, end_date)
         archiveItems = []
         for year, month in months_to_query:
-            api_response = self.get_archive(year, month)
+            api_response = self.get_monthly_archive(year, month)
             archiveItems.extend(api_response)
         
         # TODO: each API returns a status code; this status should be a higher-level status
-        #        maybe something like "OK" or "ERROR".. or just throw an exception.
+        # maybe something like "OK" or "ERROR".. or just throw an exception. Still need
+        # to handle exceptions, so will handle it when we implement that.
         if not archiveItems:
             return {"status": 404, "responses": []}
         
@@ -75,38 +60,38 @@ class NYTNews:
                 if topic.lower() in item.get('headline', '').lower() 
                 or topic.lower() in item.get('abstract', '').lower()]
 
-    def get_archive(self, year, month):
+    def get_monthly_archive(self, year, month) -> List[ArchiveItem]:
         """get archive from cache if present, else call the API and cache the results
         Args:
             year (_type_): _description_
             month (_type_): _description_
         """
-        cached_archive = self.cache.get_by_date(year, month)
-        if cached_archive:
+        if cached_archive := self.cache.get_by_date(year, month):
+            logger.debug(f"Using cached archive for {year}-{month}")
             return cached_archive
-        api_response = self.call_archive_api(year, month)
-        archive = self.map_to_archive_item(api_response)
+        archive = self.call_archive_api(year, month)
         self.cache.put_by_date(year, month, archive)
         return archive
     
     
-    def call_archive_api(self, year, month):
+    def call_archive_api(self, year, month) -> List[ArchiveItem]:
         '''This function returns the NYT Archive API response for a given year and month.'''
-        year_int = int(year)
-        month_int = int(month)
-        url = f'https://api.nytimes.com/svc/archive/v1/{year_int}/{month_int}.json?api-key={self.api_key}'
+        year = int(year)
+        month = int(month)
+        base_url = "https://api.nytimes.com/svc/archive/v1"
+        url = f'{base_url}/{year}/{month}.json?api-key={self.api_key}'
         
-        print(f"Calling NYT Archive API for {year}-{month}: {url}")
+        logger.debug(f"Calling NYT Archive API for {year}-{month}")
         response = requests.get(url)
         status_code = response.status_code
         if status_code != 200:
             raise(Exception(f"Error: {response.text}"))
         json_response = response.json()
-        return json_response
+        return self.map_to_archive_item(json_response)
   
 
     def map_to_archive_item(self, api_response) -> List[ArchiveItem]:
-        '''This function maps the API response to an ArchiveItem.'''
+        '''This function maps each doc in the API response to an ArchiveItem.'''
         docs = api_response.get('response', {}).get('docs', [])
         if not docs:
             return []
@@ -119,11 +104,12 @@ class NYTNews:
         ) for doc in docs]
 
     def generateMonths(self, start_date: str, end_date: str) -> List[str]:
-        """_summary_
+        """Given the range of months, generate a list of (year, month) tuples
+        to make it easy to call the NYT Archive API for each month in the range.
 
         Args:
-            start_date (str): String representing start date in format YYYY-MM
-            end_date (str): String representing end date in format YYYY-MM
+            - start_date (str): String representing start date in format YYYY-MM
+            - end_date (str): String representing end date in format YYYY-MM
         """
         start_year, start_month = start_date.split("-")
         end_year, end_month = end_date.split("-")
@@ -142,19 +128,22 @@ class NYTNews:
                 dates.append((str(year), str(month).zfill(2)))
         return dates
 
-if __name__ == "__main__":
+def main():
+    logging.basicConfig(filename="logs/nyt_api.log", level=logging.INFO)
     
     start_date="2024-09"
     end_date="2024-12"
-      
-    start_date = input("Enter start date (YYYY-MM): ") or start_date
-    end_date = input("Enter end date (YYYY-MM): ") or end_date
-    topic = input("Enter topic: ") or "Romania"
+    topic="outbreak"
     
-    print(f"Searching NYT archive for {topic} from {start_date} to {end_date}")
+    start_date = input(f"Start date (default {start_date}) > ") or start_date
+    end_date =   input(f"  End date (default {end_date}) > ") or end_date
+    topic = input(f"   Topic: (default {topic}) > ") or topic
+    logger.info(f"Searching NYT archive for {topic} from {start_date} to {end_date}.")
     
     api_key = os.getenv("NYT_API_KEY")
     news_api = NYTNews(api_key)
     response = news_api.get_archives(topic, start_date, end_date)    
-    print("# Response:\n")
-    print(response)
+    print(f"\n# Response:\n{response}")   
+    
+if __name__ == "__main__":
+   main() 
