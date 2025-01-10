@@ -1,4 +1,3 @@
-import pprint
 import pytest
 from nyt_api import NYTNews
 import responses
@@ -13,7 +12,7 @@ def nytimes():
 @responses.activate
 def test_loading_yaml_works():
     test_url = "https://api.nytimes.com/svc/archive/v1/2024/11.json?api-key=1234567890"
-    responses._add_from_file(file_path="tests/data/nyt_api_responses.yaml")
+    responses._add_from_file(file_path="tests/data/nyt_api_responses_2024-11.yaml")
     api_response = requests.get(test_url)
     assert api_response.status_code == 200
 
@@ -33,20 +32,19 @@ def test_loading_yaml_works():
 @responses.activate
 def test_get_archives(nytimes):
     test_url = "https://api.nytimes.com/svc/archive/v1/2024/11.json?api-key=1234567890"
-    responses._add_from_file(file_path="tests/data/nyt_api_responses.yaml")
+    responses._add_from_file(file_path="tests/data/nyt_api_responses_2024-11.yaml")
 
-    ny_times_response = nytimes.get_archives("junk", "2024-11", "2024-11")
+    ny_times_response = nytimes.get_archives(None, "2024-11", "2024-11")
     assert ny_times_response["status"] == 200
 
     archive_items = ny_times_response["responses"]
-    assert len(archive_items) == 5
+    assert len(archive_items) == 4602
 
     first_doc = archive_items[0]
     assert (
         first_doc["headline"]
         == "Vance Tells Rogan: Teens Become Trans to Get Into Ivy League"
     )
-    assert first_doc["source"] == "The New York Times"
     assert first_doc["pub_date"] == "2024-11-01T00:46:06+0000"
     assert (
         first_doc["abstract"]
@@ -56,11 +54,6 @@ Donald Trump would win the \u201Cnormal gay guy vote.\u201D"
     assert (
         first_doc["web_url"]
         == "https://www.nytimes.com/2024/10/31/us/politics/jd-vance-joe-rogan.html"
-    )
-    assert (
-        first_doc["snippet"]
-        == "Appearing on Joe Rogan\u2019s podcast, Senator JD Vance also said that liberal women celebrate their abortions and that \
-Donald Trump would win the \u201Cnormal gay guy vote.\u201D"
     )
     assert (
         first_doc["lead_paragraph"]

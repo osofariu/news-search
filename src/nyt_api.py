@@ -1,7 +1,9 @@
+from cache import NewsCache
 from dataclasses import dataclass
 from typing import TypedDict, List
 import requests
 import os
+import sys
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -14,14 +16,12 @@ class ArchiveQuery(TypedDict):
     end_date: str
 
 class ArchiveItem(TypedDict):
-    source: str
     pub_date: str
     headline: str
     abstract: str
-    web_url: str
-    snippet: str
     lead_paragraph: str
-    
+    web_url: str
+
 class ArchiveResponse(TypedDict):
     status: int
     responses: List[ArchiveItem]
@@ -40,6 +40,8 @@ class NYTNews:
     
     def __init__(self, api_key):
         self.api_key = api_key
+        self.cache = NewsCache()
+        print(f"NYTNews initialized with API key {api_key}")
 
     def get_archives(self, topic: str, start_date: str, end_date: str) -> ArchiveResponse:
         '''This function wraps the nyt_archive_api function and returns the response.
@@ -53,30 +55,55 @@ class NYTNews:
         months_to_query = self.generateMonths(start_date, end_date)
         archiveItems = []
         for year, month in months_to_query:
-            api_response = self.call_archive_api(year, month)
-            archiveItems.extend(self.map_to_archive_item(api_response))
+            api_response = self.get_archive(year, month)
+            archiveItems.extend(api_response)
         
         # TODO: each API returns a status code; this status should be a higher-level status
         #        maybe something like "OK" or "ERROR".. or just throw an exception.
-        return {"status": 200, "responses": archiveItems}
+        if not archiveItems:
+            return {"status": 404, "responses": []}
+        
+        filtered_archive_items = self.filter_by_topic(archiveItems, topic)
+        return {"status": 200, "responses": filtered_archive_items}
 
+    def filter_by_topic(self, archive_items: List[ArchiveItem], topic: str) -> List[ArchiveItem]:
+        '''This function filters the archive items by a given topic.'''
+        if topic == None:
+            return archive_items
+        
+        return [item for item in archive_items 
+                if topic.lower() in item.get('headline', '').lower() 
+                or topic.lower() in item.get('abstract', '').lower()]
 
+    def get_archive(self, year, month):
+        """get archive from cache if present, else call the API and cache the results
+        Args:
+            year (_type_): _description_
+            month (_type_): _description_
+        """
+        cached_archive = self.cache.get_by_date(year, month)
+        if cached_archive:
+            return cached_archive
+        api_response = self.call_archive_api(year, month)
+        archive = self.map_to_archive_item(api_response)
+        self.cache.put_by_date(year, month, archive)
+        return archive
+    
+    
     def call_archive_api(self, year, month):
         '''This function returns the NYT Archive API response for a given year and month.'''
-        url = f'https://api.nytimes.com/svc/archive/v1/{year}/{month}.json?api-key={self.api_key}'
+        year_int = int(year)
+        month_int = int(month)
+        url = f'https://api.nytimes.com/svc/archive/v1/{year_int}/{month_int}.json?api-key={self.api_key}'
+        
+        print(f"Calling NYT Archive API for {year}-{month}: {url}")
         response = requests.get(url)
+        status_code = response.status_code
+        if status_code != 200:
+            raise(Exception(f"Error: {response.text}"))
         json_response = response.json()
-        return self.top_responses(json_response)
-  
-  
-    def top_responses(self, json_response, count=5):
-        '''This function returns the top responses from the API response.'''
-        response = json_response.get('response', {})
-        docs = response.get('docs', [])   
-        response["docs"] = docs[:count]
-        json_response["response"] = response
         return json_response
-
+  
 
     def map_to_archive_item(self, api_response) -> List[ArchiveItem]:
         '''This function maps the API response to an ArchiveItem.'''
@@ -84,12 +111,10 @@ class NYTNews:
         if not docs:
             return []
         return [ArchiveItem(
-            source=doc.get('source', ''),
             pub_date=doc.get('pub_date', ''),
             headline=doc.get('headline', {}).get('main', ''),
             abstract=doc.get('abstract', ''),
             web_url=doc.get('web_url', ''),
-            snippet=doc.get('snippet', ''),
             lead_paragraph=doc.get('lead_paragraph', '')
         ) for doc in docs]
 
@@ -116,3 +141,20 @@ class NYTNews:
                     continue
                 dates.append((str(year), str(month).zfill(2)))
         return dates
+
+if __name__ == "__main__":
+    
+    start_date="2024-09"
+    end_date="2024-12"
+      
+    start_date = input("Enter start date (YYYY-MM): ") or start_date
+    end_date = input("Enter end date (YYYY-MM): ") or end_date
+    topic = input("Enter topic: ") or "Romania"
+    
+    print(f"Searching NYT archive for {topic} from {start_date} to {end_date}")
+    
+    api_key = os.getenv("NYT_API_KEY")
+    news_api = NYTNews(api_key)
+    response = news_api.get_archives(topic, start_date, end_date)    
+    print("# Response:\n")
+    print(response)

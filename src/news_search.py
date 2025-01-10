@@ -8,6 +8,7 @@ from langgraph.checkpoint.memory import MemorySaver
 from langsmith import traceable
 from nyt_api import NYTNews, ArchiveResponse
 import os
+import sys
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -35,7 +36,8 @@ def nyt_archive_search(topic: str, start_date: str, end_date: str) -> ArchiveRes
         topic: a search query for in the NYT archive.
         start_date: the beginning of the date range with format YYYY.MM.
         end_date: the beginning of the date range with format YYYY.MM.
-        """
+    """
+    print(f"Searching for {topic} from {start_date} to {end_date}")
     response = nyt_news.get_archives(topic, start_date, end_date)
     return {"messages": [AIMessage(content=str(response))]}
 
@@ -45,12 +47,14 @@ class NewsSearch:
         self.tool_node = ToolNode(tools)
         self.nyt_news = NYTNews(os.getenv("NYT_API_KEY"))
 
+        print("Init model")
         self.model = (
             ChatOpenAI(model="gpt-4o-mini", temperature=0)
             .bind_tools(tools)
         )
 
     def call_model(self, state: MessagesState):
+        print("Calling model")
         messages = state["messages"]
         response = self.model.invoke(messages)
         last_message = messages[-1]
@@ -79,7 +83,7 @@ class NewsSearch:
 
         final_state = app.invoke(
             {"messages": [HumanMessage(content=user_input)]},
-            config={"configurable": {"thread_id": 1}, "recursion_limit": 5},
+            config={"configurable": {"thread_id": 1}, "recursion_limit": 25},
         )
 
         messages = final_state.get("messages", [])
@@ -87,8 +91,15 @@ class NewsSearch:
             return messages[-1].content
         return "No response"
     
-news_search = NewsSearch()
-response = news_search.invoke_workflow(
-    "I want to know about the news from NYT archive about climate change from November 2024"
-)
-print(response)
+
+if __name__ == "__main__":
+    
+    query = "I want to know about the news from NYT archive about Romania from September 2024 through December 2024"
+    if sys.argv[1:]:
+        query = " ".join(sys.argv[1:])
+        
+    print("Running the NYT API search")
+    news_search = NewsSearch()
+    response = news_search.invoke_workflow(query)
+    print("# Response:\n")
+    print(response)

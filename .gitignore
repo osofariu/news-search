@@ -24,3 +24,4 @@ env/
 
 # other local files I want to ignore
 logs/
+data/
