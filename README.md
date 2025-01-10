@@ -3,7 +3,7 @@
 ## MVP
 - take user input in natural language,  containing:
   - topic (a list of words)
-  - a date range (TBD, but start simple)
+  - a date range (YYYY-MM)
 - search NTY archive for articles related to the topic
 
 ## Steps 
@@ -17,61 +17,57 @@ Some are parallel some are not:
       {
         topic,
         start_date,
-        end_date:
+        end_date
       }
       ```
 
-    - create some tests that evaluate some typical inputs, to make sure it does well enough
-    - determine how to handle errors -- such as when it can't extract key info to call the function.
-    - (maybe later) may ask an LLM to judge whether the results extracted are sufficient to deduce whether
-      those fields were extracted correctly and return a confidence score
+    - [x] Works well enough with some vague date ranges, but more testing needed.
+    - [ ] determine how to handle errors -- such as when it can't determine the date range or the topic is not clear
+    - [ ] the LLM finds the function to use with simple input, but may need to improve the prompt or tool description.
 
 ### 2.  search New York times Archive to get summary and url by date range
     - input: from 1.topic
     - output:
 ```
-      [{
-        - pub_date,
-        - archive,
-        - snippet,
-        - web_url,
-        - TBD
-      }]
+      [
+        {
+          pub_date,
+          headline,
+          abstract,
+          lead_paragraph,
+          web_url: str
+       }
+      ]
 ```
-  - need a start / end year and month (can assume 1 if not present)
-  - download the date with multiple calls (add caching later so we don't get duplicates)
+  - [x] download the news items with multiple calls
+  - [x] caching to improve performance and avoid API limits
 
 ### 3.  use the search results to find interesting articles (filter)
-  - input: 1.topic, 2.output (array)
-  - output: same as 2.output
+  - [x] basic filter against headline and abstract (lowercase)
+  - [ ] add a vector database to do better searches
 
-### 4.  given list of article from above, find stories related to the user topic
-  - input: 1.topic, 2.output (array)
-  - output: 2.output (array), having been filtered by topic, confidence score for each match
-
-### 5.  for each match: prompt user for interest
-  - input: 4.output
-  - output: keep ? download content : END
+### 4.  for each topic match: prompt user for interest
+  - [ ] show topic info, collect user response
 
 ### 6.  for each interest: download the article (TBD how) and save it
-  - input: URL
-  - output: HTML content of the article
+  - [ ] hope to use my account creds to download article details for the items user is interested in.
 
 ### 7.  for each article saved: ask an LLM for a summary
-  - input: list of article details 
-  - output: list of summaries for input details
+  - [ ] should be straight-forward to collect this
+  - [ ] show the user the list of summaries
+  - [ ] save the summary for later review
 
 ## NYT Archive API notes
 
 Sample queries to experiment with the API:
 
-Download archives:
+Download archives using `curl`
 
-``` sh a
-curl -s -o nyt-2024-1.json https://api.nytimes.com/svc/archive/v1/2024/1.json\?api-key\=<NYT_API_KEY>
+```
+curl -s -o nyt-2024-1.json https://api.nytimes.com/svc/archive/v1/2024/1.json?api-key<NYT_API_KEY>
 ```
 
-Extract key info:
+Extract key info.  Just to remember how to use `jq`
 ```
 cat nyt-2024-1.json | jq '.response.docs ' | jq 'map({abstract,web_url,snippet,lead_paragraph})'
 ```
