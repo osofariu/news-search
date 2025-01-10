@@ -1,33 +1,36 @@
 # News Search
 
 ## MVP
-- take user input in natural language,  containing:
+
+Currently able to download articles through a langgraph flow, starting with user request, ending with a list of articles presented in a nice format to the user.
+
+- [x] take user input in natural language, containing:
   - topic (a list of words)
   - a date range (YYYY-MM)
-- search NTY archive for articles related to the topic
+- [x] search NTY archive for articles related to the topic for the given date range.
 
 ## Steps 
 
-Some are parallel some are not:
 
 ### 1. parse natural language to extract topic and date range
-    - in: text
-    - out: 
-    ```
+
+```
       {
         topic,
         start_date,
         end_date
       }
-      ```
+```
 
     - [x] Works well enough with some vague date ranges, but more testing needed.
     - [ ] determine how to handle errors -- such as when it can't determine the date range or the topic is not clear
     - [ ] the LLM finds the function to use with simple input, but may need to improve the prompt or tool description.
 
 ### 2.  search New York times Archive to get summary and url by date range
-    - input: from 1.topic
-    - output:
+
+  - input: topic, start date, end date.
+  - output:
+
 ```
       [
         {
