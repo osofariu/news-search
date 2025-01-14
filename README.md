@@ -9,6 +9,10 @@ Currently able to download articles through a langgraph flow, starting with user
   - a date range (YYYY-MM)
 - [x] search NTY archive for articles related to the topic for the given date range.
 
+### Current graph
+
+![Graph](graph.png)
+
 ## Steps 
 
 

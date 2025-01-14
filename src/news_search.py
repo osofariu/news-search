@@ -5,6 +5,7 @@ from langchain_core.tools import tool
 from langgraph.prebuilt import ToolNode
 from langgraph.graph import END, START, StateGraph, MessagesState
 from langgraph.checkpoint.memory import MemorySaver
+from langgraph.types import interrupt
 from langsmith import traceable
 from nyt_api import NYTApi, ArchiveResponse
 import os
@@ -62,26 +63,47 @@ class NewsSearch:
     def should_continue(self, state: MessagesState):
         last_message = state["messages"][-1]
         args = last_message.additional_kwargs
+        response_metadata = last_message.response_metadata 
+        token_usage = response_metadata.get("token_usage")
+        completion_tokens = token_usage.get("completion_tokens") or 0
+        print(f"*last_message: {last_message}\n *args: {args}\n*response_metadata: {response_metadata}\n* token_usage: {token_usage}\ncompletion_tokens: {completion_tokens}")
         if args.get("tool_calls"):
             return "tools"
+        elif token_usage and completion_tokens < 100:
+            return "human"
         return END
+    
+    def human(self, state: MessagesState):
+        last_message = state["messages"][-1]    
+        print(f"\nNot enough information to answer your question: \n\t{last_message.content}")
+        improved_question = interrupt({
+            "question": "Can you fill in the details > "
+            })   
+        print(f"improved_question: {improved_question}")
 
+        return {
+            "content": "Tell me about fires in January 2025"
+        }
+        
     @traceable
     def invoke_workflow(self, user_input):
-        workflow = StateGraph(MessagesState)
-        workflow.add_node("agent", self.call_model)
-        workflow.add_node("tools", self.tool_node)
+        graph_builder = StateGraph(MessagesState)
+        graph_builder.add_node("agent", self.call_model)
+        graph_builder.add_node("tools", self.tool_node)
+        graph_builder.add_node("human", self.human)
 
-        workflow.add_edge(START, "agent")
-        workflow.add_edge("tools", "agent")
-        workflow.add_conditional_edges("agent", self.should_continue)
+        graph_builder.add_edge(START, "agent")
+        graph_builder.add_edge("tools", "agent")
+        graph_builder.add_edge("human", "agent")
+        graph_builder.add_conditional_edges("agent", self.should_continue)
 
         checkpointer = MemorySaver()
-        app = workflow.compile(checkpointer=checkpointer)
-
-        final_state = app.invoke(
+        self.graph = graph_builder.compile(checkpointer=checkpointer)
+        self.graph.get_graph(xray=1).draw_mermaid_png(output_file_path="graph.png")
+        self.config = {"configurable": {"thread_id": 1}, "recursion_limit": 25}
+        final_state = self.graph.invoke(
             {"messages": [HumanMessage(content=user_input)]},
-            config={"configurable": {"thread_id": 1}, "recursion_limit": 25},
+            config = self.config
         )
 
         messages = final_state.get("messages", [])
