@@ -1,6 +1,6 @@
 from cache import NewsCache
 from dataclasses import dataclass
-from typing import TypedDict, List
+from typing import Literal, TypedDict, List
 import requests
 import os
 import logging
@@ -18,13 +18,15 @@ class ArchiveItem(TypedDict):
     web_url: str
 
 class ArchiveResponse(TypedDict):
-    status: int
+    status: Literal["Ok", "RangeError"]
+    message: str
     responses: List[ArchiveItem]
 
 class NYTApi:
-    def __init__(self, api_key: str, cache: NewsCache = None):
+    def __init__(self, api_key: str, max_range: int = 12, cache: NewsCache = None):
         self.api_key = api_key
         self.cache = cache or NewsCache()
+        self.max_range = max_range
 
     def get_archives(self, topic: str, start_date: str, end_date: str) -> ArchiveResponse:
         '''Given a topic and date range, get all the appropriate archive items and filter
@@ -37,19 +39,22 @@ class NYTApi:
         '''
         
         months_to_query = self.generateMonths(start_date, end_date)
+        if (len(months_to_query) > self.max_range):
+            month =  "month"  if self.max_range == 1 else "months"
+            return {
+               "status": "RangeError",
+               "responses": [],
+               "message": f"Your time range is too large. Choose a time range no longer than {self.max_range} {month}."
+            }
+            
         archiveItems = []
         for year, month in months_to_query:
             api_response = self.get_monthly_archive(year, month)
             archiveItems.extend(api_response)
         
-        # TODO: each API returns a status code; this status should be a higher-level status
-        # maybe something like "OK" or "ERROR".. or just throw an exception. Still need
-        # to handle exceptions, so will handle it when we implement that.
-        if not archiveItems:
-            return {"status": 404, "responses": []}
-        
         filtered_archive_items = self.filter_by_topic(archiveItems, topic)
-        return {"status": 200, "responses": filtered_archive_items}
+        
+        return {"status": "Ok", "responses": filtered_archive_items}
 
     def filter_by_topic(self, archive_items: List[ArchiveItem], topic: str) -> List[ArchiveItem]:
         '''This function filters the archive items by a given topic.'''

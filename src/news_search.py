@@ -15,7 +15,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 logger = logging.getLogger(__name__)
-nyt_news = NYTApi(os.getenv("NYT_API_KEY"))
+nyt_news = NYTApi(os.getenv("NYT_API_KEY"), max_range=3)
 
 class ArchiveQuery(BaseModel):
     """Inputs to the nyt_archive tool."""
@@ -50,7 +50,7 @@ class NewsSearch:
         self.nyt_news = NYTApi(os.getenv("NYT_API_KEY"))
         self.model = (
             ChatOpenAI(model="gpt-4o-mini", temperature=0)
-            .bind_tools(tools)
+            .bind_tools(tools, parallel_tool_calls=True)
         )
 
     def call_model(self, state: MessagesState):
@@ -97,7 +97,7 @@ class NewsSearch:
 
     def run_graph(self, question, config):
         graph = self.build_graph()
-        config = {"configurable": {"thread_id": 1}, "recursion_limit": 5}
+        config = {"configurable": {"thread_id": 1}, "recursion_limit": 25}
         state = graph.invoke(
             {"messages": [HumanMessage(content=question)]},
             config = config
