@@ -5,7 +5,7 @@ from langchain_core.tools import tool
 from langgraph.prebuilt import ToolNode
 from langgraph.graph import END, START, StateGraph, MessagesState
 from langgraph.checkpoint.memory import MemorySaver
-from langgraph.types import interrupt
+from langgraph.types import interrupt, Command
 from langsmith import traceable
 from nyt_api import NYTApi, ArchiveResponse
 import os
@@ -59,58 +59,64 @@ class NewsSearch:
         response = self.model.invoke(messages)
         return {"messages": [response]}
 
-
     def should_continue(self, state: MessagesState):
         last_message = state["messages"][-1]
         args = last_message.additional_kwargs
         response_metadata = last_message.response_metadata 
         token_usage = response_metadata.get("token_usage")
         completion_tokens = token_usage.get("completion_tokens") or 0
-        print(f"*last_message: {last_message}\n *args: {args}\n*response_metadata: {response_metadata}\n* token_usage: {token_usage}\ncompletion_tokens: {completion_tokens}")
         if args.get("tool_calls"):
             return "tools"
         elif token_usage and completion_tokens < 100:
-            return "human"
+            return "human_input"
         return END
     
-    def human(self, state: MessagesState):
-        last_message = state["messages"][-1]    
-        print(f"\nNot enough information to answer your question: \n\t{last_message.content}")
-        improved_question = interrupt({
-            "question": "Can you fill in the details > "
-            })   
-        print(f"improved_question: {improved_question}")
-
-        return {
-            "content": "Tell me about fires in January 2025"
-        }
-        
     @traceable
-    def invoke_workflow(self, user_input):
+    def human_input(self, state: MessagesState):
+        human_message = interrupt("human_input")
+        return {
+            "messages": [HumanMessage(content=human_message)],
+        }
+    
+    @traceable
+    def build_graph(self):
         graph_builder = StateGraph(MessagesState)
         graph_builder.add_node("agent", self.call_model)
         graph_builder.add_node("tools", self.tool_node)
-        graph_builder.add_node("human", self.human)
+        graph_builder.add_node("human_input", self.human_input)
 
         graph_builder.add_edge(START, "agent")
         graph_builder.add_edge("tools", "agent")
-        graph_builder.add_edge("human", "agent")
+        graph_builder.add_edge("human_input", "agent")
         graph_builder.add_conditional_edges("agent", self.should_continue)
 
         checkpointer = MemorySaver()
-        self.graph = graph_builder.compile(checkpointer=checkpointer)
-        self.graph.get_graph(xray=1).draw_mermaid_png(output_file_path="graph.png")
-        self.config = {"configurable": {"thread_id": 1}, "recursion_limit": 25}
-        final_state = self.graph.invoke(
-            {"messages": [HumanMessage(content=user_input)]},
-            config = self.config
+        graph = graph_builder.compile(checkpointer=checkpointer)
+        graph.get_graph(xray=1).draw_mermaid_png(output_file_path="graph.png")
+        return graph
+
+    def run_graph(self, question, config):
+        graph = self.build_graph()
+        config = {"configurable": {"thread_id": 1}, "recursion_limit": 5}
+        state = graph.invoke(
+            {"messages": [HumanMessage(content=question)]},
+            config = config
         )
 
-        messages = final_state.get("messages", [])
-        if messages:
-            return messages[-1].content
-        return "No response"
-    
+        messages = state.get("messages", [])
+        last_message = messages[-1]
+        content = messages[-1].content 
+        res = graph.get_state(config).next
+        if (len(res) > 0 and res[0] == 'human_input'):
+            print(f"\nWe need you to refine your question:")
+            improved_question = input(f"\n{content}\n> ")
+            final_state = graph.invoke(
+                Command(resume=improved_question),
+                config=config)
+        
+        content = last_message.content
+        return content
+
 
 def main(): 
     logging.basicConfig(filename="logs/news_search.log", level=logging.INFO)
@@ -119,8 +125,10 @@ def main():
         query = " ".join(sys.argv[1:])
         
     print(f"Running the NYT API search with query: {query}\n")
+    config = {"configurable": {"thread_id": 1}, "recursion_limit": 4}
+    
     news_search = NewsSearch()
-    response = news_search.invoke_workflow(query)
+    response = news_search.run_graph(question=query, config=config)
     print(f"# Response:\n{response}")
 
 if __name__ == "__main__":
