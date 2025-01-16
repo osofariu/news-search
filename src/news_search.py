@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from langchain_core.messages import HumanMessage, AIMessage
+from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
 from langchain_openai import ChatOpenAI
 from langchain_core.tools import tool
 from langgraph.prebuilt import ToolNode
@@ -40,9 +40,23 @@ def nyt_archive_search(topic: str, start_date: str, end_date: str) -> ArchiveRes
         end_date: the beginning of the date range with format YYYY.MM.
     """
     print(f"Searching for {topic} from {start_date} to {end_date}")
+    logger.debug(f"searching for topic {topic}")
     response = nyt_news.get_archives(topic, start_date, end_date)
+    messages_count = len(response.get("responses", []))
+    logger.debug(f"response: count:{messages_count}, status: {response.get("status")}, message: {response.get("message")}")
     return {"messages": [AIMessage(content=str(response))]}
 
+
+SYSTEM_MESSAGE="""
+You are a helpful assistant who helps people use the New York Times Archive to find
+interesting stories about topics they are interested in.  You need to find out what the
+topic is and the date range they are interested in.  If you cannot determine these
+from the question you must ask for clarification.  You must use the nyt_archive_search
+and cannot answer the question using general knowledge.
+
+Afer the tool was called and we have some articles to review you should include a wide
+selection of articles, and can omit those that seem to be duplicates.
+"""
 class NewsSearch:
     def __init__(self):
         tools = [nyt_archive_search]
@@ -52,7 +66,7 @@ class NewsSearch:
             ChatOpenAI(model="gpt-4o-mini", temperature=0)
             .bind_tools(tools, parallel_tool_calls=True)
         )
-
+        
     def call_model(self, state: MessagesState):
         logger.debug("Calling model")
         messages = state["messages"]
@@ -99,12 +113,13 @@ class NewsSearch:
         graph = self.build_graph()
         config = {"configurable": {"thread_id": 1}, "recursion_limit": 25}
         state = graph.invoke(
-            {"messages": [HumanMessage(content=question)]},
+            {"messages": [
+                SystemMessage(content=SYSTEM_MESSAGE),
+                HumanMessage(content=question)]},
             config = config
         )
 
         messages = state.get("messages", [])
-        last_message = messages[-1]
         content = messages[-1].content 
         res = graph.get_state(config).next
         if (len(res) > 0 and res[0] == 'human_input'):
@@ -113,23 +128,32 @@ class NewsSearch:
             final_state = graph.invoke(
                 Command(resume=improved_question),
                 config=config)
-        
+            messages = final_state.get("messages", []) 
+
+        logger.debug(f"state: {state}")
+        logger.debug(f"messages: {messages}")   
+        last_message = messages[-1]      
         content = last_message.content
         return content
 
 
 def main(): 
-    logging.basicConfig(filename="logs/news_search.log", level=logging.INFO)
+    logging.basicConfig(
+        filename="logs/news_search.log",
+        format='%(asctime)s - %(levelname)s - %(message)s',
+        datefmt='%Y-%m-%d %H:%M:%S', 
+        level=logging.DEBUG 
+)
     query = "I want to know about the news from NYT archive about Romania from September 2024 through December 2024"
     if sys.argv[1:]:
         query = " ".join(sys.argv[1:])
         
-    print(f"Running the NYT API search with query: {query}\n")
+    print(f"News-search with query: {query}\n")
     config = {"configurable": {"thread_id": 1}, "recursion_limit": 4}
     
     news_search = NewsSearch()
     response = news_search.run_graph(question=query, config=config)
-    print(f"# Response:\n{response}")
+    print(f"\n# Response:\n{response}")
 
 if __name__ == "__main__":
     main()
