@@ -138,7 +138,7 @@ def main():
     
     start_date="2024-09"
     end_date="2024-12"
-    topic="outbreak"
+    topic="COVID"
     
     start_date = input(f"Start date (default {start_date}) > ") or start_date
     end_date =   input(f"  End date (default {end_date}) > ") or end_date

@@ -22,7 +22,7 @@ from helpers import (
 
 load_dotenv()
 logger = logging.getLogger(__name__)
-nyt_news = NYTApi(os.getenv("NYT_API_KEY"), max_range=3)
+nyt_news = NYTApi(os.getenv("NYT_API_KEY"), max_range=6)
 
 
 class ArchiveQuery(BaseModel):
@@ -61,9 +61,12 @@ def nyt_archive_search(topic: str, start_date: str, end_date: str) -> ArchiveRes
 SYSTEM_MESSAGE = """
 You are a helpful assistant who helps people use the New York Times Archive to find
 interesting stories about topics they are interested in.  You need to find out what the
-topic is and the date range they are interested in.  If you cannot determine these
-from the question you must ask for clarification.  You must use the nyt_archive_search
-and cannot answer the question using general knowledge.
+topic is and the date range they are interested in.  The start date must be after 1852,
+and the end date can be as late as the current month.
+
+If you cannot determine the topic, start date, and end date from the question you must ask 
+for clarification.  You must use the nyt_archive_search tool and cannot answer the question 
+using general knowledge.
 
 Afer the tool was called and we have some articles to review you should include a wide
 selection of articles, and can omit those that seem to be duplicates.
@@ -143,7 +146,7 @@ def main():
         datefmt="%Y-%m-%d %H:%M:%S",
         level=logging.DEBUG,
     )
-    query = "I want to know about the news from NYT archive about Romania from September 2024 through December 2024"
+    query = "I want to know about the news from NYT archive about COVID from September 2024 through the end of the year"
     if sys.argv[1:]:
         query = " ".join(sys.argv[1:])
 
