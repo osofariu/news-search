@@ -13,8 +13,7 @@ Currently able to download articles through a langgraph flow, starting with user
 
 ![Graph](graph.png)
 
-## Steps 
-
+## Ideas for where I want to go next
 
 ### 1. parse natural language to extract topic and date range
 
@@ -27,13 +26,13 @@ Currently able to download articles through a langgraph flow, starting with user
 ```
 
     - [x] Works well enough with some vague date ranges, but more testing needed.
-    - [ ] determine how to handle errors -- such as when it can't determine the date range or the topic is not clear
-    - [ ] the LLM finds the function to use with simple input, but may need to improve the prompt or tool description.
+    - [x] determine how to handle errors -- such as when it can't determine the date range or the topic is not clear
+    - [x] the LLM finds the function to use with simple input, but may need to improve the prompt or tool description.
 
-### 2.  search New York times Archive to get summary and url by date range
+### 2. search New York times Archive to get summary and url by date range
 
-  - input: topic, start date, end date.
-  - output:
+- input: topic, start date, end date.
+- output:
 
 ```
       [
@@ -46,23 +45,28 @@ Currently able to download articles through a langgraph flow, starting with user
        }
       ]
 ```
-  - [x] download the news items with multiple calls
-  - [x] caching to improve performance and avoid API limits
 
-### 3.  use the search results to find interesting articles (filter)
-  - [x] basic filter against headline and abstract (lowercase)
-  - [ ] add a vector database to do better searches
+- [x] download the news items with multiple calls
+- [x] caching to improve performance and avoid API limits
 
-### 4.  for each topic match: prompt user for interest
-  - [ ] show topic info, collect user response
+### 3. use the search results to find interesting articles (filter)
 
-### 6.  for each interest: download the article (TBD how) and save it
-  - [ ] hope to use my account creds to download article details for the items user is interested in.
+- [x] basic filter against headline and abstract (lowercase)
+- [ ] add a vector database to do better searches ... THIS IS NEXT
 
-### 7.  for each article saved: ask an LLM for a summary
-  - [ ] should be straight-forward to collect this
-  - [ ] show the user the list of summaries
-  - [ ] save the summary for later review
+### 4. for each topic match: prompt user for interest
+
+- [ ] show topic info, collect user response
+
+### 6. for each interest: download the article (TBD how) and save it
+
+- [ ] hope to use my account creds to download article details for the items user is interested in.. this may prove impossible
+
+### 7. for each article saved: ask an LLM for a summary
+
+- [ ] should be straight-forward to collect this
+- [ ] show the user the list of summaries
+- [ ] save the summary for later review
 
 ## NYT Archive API notes
 
@@ -74,7 +78,8 @@ Download archives using `curl`
 curl -s -o nyt-2024-1.json https://api.nytimes.com/svc/archive/v1/2024/1.json?api-key<NYT_API_KEY>
 ```
 
-Extract key info.  Just to remember how to use `jq`
+Extract key info. Just to remember how to use `jq`
+
 ```
 cat nyt-2024-1.json | jq '.response.docs ' | jq 'map({abstract,web_url,snippet,lead_paragraph})'
 ```
