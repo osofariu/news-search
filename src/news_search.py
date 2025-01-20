@@ -11,6 +11,10 @@ from nyt_api import NYTApi, ArchiveResponse
 import os
 import sys
 import logging
+from rich.console import Console
+from rich.markdown import Markdown
+from rich.text import Text
+from datetime import datetime
 from dotenv import load_dotenv
 
 from helpers import (
@@ -23,6 +27,8 @@ from helpers import (
 load_dotenv()
 logger = logging.getLogger(__name__)
 nyt_news = NYTApi(os.getenv("NYT_API_KEY"), max_range=6)
+today = datetime.today().strftime("%Y-%m-%d")
+console = Console()
 
 
 class ArchiveQuery(BaseModel):
@@ -39,6 +45,11 @@ class ArchiveQuery(BaseModel):
     )
 
 
+def fancy_print(text: str, style=""):
+    text = Text(text=text, style=style)
+    console.print(text)
+
+
 @tool(
     "nyt_archive_search",
     args_schema=ArchiveQuery,
@@ -53,19 +64,21 @@ def nyt_archive_search(topic: str, start_date: str, end_date: str) -> ArchiveRes
         start_date: the beginning of the date range with format YYYY.MM.
         end_date: the beginning of the date range with format YYYY.MM.
     """
-    print(f"Searching for {topic} from {start_date} to {end_date}")
+    fancy_print(f"Searching for {topic} from {start_date} to {end_date}", "magenta")
     response = nyt_news.get_archives(topic, start_date, end_date)
     return {"messages": [AIMessage(content=str(response))]}
 
 
-SYSTEM_MESSAGE = """
-You are a helpful assistant who helps people use the New York Times Archive to find
+SYSTEM_MESSAGE = f"""
+You are a helpful librarian who helps people use the New York Times Archive to find
 interesting stories about topics they are interested in.  You need to find out what the
-topic is and the date range they are interested in.  The start date must be after 1852,
-and the end date can be as late as the current month.
+topic is and the date range they are interested in. 
+
+Today is: {today} The start date must be after 1852, and the end date can be as late as today.
+When computing relative dates use the today's date that I have passed in.
 
 If you cannot determine the topic, start date, and end date from the question you must ask 
-for clarification.  You must use the nyt_archive_search tool and cannot answer the question 
+for clarification. You must use the nyt_archive_search tool and cannot answer the question 
 using general knowledge.
 
 Afer the tool was called and we have some articles to review you should include a wide
@@ -78,7 +91,7 @@ class NewsSearch:
         tools = [nyt_archive_search]
         self.tool_node = ToolNode(tools)
         self.model = ChatOpenAI(model="gpt-4o-mini", temperature=0).bind_tools(
-            tools, parallel_tool_calls=True
+            tools, parallel_tool_calls=False
         )
 
     def call_model(self, state: MessagesState):
@@ -131,9 +144,9 @@ class NewsSearch:
         )
 
         content = get_last_content(state)
-        if next_node_is_human(graph, config):
-            print(f"\nWe need you to refine your question:")
-            improved_question = input(f"\n{content}\n> ")
+        while next_node_is_human(graph, config):
+            console.print(Text(f"{content}\n =>", style="bold dark_magenta"), end=" ")
+            improved_question = console.input()
             final_state = graph.invoke(Command(resume=improved_question), config=config)
             content = get_last_content(final_state)
         return content
@@ -146,16 +159,16 @@ def main():
         datefmt="%Y-%m-%d %H:%M:%S",
         level=logging.DEBUG,
     )
-    query = "I want to know about the news from NYT archive about COVID from September 2024 through the end of the year"
     if sys.argv[1:]:
         query = " ".join(sys.argv[1:])
+    else:
+        query = "I want to know about the news from NYT archive about COVID from September 2024 through the end of the year"
 
-    print(f"News-search with query: {query}\n")
     config = {"configurable": {"thread_id": 1}, "recursion_limit": 4}
-
     news_search = NewsSearch()
     response = news_search.run_graph(question=query, config=config)
-    print(f"\n# Response:\n{response}")
+    md = Markdown(response)
+    console.print(md)
 
 
 if __name__ == "__main__":
