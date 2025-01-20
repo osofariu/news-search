@@ -9,6 +9,8 @@ langchain-openai = "*"
 langchain-core = "*"
 python-dotenv = "*"
 langchain = "*"
+numpy = "*"
+rich = "*"
 
 [dev-packages]
 pytest = "*"
