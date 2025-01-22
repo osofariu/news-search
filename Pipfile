@@ -11,6 +11,10 @@ python-dotenv = "*"
 langchain = "*"
 numpy = "*"
 rich = "*"
+sentence-transformers = "*"
+faiss-cpu = "*"
+langchain-community = "*"
+jq = "*"
 
 [dev-packages]
 pytest = "*"

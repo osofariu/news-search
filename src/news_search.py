@@ -64,7 +64,7 @@ def nyt_archive_search(topic: str, start_date: str, end_date: str) -> ArchiveRes
         start_date: the beginning of the date range with format YYYY.MM.
         end_date: the beginning of the date range with format YYYY.MM.
     """
-    fancy_print(f"Searching for {topic} from {start_date} to {end_date}", "magenta")
+    fancy_print(f"Searching for {topic} from {start_date} to {end_date}", "bright_cyan")
     response = nyt_news.get_archives(topic, start_date, end_date)
     return {"messages": [AIMessage(content=str(response))]}
 
@@ -145,7 +145,7 @@ class NewsSearch:
 
         content = get_last_content(state)
         while next_node_is_human(graph, config):
-            console.print(Text(f"{content}\n =>", style="bold dark_magenta"), end=" ")
+            console.print(Text(f"{content}\n =>", style="bold bright_cyan"), end=" ")
             improved_question = console.input()
             final_state = graph.invoke(Command(resume=improved_question), config=config)
             content = get_last_content(final_state)
