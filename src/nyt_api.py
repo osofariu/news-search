@@ -76,25 +76,25 @@ class NYTApi:
         return {"status": "Ok", "responses": filtered_archive_items}
 
     def filter_by_topic(
-        self, archive_items_for_month: List[List[ArchiveItem]], topic: str
+        self, archive_items_by_month: List[List[ArchiveItem]], topic: str
     ) -> List[ArchiveItem]:
         """This function filters the archive items by a given topic."""
         if topic == None:
             return [
                 archive_item
-                for archive_item in archive_items_for_month
-                for archive_items_by_month in archive_items_by_month
+                for archive_items in archive_items_by_month
+                for archive_item in archive_items
             ]
 
         response = []
-        for archive_items_by_month in archive_items_for_month:
-            if len(archive_items_by_month) > 0:
-                archive_date = archive_items_by_month[0].get("archive_date")
+        for archive_items in archive_items_by_month:
+            if len(archive_items) > 0:
+                archive_date = archive_items[0].get("archive_date")
                 matched_items = self.index.search_index(archive_date, topic)
 
-                for archive_item in archive_items_by_month:
+                for archive_item in archive_items:
                     headline = archive_item.get("headline")
-                    if archive_item.get("headline") in matched_items:
+                    if headline in matched_items:
                         response.append(archive_item)
         return response
 
@@ -116,7 +116,7 @@ class NYTApi:
         base_url = "https://api.nytimes.com/svc/archive/v1"
         url = f"{base_url}/{int(year)}/{int(month)}.json?api-key={self.api_key}"
 
-        self.ogger.info(f"Calling NYT Archive API for {year}-{month}")
+        logger.info(f"Calling NYT Archive API for {year}-{month}")
         response = requests.get(url)
         status_code = response.status_code
         if status_code != 200:
