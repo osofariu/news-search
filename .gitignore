@@ -23,5 +23,6 @@ env/
 .vscode/
 
 # other local files I want to ignore
-logs/
+logs/*
 cache/
+index/
