@@ -22,7 +22,7 @@ Next we may try to download articles, summarize them, etc.. TBD.
 
 #### Environment and running the app
 
-- `python 3.11` or later and `pipenv` I included a couple of script for setting up the project the first time and for running it. You don't need them, but they show one way to do things.
+- `python 3.12` and `pipenv` I included a couple of script for setting up the project the first time and for running it. You don't need them, but they show one way to do things.
 
   - [setup.sh](scripts/setup.sh) - to create a local virtual environment and install dependencies
   - [run.sh](scripts/run.sh) - to run `news-search.py`.
