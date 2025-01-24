@@ -1,5 +1,11 @@
 # News Search
 
+## Motivation
+
+- Do something fun with Langchain Agents that's just complex enough to help me learn about what's involved
+- Use some public API that's easy to use, and free
+- Build something that is actually useful
+
 ## MVP
 
 Currently able to download articles through a langgraph flow, starting with user request, ending with a list of articles presented in a nice format to the user.
@@ -10,7 +16,52 @@ Next we may try to download articles, summarize them, etc.. TBD.
 
 ![Graph](graph.png)
 
-## Solution Description
+## Setup
+
+### Requirements
+
+#### Environment and running the app
+
+- `python 3.11` or later and `pipenv` I included a couple of script for setting up the project the first time and for running it. You don't need them, but they show one way to do things.
+
+  - [setup.sh](scripts/setup.sh) - to create a local virtual environment and install dependencies
+  - [run.sh](scripts/run.sh) - to run `news-search.py`.
+
+#### Access to the [New York Times Developer APIs](https://developer.nytimes.com/apis).
+
+- You can create an account for free, and get an API key:
+
+  ```
+  NYT_API_KEY=<you-get-this>
+  NYT_API_SECRET=<you-get-this>
+  ```
+
+#### Access to [OpenAPI Developer Platform](https://platform.openai.com/docs/overview).
+
+This is pay-per-use, but using `gpt-4o-mini`, as we are here, is really inexpensive: For 1 million tokens as of 1/24/25, it costs:
+
+- $0.15 for Input
+- $0.075 for Cached input
+- $0.60 for Output
+
+```
+OPENAI_API_KEY=<you-get-this>
+```
+
+#### Access to langsmith
+
+This is also free for non-commercial use. Tracing gives you access to a nice web interface that lets you trace your agentic calls and clearly see the inputs and outputs at every step. Very useful for troubleshooting.
+
+```
+LANGSMITH_TRACING=true
+LANGSMITH_API_KEY=<you-get-this>
+```
+
+**Here's an example of what Langsmith looks like:**
+
+![Graph](langsmith.png)
+
+## Plans and Progress
 
 ### 1. LLM parses natural language to extract topic and date range
 
@@ -21,10 +72,6 @@ Next we may try to download articles, summarize them, etc.. TBD.
         end_date
       }
 ```
-
-    - [x] Works well enough with some vague date ranges, but more testing needed.
-    - [x] determine how to handle errors -- such as when it can't determine the date range or the topic is not clear
-    - [x] the LLM finds the function to use with simple input, but may need to improve the prompt or tool description.
 
 ### 2. search New York times Archive to get summary and url by date range
 
@@ -43,17 +90,17 @@ Next we may try to download articles, summarize them, etc.. TBD.
       ]
 ```
 
-- [x] download the news items with multiple calls
-- [x] caching to improve performance and avoid API limits
+- [x] we download the news items with multiple calls as needed
+- [x] cache API results to avoid API limits
 
 ### 3. use the search results to find interesting articles (filter)
 
-- [x] basic filter against headline and abstract (lowercase)
-- [x] add a vector database to do better searches ... THIS IS NEXT
+- [x] initially a basic filter against headline and abstract (lowercase)
+- [x] added a vector database which improved the search but added latench for indexing new results.. but we are caching this so we only pay a penalty once per API call.
 
 ### 4. Figure out why the LLM thinks today is in the past
 
-- [ ] in spite of prompt trying to address that, it is not working especially when the start date is recent and today's date is vaguely specified as today.
+- [ ] in spite of prompt trying to address that, it is not working especially when the start date is recent and today's date is vaguely specified as today. This needs more work.
 
 ### 5. Possible future steps
 
