@@ -19,6 +19,7 @@ jq = "*"
 [dev-packages]
 pytest = "*"
 responses = "*"
+pytest-mock = "*"
 
 [requires]
 python_version = "3.12"

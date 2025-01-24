@@ -95,6 +95,7 @@ class NYTApi:
                 for archive_item in archive_items:
                     headline = archive_item.get("headline")
                     if headline in matched_items:
+                        print(f"appending: {archive_item.get("headline")}")
                         response.append(archive_item)
         return response
 
