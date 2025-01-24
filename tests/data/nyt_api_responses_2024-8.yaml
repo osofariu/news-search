@@ -1,0 +1,24 @@
+responses:
+  - response:
+      auto_calculate_content_length: false
+      body:
+        "{\"copyright\":\"Copyright (c) 2024 The New York Times Company. All Rights\
+        \ Reserved.\",\"response\":{\"docs\":[],\"meta\":{\"hits\":4054}}}"
+      content_type: text/plain; charset=utf-8
+      headers:
+        Accept-Ranges: bytes
+        Alt-Svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+        Cache-Control: max-age=43200
+        ETag: '"c0d5f6930f6b2c3aeb4bc8414bd1faca"'
+        Expires: Fri, 10 Jan 2025 14:42:41 GMT
+        Last-Modified: Mon, 30 Sep 2024 16:04:52 GMT
+        X-GUploader-UploadID: AFiumC4VQQ5ZX3QospquSUE-d9JMrFP_kAURwLwM2vGQl9EdY_1LuCEZuxXsNDSaWvNtIMmnj0L9yrI
+        x-goog-generation: "1727712291943188"
+        x-goog-hash: crc32c=jbkuSw==, md5=wNX2kw9rLDrrS8hBS9H6yg==
+        x-goog-metageneration: "2"
+        x-goog-storage-class: MULTI_REGIONAL
+        x-goog-stored-content-encoding: identity
+        x-goog-stored-content-length: "14058618"
+      method: GET
+      status: 200
+      url: https://api.nytimes.com/svc/archive/v1/2024/8.json?api-key=1234567890

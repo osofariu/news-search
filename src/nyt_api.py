@@ -25,7 +25,7 @@ class ArchiveItem(TypedDict):
 
 
 class ArchiveResponse(TypedDict):
-    status: Literal["Ok", "RangeError"]
+    status: Literal["Ok", "RangeError", "ValueError"]
     message: str
     responses: List[ArchiveItem]
 
@@ -54,15 +54,17 @@ class NYTApi:
             start_date: the beginning of the date range with format YYYY.MM.
             end_date: the beginning of the date range with format YYYY.MM.
         """
-
-        months_to_query = self.generate_months(start_date, end_date)
-        if len(months_to_query) > self.max_range:
-            month = "month" if self.max_range == 1 else "months"
-            return {
-                "status": "RangeError",
-                "responses": [],
-                "message": f"Your time range is too large. Choose a time range no longer than {self.max_range} {month}.",
-            }
+        try:
+            months_to_query = self.generate_months(start_date, end_date)
+            if len(months_to_query) > self.max_range:
+                month = "month" if self.max_range == 1 else "months"
+                return {
+                    "status": "RangeError",
+                    "responses": [],
+                    "message": f"Your time range is too large. Choose a time range no longer than {self.max_range} {month}.",
+                }
+        except ValueError as ve:
+            return {"status": "ValueError", "message": ve.args[0], "responses": []}
 
         archive_items_by_month = []
         for year, month in months_to_query:
@@ -88,6 +90,7 @@ class NYTApi:
 
         response = []
         for archive_items in archive_items_by_month:
+            # they all ahve the same 'archive_date' so pick the f
             archive_date = archive_items[0].get("archive_date")
             matched_items = self.index.search_index(archive_date, topic)
 
@@ -153,10 +156,10 @@ class NYTApi:
         end_year, end_month = end_date.split("-")
         dates = []
         if int(start_year) > int(end_year):
-            raise ValueError("Start year must be less than or equal to end year")
+            raise ValueError("Start year must be less than or equal to end year.")
 
         if int(start_year) == int(end_year) and int(start_month) > int(end_month):
-            raise ValueError("Start month must be less than or equal to end month")
+            raise ValueError("Start month must be less than or equal to end month.")
         for year in range(int(start_year), int(end_year) + 1):
             for month in range(1, 13):
                 if year == int(start_year) and month < int(start_month):

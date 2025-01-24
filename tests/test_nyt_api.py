@@ -127,7 +127,7 @@ def test_with_multiple_months():
 
 
 @responses.activate
-def test_with_multiple_months_fail_max_range(mocker):
+def test_with_multiple_months_fail_max_range():
     responses._add_from_file(file_path="tests/data/nyt_api_responses_2024-9.yaml")
     responses._add_from_file(file_path="tests/data/nyt_api_responses_2024-10.yaml")
 
@@ -137,8 +137,38 @@ def test_with_multiple_months_fail_max_range(mocker):
     assert ny_times_response["status"] == "RangeError"
     assert (
         ny_times_response["message"]
-        == f"Your time range is too large. Choose a time range no longer than 1 month."
+        == "Your time range is too large. Choose a time range no longer than 1 month."
     )
 
     archive_items = ny_times_response["responses"]
     assert len(archive_items) == 0
+
+
+@responses.activate
+def test_with_multiple_months_fail_max_range():
+    responses._add_from_file(file_path="tests/data/nyt_api_responses_2024-9.yaml")
+    responses._add_from_file(file_path="tests/data/nyt_api_responses_2024-10.yaml")
+
+    nyt_api = fake_nytimes([], 1)
+    ny_times_response = nyt_api.get_archives(None, "2024-10", "2024-09")
+
+    assert ny_times_response["status"] == "ValueError"
+    assert (
+        ny_times_response["message"]
+        == "Start month must be less than or equal to end month."
+    )
+
+    archive_items = ny_times_response["responses"]
+    assert len(archive_items) == 0
+
+
+# @responses.activate
+# def test_with_no_documents_returned_for_month():
+#     responses._add_from_file(file_path="tests/data/nyt_api_responses_2024-8.yaml")
+#     nyt_api = fake_nytimes([])
+
+#     ny_times_response = nyt_api.get_archives(None, "2024-08", "2024-08")
+#     assert ny_times_response["status"] == "Ok"
+
+#     archive_items = ny_times_response["responses"]
+#     assert len(archive_items) == 0
