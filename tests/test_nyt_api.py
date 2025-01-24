@@ -8,23 +8,14 @@ import requests
 from unittest.mock import MagicMock
 
 
-# bypass the cache by returning None
-class FakeCache(NewsCache):
-    def __init__(self):
-        self.cache_path = None
-
-    def get_by_date(self, _year, _month):
-        return None
-
-    def put_by_date(self, _year, _month, _value):
-        return None
-
-
 def make_nytimes(fake_index_responses, max_range=12):
-    my_index = Index()
-    my_index.search_index = MagicMock(return_value=fake_index_responses)
-    my_index.create_vector_store = MagicMock(return_value=None)
-    return NYTApi("1234567890", max_range, FakeCache(), my_index)
+    fake_index = Index()
+    fake_index.search_index = MagicMock(return_value=fake_index_responses)
+    fake_index.create_vector_store = MagicMock(return_value=None)
+    fake_cache = NewsCache()
+    fake_cache.get_by_date = MagicMock(return_value=None)
+    fake_cache.put_by_date = MagicMock(return_value=None)
+    return NYTApi("1234567890", max_range, fake_cache, fake_index)
 
 
 @responses.activate
