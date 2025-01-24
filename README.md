@@ -4,18 +4,15 @@
 
 Currently able to download articles through a langgraph flow, starting with user request, ending with a list of articles presented in a nice format to the user.
 
-- [x] take user input in natural language, containing:
-  - topic (a list of words)
-  - a date range (YYYY-MM)
-- [x] search NTY archive for articles related to the topic for the given date range.
+Next we may try to download articles, summarize them, etc.. TBD.
 
-### Current graph
+### Langchain graph:
 
 ![Graph](graph.png)
 
-## Ideas for where I want to go next
+## Solution Description
 
-### 1. parse natural language to extract topic and date range
+### 1. LLM parses natural language to extract topic and date range
 
 ```
       {
@@ -52,21 +49,18 @@ Currently able to download articles through a langgraph flow, starting with user
 ### 3. use the search results to find interesting articles (filter)
 
 - [x] basic filter against headline and abstract (lowercase)
-- [ ] add a vector database to do better searches ... THIS IS NEXT
+- [x] add a vector database to do better searches ... THIS IS NEXT
 
-### 4. for each topic match: prompt user for interest
+### 4. Figure out why the LLM thinks today is in the past
 
-- [ ] show topic info, collect user response
+- [ ] in spite of prompt trying to address that, it is not working especially when the start date is recent and today's date is vaguely specified as today.
 
-### 6. for each interest: download the article (TBD how) and save it
+### 5. Possible future steps
 
-- [ ] hope to use my account creds to download article details for the items user is interested in.. this may prove impossible
-
-### 7. for each article saved: ask an LLM for a summary
-
-- [ ] should be straight-forward to collect this
-- [ ] show the user the list of summaries
-- [ ] save the summary for later review
+- for each topic matched in the list prompt user for interest (should we drill further into this story?)
+- for each interest: download the article (TBD how) and save it (hope to use my account creds to download article details for the items user is interested in.. this may prove impossible)
+- for each article saved: ask an LLM for a summary
+- save the summary for later review
 
 ## NYT Archive API notes
 

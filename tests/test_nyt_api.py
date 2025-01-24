@@ -1,22 +1,30 @@
+from typing import List
 import pytest
 from nyt_api import NYTApi
 from cache import NewsCache
+from index import Index
 import responses
 import requests
+from unittest.mock import MagicMock
 
+
+# bypass the cache by returning None
 class FakeCache(NewsCache):
     def __init__(self):
         self.cache_path = None
-    
+
     def get_by_date(self, _year, _month):
         return None
-    
+
     def put_by_date(self, _year, _month, _value):
         return None
 
-@pytest.fixture
-def nyt_api():
-    return NYTApi(api_key="1234567890", cache=FakeCache())
+
+def make_nytimes(fake_index_responses, max_range=12):
+    my_index = Index()
+    my_index.search_index = MagicMock(return_value=fake_index_responses)
+    my_index.create_vector_store = MagicMock(return_value=None)
+    return NYTApi("1234567890", max_range, FakeCache(), my_index)
 
 
 @responses.activate
@@ -40,13 +48,16 @@ def test_loading_yaml_works():
 
 
 @responses.activate
-def test_get_archives_field_mapping(nyt_api):
+def test_get_archives_field_mapping_getting_all_responses():
+    nyt_api = make_nytimes([])
+
     responses._add_from_file(file_path="tests/data/nyt_api_responses_2024-11.yaml")
 
     ny_times_response = nyt_api.get_archives(None, "2024-11", "2024-11")
     assert ny_times_response["status"] == "Ok"
 
     archive_items = ny_times_response["responses"]
+    print(f"archive_items: {archive_items}")
     assert len(archive_items) == 5
 
     first_doc = archive_items[0]
@@ -70,54 +81,65 @@ Donald Trump would win the \u201Cnormal gay guy vote.\u201D"
  spoke dismissively of women he claimed were \u201Ccelebrating\u201D their abortions and said that studies \u201Cconnect testosterone levels in young\
  men with conservative politics\u201D during a three-hour episode of \u201CThe Joe Rogan Experience\u201D that was released on Thursday."
     )
-    
+
+
 @responses.activate
-def test_filter_with_topic_search(nyt_api):
+def test_filter_with_topic_search():
     responses._add_from_file(file_path="tests/data/nyt_api_responses_2024-11.yaml")
-    
+    nyt_api = make_nytimes(
+        ["\u2018This Was One of the Most Delicious Recipes We Have Made\u2019"],
+    )
     ny_times_response = nyt_api.get_archives("Sarah DiGregorio", "2024-11", "2024-11")
     assert ny_times_response["status"] == "Ok"
 
     archive_items = ny_times_response["responses"]
     assert len(archive_items) == 1
-    first_doc = archive_items[0] 
-    assert (first_doc["abstract"]
+    first_doc = archive_items[0]
+    assert (
+        first_doc["abstract"]
         == "Sarah DiGregorio\u2019s salmon and kimchi skillet, a five-star, \
 five-ingredient dinner to kick-start your taste buds."
-    ) 
+    )
+
 
 @responses.activate
-def test_filter_too_strinct_no_matches(nyt_api):
+def test_filter_too_strinct_no_matches():
     responses._add_from_file(file_path="tests/data/nyt_api_responses_2024-11.yaml")
-    
-    ny_times_response = nyt_api.get_archives("Something no one would ever write, ever", "2024-11", "2024-11")
-    # assert ny_times_response["status"] == "Ok"
+    nyt_api = make_nytimes([])
+
+    ny_times_response = nyt_api.get_archives("does-not-matter", "2024-11", "2024-11")
+    assert ny_times_response["status"] == "Ok"
 
     archive_items = ny_times_response["responses"]
     assert len(archive_items) == 0
 
 
 @responses.activate
-def test_with_multiple_months(nyt_api):
+def test_with_multiple_months():
     responses._add_from_file(file_path="tests/data/nyt_api_responses_2024-9.yaml")
-    responses._add_from_file(file_path="tests/data/nyt_api_responses_2024-10.yaml") 
+    responses._add_from_file(file_path="tests/data/nyt_api_responses_2024-10.yaml")
+    nyt_api = make_nytimes([])
+
     ny_times_response = nyt_api.get_archives(None, "2024-09", "2024-10")
     assert ny_times_response["status"] == "Ok"
 
     archive_items = ny_times_response["responses"]
     assert len(archive_items) == 10
 
-    
+
 @responses.activate
 def test_with_multiple_months_fail_max_range():
     responses._add_from_file(file_path="tests/data/nyt_api_responses_2024-9.yaml")
-    responses._add_from_file(file_path="tests/data/nyt_api_responses_2024-10.yaml") 
-    
-    nyt_api = NYTApi(api_key="1234567890", max_range = 1, cache=FakeCache())
+    responses._add_from_file(file_path="tests/data/nyt_api_responses_2024-10.yaml")
+
+    nyt_api = make_nytimes([], 1)
     ny_times_response = nyt_api.get_archives(None, "2024-09", "2024-10")
-    
+
     assert ny_times_response["status"] == "RangeError"
-    assert ny_times_response["message"] == f"Your time range is too large. Choose a time range no longer than 1 month."
+    assert (
+        ny_times_response["message"]
+        == "Your time range is too large. Choose a time range no longer than 1 month."
+    )
 
     archive_items = ny_times_response["responses"]
     assert len(archive_items) == 0

@@ -26,6 +26,7 @@ from helpers import (
 
 load_dotenv()
 logger = logging.getLogger(__name__)
+
 nyt_news = NYTApi(os.getenv("NYT_API_KEY"), max_range=6)
 today = datetime.today().strftime("%Y-%m-%d")
 console = Console()
@@ -155,18 +156,19 @@ class NewsSearch:
 def main():
     logging.basicConfig(
         filename="logs/news_search.log",
-        format="%(asctime)s - %(levelname)s - %(message)s",
+        level=logging.INFO,
+        format="%(asctime)s.%(levelname)s:%(message)s",
         datefmt="%Y-%m-%d %H:%M:%S",
-        level=logging.DEBUG,
     )
     if sys.argv[1:]:
-        query = " ".join(sys.argv[1:])
+        topic = " ".join(sys.argv[1:])
     else:
-        query = "I want to know about the news from NYT archive about COVID from September 2024 through the end of the year"
-
+        topic = "I want to know about the news from NYT archive about COVID from September 2024 through the end of the year"
+    logger.info(f"{"*" * 80}")
+    logger.info(f"News Search for: {topic}")
     config = {"configurable": {"thread_id": 1}, "recursion_limit": 4}
     news_search = NewsSearch()
-    response = news_search.run_graph(question=query, config=config)
+    response = news_search.run_graph(question=topic, config=config)
     md = Markdown(response)
     console.print(md)
 
