@@ -23,6 +23,7 @@ class FakeCache(NewsCache):
 def fake_nytimes(index_responses, max_range=12):
     my_index = Index()
     my_index.search_index = MagicMock(return_value=index_responses)
+    my_index.create_vector_store = MagicMock(return_value=None)
     return NYTApi("1234567890", max_range, FakeCache(), my_index)
 
 
@@ -145,30 +146,12 @@ def test_with_multiple_months_fail_max_range():
 
 
 @responses.activate
-def test_with_multiple_months_fail_max_range():
-    responses._add_from_file(file_path="tests/data/nyt_api_responses_2024-9.yaml")
-    responses._add_from_file(file_path="tests/data/nyt_api_responses_2024-10.yaml")
+def test_with_no_documents_returned_for_month():
+    responses._add_from_file(file_path="tests/data/nyt_api_responses_2024-8.yaml")
+    nyt_api = fake_nytimes([])
 
-    nyt_api = fake_nytimes([], 1)
-    ny_times_response = nyt_api.get_archives(None, "2024-10", "2024-09")
-
-    assert ny_times_response["status"] == "ValueError"
-    assert (
-        ny_times_response["message"]
-        == "Start month must be less than or equal to end month."
-    )
+    ny_times_response = nyt_api.get_archives(None, "2024-08", "2024-08")
+    assert ny_times_response["status"] == "Ok"
 
     archive_items = ny_times_response["responses"]
     assert len(archive_items) == 0
-
-
-# @responses.activate
-# def test_with_no_documents_returned_for_month():
-#     responses._add_from_file(file_path="tests/data/nyt_api_responses_2024-8.yaml")
-#     nyt_api = fake_nytimes([])
-
-#     ny_times_response = nyt_api.get_archives(None, "2024-08", "2024-08")
-#     assert ny_times_response["status"] == "Ok"
-
-#     archive_items = ny_times_response["responses"]
-#     assert len(archive_items) == 0

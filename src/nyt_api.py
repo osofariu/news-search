@@ -63,19 +63,18 @@ class NYTApi:
                     "responses": [],
                     "message": f"Your time range is too large. Choose a time range no longer than {self.max_range} {month}.",
                 }
+            archive_items_by_month = []
+            for year, month in months_to_query:
+                api_response = self.get_monthly_archive(year, month)
+                archive_item_date = f"{year}-{month}"
+                self.index.create_vector_store(archive_item_date)
+                archive_items_by_month.append(api_response)
+
+            filtered_archive_items = self.filter_by_topic(archive_items_by_month, topic)
+            return {"status": "Ok", "responses": filtered_archive_items}
+
         except ValueError as ve:
             return {"status": "ValueError", "message": ve.args[0], "responses": []}
-
-        archive_items_by_month = []
-        for year, month in months_to_query:
-            api_response = self.get_monthly_archive(year, month)
-            archive_item_date = f"{year}-{month}"
-            self.index.create_vector_store(archive_item_date)
-            archive_items_by_month.append(api_response)
-
-        filtered_archive_items = self.filter_by_topic(archive_items_by_month, topic)
-
-        return {"status": "Ok", "responses": filtered_archive_items}
 
     def filter_by_topic(
         self, archive_items_by_month: List[List[ArchiveItem]], topic: str
@@ -87,10 +86,9 @@ class NYTApi:
                 for archive_items in archive_items_by_month
                 for archive_item in archive_items
             ]
-
         response = []
         for archive_items in archive_items_by_month:
-            # they all ahve the same 'archive_date' so pick the f
+            # they all have the same 'archive_date' so pick the first one
             archive_date = archive_items[0].get("archive_date")
             matched_items = self.index.search_index(archive_date, topic)
 
