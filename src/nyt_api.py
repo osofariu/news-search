@@ -25,7 +25,7 @@ class ArchiveItem(TypedDict):
 
 
 class ArchiveResponse(TypedDict):
-    status: Literal["Ok", "RangeError", "ValueError"]
+    status: Literal["Ok", "Error"]
     message: str
     responses: List[ArchiveItem]
 
@@ -59,7 +59,7 @@ class NYTApi:
             if len(months_to_query) > self.max_range:
                 month = "month" if self.max_range == 1 else "months"
                 return {
-                    "status": "RangeError",
+                    "status": "Error",
                     "responses": [],
                     "message": f"Your time range is too large. Choose a time range no longer than {self.max_range} {month}.",
                 }
@@ -73,7 +73,7 @@ class NYTApi:
             return {"status": "Ok", "responses": filtered_archive_items}
 
         except ValueError as ve:
-            return {"status": "ValueError", "message": ve.args[0], "responses": []}
+            return {"status": "Error", "message": ve.args[0], "responses": []}
 
     def filter_by_topic(
         self, archive_items_by_month: List[List[ArchiveItem]], topic: str
@@ -185,6 +185,10 @@ def main():
     api_key = os.getenv("NYT_API_KEY")
     news_api = NYTApi(api_key)
     response = news_api.get_archives(topic, start_date, end_date)
+    message = f"message: {response.get("message")}" if response.get("message") else ""
+    print(
+        f"Status: {response.get("status")} {message} {len(response.get("responses"))} records."
+    )
 
 
 if __name__ == "__main__":

@@ -126,7 +126,7 @@ def test_with_multiple_months_fail_max_range():
     nyt_api = make_nytimes([], 1)
     ny_times_response = nyt_api.get_archives(None, "2024-09", "2024-10")
 
-    assert ny_times_response["status"] == "RangeError"
+    assert ny_times_response["status"] == "Error"
     assert (
         ny_times_response["message"]
         == "Your time range is too large. Choose a time range no longer than 1 month."
