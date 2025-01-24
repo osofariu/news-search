@@ -133,7 +133,6 @@ class NewsSearch:
 
     def run_graph(self, question, config):
         graph = self.build_graph()
-        config = {"configurable": {"thread_id": 1}, "recursion_limit": 25}
         state = graph.invoke(
             {
                 "messages": [
