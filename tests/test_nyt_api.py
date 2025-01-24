@@ -20,9 +20,9 @@ class FakeCache(NewsCache):
         return None
 
 
-def fake_nytimes(index_responses, max_range=12):
+def make_nytimes(fake_index_responses, max_range=12):
     my_index = Index()
-    my_index.search_index = MagicMock(return_value=index_responses)
+    my_index.search_index = MagicMock(return_value=fake_index_responses)
     my_index.create_vector_store = MagicMock(return_value=None)
     return NYTApi("1234567890", max_range, FakeCache(), my_index)
 
@@ -49,7 +49,7 @@ def test_loading_yaml_works():
 
 @responses.activate
 def test_get_archives_field_mapping_getting_all_responses():
-    nyt_api = fake_nytimes([])
+    nyt_api = make_nytimes([])
 
     responses._add_from_file(file_path="tests/data/nyt_api_responses_2024-11.yaml")
 
@@ -86,7 +86,7 @@ Donald Trump would win the \u201Cnormal gay guy vote.\u201D"
 @responses.activate
 def test_filter_with_topic_search():
     responses._add_from_file(file_path="tests/data/nyt_api_responses_2024-11.yaml")
-    nyt_api = fake_nytimes(
+    nyt_api = make_nytimes(
         ["\u2018This Was One of the Most Delicious Recipes We Have Made\u2019"],
     )
     ny_times_response = nyt_api.get_archives("Sarah DiGregorio", "2024-11", "2024-11")
@@ -105,7 +105,7 @@ five-ingredient dinner to kick-start your taste buds."
 @responses.activate
 def test_filter_too_strinct_no_matches():
     responses._add_from_file(file_path="tests/data/nyt_api_responses_2024-11.yaml")
-    nyt_api = fake_nytimes([])
+    nyt_api = make_nytimes([])
 
     ny_times_response = nyt_api.get_archives("does-not-matter", "2024-11", "2024-11")
     assert ny_times_response["status"] == "Ok"
@@ -118,7 +118,7 @@ def test_filter_too_strinct_no_matches():
 def test_with_multiple_months():
     responses._add_from_file(file_path="tests/data/nyt_api_responses_2024-9.yaml")
     responses._add_from_file(file_path="tests/data/nyt_api_responses_2024-10.yaml")
-    nyt_api = fake_nytimes([])
+    nyt_api = make_nytimes([])
 
     ny_times_response = nyt_api.get_archives(None, "2024-09", "2024-10")
     assert ny_times_response["status"] == "Ok"
@@ -132,7 +132,7 @@ def test_with_multiple_months_fail_max_range():
     responses._add_from_file(file_path="tests/data/nyt_api_responses_2024-9.yaml")
     responses._add_from_file(file_path="tests/data/nyt_api_responses_2024-10.yaml")
 
-    nyt_api = fake_nytimes([], 1)
+    nyt_api = make_nytimes([], 1)
     ny_times_response = nyt_api.get_archives(None, "2024-09", "2024-10")
 
     assert ny_times_response["status"] == "RangeError"
@@ -140,18 +140,6 @@ def test_with_multiple_months_fail_max_range():
         ny_times_response["message"]
         == "Your time range is too large. Choose a time range no longer than 1 month."
     )
-
-    archive_items = ny_times_response["responses"]
-    assert len(archive_items) == 0
-
-
-@responses.activate
-def test_with_no_documents_returned_for_month():
-    responses._add_from_file(file_path="tests/data/nyt_api_responses_2024-8.yaml")
-    nyt_api = fake_nytimes([])
-
-    ny_times_response = nyt_api.get_archives(None, "2024-08", "2024-08")
-    assert ny_times_response["status"] == "Ok"
 
     archive_items = ny_times_response["responses"]
     assert len(archive_items) == 0

@@ -66,8 +66,7 @@ class NYTApi:
             archive_items_by_month = []
             for year, month in months_to_query:
                 api_response = self.get_monthly_archive(year, month)
-                archive_item_date = f"{year}-{month}"
-                self.index.create_vector_store(archive_item_date)
+                self.index.create_vector_store(f"{year}-{month}")
                 archive_items_by_month.append(api_response)
 
             filtered_archive_items = self.filter_by_topic(archive_items_by_month, topic)
