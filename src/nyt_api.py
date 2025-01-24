@@ -88,15 +88,13 @@ class NYTApi:
 
         response = []
         for archive_items in archive_items_by_month:
-            if len(archive_items) > 0:
-                archive_date = archive_items[0].get("archive_date")
-                matched_items = self.index.search_index(archive_date, topic)
+            archive_date = archive_items[0].get("archive_date")
+            matched_items = self.index.search_index(archive_date, topic)
 
-                for archive_item in archive_items:
-                    headline = archive_item.get("headline")
-                    if headline in matched_items:
-                        print(f"appending: {archive_item.get("headline")}")
-                        response.append(archive_item)
+            for archive_item in archive_items:
+                headline = archive_item.get("headline")
+                if headline in matched_items:
+                    response.append(archive_item)
         return response
 
     def get_monthly_archive(self, year, month) -> List[ArchiveItem]:
@@ -187,7 +185,6 @@ def main():
     api_key = os.getenv("NYT_API_KEY")
     news_api = NYTApi(api_key)
     response = news_api.get_archives(topic, start_date, end_date)
-    print(f"\n# Response:\n{response}")
 
 
 if __name__ == "__main__":
