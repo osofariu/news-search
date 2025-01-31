@@ -154,8 +154,14 @@ class NewsSearch:
 
         content = get_last_content(state)
         while next_node_is_human(graph, config):
-            console.print(Text(f"{content}\n =>", style="bold bright_cyan"), end=" ")
+            console.print(
+                Text(f"{content}\nType '/quit' to exit =>", style="bold bright_cyan"),
+                end=" ",
+            )
             improved_question = console.input()
+            if improved_question.strip().lower() == "/quit":
+                console.print("Exiting...", style="bold red")
+                return "User exited the conversation."
             final_state = graph.invoke(Command(resume=improved_question), config=config)
             content = get_last_content(final_state)
         return content
