@@ -1,6 +1,5 @@
 from cache import NewsCache
 from index import Index
-from dataclasses import dataclass
 from typing import Literal, TypedDict, List
 import requests
 import os
@@ -79,7 +78,7 @@ class NYTApi:
         self, archive_items_by_month: List[List[ArchiveItem]], topic: str
     ) -> List[ArchiveItem]:
         """This function filters the archive items by a given topic."""
-        if topic == None:
+        if topic is None:
             return [
                 archive_item
                 for archive_items in archive_items_by_month

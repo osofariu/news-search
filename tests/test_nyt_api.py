@@ -1,5 +1,3 @@
-from typing import List
-import pytest
 from nyt_api import NYTApi
 from cache import NewsCache
 from index import Index
