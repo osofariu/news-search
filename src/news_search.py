@@ -6,7 +6,7 @@ from langgraph.prebuilt import ToolNode
 from langgraph.graph import END, START, StateGraph, MessagesState
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.types import interrupt, Command
-from langsmith import traceable
+from langsmith import utils
 from nyt_api import NYTApi, ArchiveResponse
 import os
 import sys
@@ -26,10 +26,12 @@ from helpers import (
 
 load_dotenv()
 logger = logging.getLogger(__name__)
+utils.tracing_is_enabled()
 
 nyt_news = NYTApi(os.getenv("NYT_API_KEY"), max_range=6)
 today = datetime.today().strftime("%Y-%m-%d")
 today_short = datetime.today().strftime("%Y-%m")
+year = datetime.today().strftime("%Y")
 console = Console()
 
 
@@ -84,7 +86,8 @@ Here are some examples of valid date ranges and how to handle them:
 - "from September 2024 through the end of the year" => start_date = "2024-09", end_date = "2024-12"
 - "from 2020 through 2021" => start_date = "2020-01", end_date = "2021-12"
 - "from September 2025 through today" => start_date = "2020-01", end_date = "{today_short}"
-- "since December 2024: => start_date = "2024-12", end_date = "{today_short}"
+- "since December 2024": => start_date = "2024-12", end_date = "{today_short}"
+- "this year to date": => start_date = "{year}-01", end_date = "{today_short}"
 
 If you cannot determine the topic, start date, and end date from the question you must ask 
 for clarification. You must use the nyt_archive_search tool and cannot answer the question 
@@ -122,7 +125,6 @@ class NewsSearch:
             "messages": [HumanMessage(content=human_message)],
         }
 
-    @traceable
     def build_graph(self):
         graph_builder = StateGraph(MessagesState)
         graph_builder.add_node("agent", self.call_model)
