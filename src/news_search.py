@@ -8,6 +8,7 @@ from langgraph.checkpoint.memory import MemorySaver
 from langgraph.types import interrupt, Command
 from langsmith import utils
 from nyt_api import NYTApi, ArchiveResponse
+from tavily import TavilyClient
 import os
 import sys
 import logging
@@ -29,6 +30,7 @@ logger = logging.getLogger(__name__)
 utils.tracing_is_enabled()
 
 nyt_news = NYTApi(os.getenv("NYT_API_KEY"), max_range=6)
+tavily_client = TavilyClient(api_key=os.getenv("TAVILY_API_KEY"))
 today = datetime.today().strftime("%Y-%m-%d")
 today_short = datetime.today().strftime("%Y-%m")
 year = datetime.today().strftime("%Y")
@@ -54,6 +56,14 @@ def fancy_print(text: str, style=""):
     console.print(text)
 
 
+@tool("web_search")
+def web_search(query: str) -> dict:
+    """Call the Tavily API with query to search the web for a topic."""
+    fancy_print(f"Searching for {query} on the web", "bright_cyan")
+    response = tavily_client.search(query)
+    return {"messages": [AIMessage(content=str(response))]}
+
+
 @tool(
     "nyt_archive_search",
     args_schema=ArchiveQuery,
@@ -74,33 +84,44 @@ def nyt_archive_search(topic: str, start_date: str, end_date: str) -> ArchiveRes
 
 
 SYSTEM_MESSAGE = f"""
-You are a helpful librarian who helps people use the New York Times Archive to find
-interesting stories about topics they are interested in.  You need to find out what the
-topic is and the date range they are interested in. 
+You are an expert researcher who helps people find interesting stories about topics they are interested in.  
+You need to find out what the topic is. 
+
+## Tool Usage
+
+### Web Search (web_search)
+If it appears that the customer wants stories from the web you must use the web_search tool. If they mention
+web it's probably a web search.  For a web search you don't need to specify a date range.
+
+If you are using the Web Search tool do not also use the nyt_archive_search tool.
+
+Afer the tool was called and we have some articles to review you should include a wide
+selection of articles, and can omit those that seem to be duplicates.
+
+### New York Times Archive Search (nyt_archive_search)
+
+You can use the nyt_archive_search tool to find stories from the New York Times Archive.  If user mentions
+the "new york times" by name (or "the times", or "nyt") or a date range is mentioned you should use this tool. 
+Otherwise do not use this tool.
+
+When using the nyt_archive_search tool you must specify the topic, start date, and end date. 
+If the date range is longer than {nyt_news.max_range} months you must not use the nyt_archive_search tool.
 
 Today is: {today} The start date must be after 1852, and the end date can be as late as today.
 When computing relative dates use the today's date that I have passed in.
 
-
-Here are some examples of valid date ranges and how to handle them:
+Here are some examples of valid date ranges and how to handle them when using the nyt_archive_search tool:
 - "from September 2024 through the end of the year" => start_date = "2024-09", end_date = "2024-12"
 - "from 2020 through 2021" => start_date = "2020-01", end_date = "2021-12"
 - "from September 2025 through today" => start_date = "2020-01", end_date = "{today_short}"
 - "since December 2024": => start_date = "2024-12", end_date = "{today_short}"
 - "this year to date": => start_date = "{year}-01", end_date = "{today_short}"
-
-If you cannot determine the topic, start date, and end date from the question you must ask 
-for clarification. You must use the nyt_archive_search tool and cannot answer the question 
-using general knowledge.
-
-Afer the tool was called and we have some articles to review you should include a wide
-selection of articles, and can omit those that seem to be duplicates.
 """
 
 
 class NewsSearch:
     def __init__(self):
-        tools = [nyt_archive_search]
+        tools = [nyt_archive_search, web_search]
         self.tool_node = ToolNode(tools)
         self.model = ChatOpenAI(model="gpt-4o-mini", temperature=0).bind_tools(
             tools, parallel_tool_calls=False
@@ -182,7 +203,7 @@ def main():
         topic = "I want to know about the news from NYT archive about COVID from September 2024 through the end of the year"
     logger.info(f"{"*" * 80}")
     logger.info(f"News Search for: {topic}")
-    config = {"configurable": {"thread_id": 1}, "recursion_limit": 4}
+    config = {"configurable": {"thread_id": 1}, "recursion_limit": 12}
     news_search = NewsSearch()
     response = news_search.run_graph(question=topic, config=config)
     md = Markdown(response)
