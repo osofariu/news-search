@@ -12,7 +12,7 @@ Currently able to download articles through a langgraph flow, starting with user
 
 Next we may try to download articles, summarize them, etc.. TBD.
 
-### Langchain graph:
+### Langchain graph
 
 ![Graph](graph.png)
 
@@ -27,16 +27,16 @@ Next we may try to download articles, summarize them, etc.. TBD.
   - [setup.sh](scripts/setup.sh) - to create a local virtual environment and install dependencies
   - [run.sh](scripts/run.sh) - to run `news-search.py`.
 
-#### Access to the [New York Times Developer APIs](https://developer.nytimes.com/apis).
+#### Access to the [New York Times Developer APIs](https://developer.nytimes.com/apis)
 
 - You can create an account for free, and get an API key:
 
-  ```
+  ```shell
   NYT_API_KEY=<you-get-this>
   NYT_API_SECRET=<you-get-this>
   ```
 
-#### Access to [OpenAPI Developer Platform](https://platform.openai.com/docs/overview).
+#### Access to [OpenAPI Developer Platform](https://platform.openai.com/docs/overview)
 
 This is pay-per-use, but using `gpt-4o-mini`, as we are here, is really inexpensive: For 1 million tokens as of 1/24/25, it costs:
 
@@ -44,7 +44,7 @@ This is pay-per-use, but using `gpt-4o-mini`, as we are here, is really inexpens
 - $0.075 for Cached input
 - $0.60 for Output
 
-```
+```shell
 OPENAI_API_KEY=<you-get-this>
 ```
 
@@ -52,7 +52,7 @@ OPENAI_API_KEY=<you-get-this>
 
 This is also free for non-commercial use. Tracing gives you access to a nice web interface that lets you trace your agentic calls and clearly see the inputs and outputs at every step. Very useful for troubleshooting.
 
-```
+```shell
 LANGSMITH_TRACING=true
 LANGSMITH_API_KEY=<you-get-this>
 ```
@@ -65,7 +65,7 @@ LANGSMITH_API_KEY=<you-get-this>
 
 ### 1. LLM parses natural language to extract topic and date range
 
-```
+```json
       {
         topic,
         start_date,
@@ -78,7 +78,7 @@ LANGSMITH_API_KEY=<you-get-this>
 - input: topic, start date, end date.
 - output:
 
-```
+```json
       [
         {
           pub_date,
@@ -103,7 +103,6 @@ LANGSMITH_API_KEY=<you-get-this>
 
 - maybe done: It seems that the examples I have given the prompt are good. I have some other ideas about prompt improvements.
 
-
 ### 5. Evaluation
 
 - [ ] I need to evaluate the graph with different inputs, and can handle multi-turn prompts as part of the evaluation, so I can evaluate how the graph responds.  It doesn't make sense to do more until we have a more predictable evaluation for the current tool.
@@ -121,12 +120,12 @@ Sample queries to experiment with the API:
 
 Download archives using `curl`
 
-```
+```shell
 curl -s -o nyt-2024-1.json https://api.nytimes.com/svc/archive/v1/2024/1.json?api-key<NYT_API_KEY>
 ```
 
 Extract key info. Just to remember how to use `jq`
 
-```
+```shell
 cat nyt-2024-1.json | jq '.response.docs ' | jq 'map({abstract,web_url,snippet,lead_paragraph})'
 ```
