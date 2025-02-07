@@ -34,11 +34,12 @@ class NYTApi:
         self,
         api_key: str,
         max_range: int = 12,
+        max_cache_age_days=5,
         cache: NewsCache = None,
         index: Index = None,
     ):
         self.api_key = api_key
-        self.cache = cache or NewsCache()
+        self.cache = cache or NewsCache(max_cache_age_days)
         self.index = index or Index()
         self.max_range = max_range
 
@@ -107,6 +108,7 @@ class NYTApi:
             return cached_archive
         archive = self.call_archive_api(year, month)
         self.cache.put_by_date(year, month, archive)
+        logger.info(f"Creating cached archive for {year}-{month}")
         return archive
 
     def call_archive_api(self, year: str, month: str) -> List[ArchiveItem]:

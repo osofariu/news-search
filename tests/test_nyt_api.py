@@ -13,7 +13,7 @@ def make_nytimes(fake_index_responses, max_range=12):
     fake_cache = NewsCache()
     fake_cache.get_by_date = MagicMock(return_value=None)
     fake_cache.put_by_date = MagicMock(return_value=None)
-    return NYTApi("1234567890", max_range, fake_cache, fake_index)
+    return NYTApi("1234567890", max_range, 5, fake_cache, fake_index)
 
 
 @responses.activate
