@@ -34,13 +34,12 @@ class NYTApi:
         self,
         api_key: str,
         max_range: int = 12,
-        max_cache_age_days=5,
         cache: NewsCache = None,
         index: Index = None,
     ):
         self.api_key = api_key
-        self.cache = cache or NewsCache(max_cache_age_days)
-        self.index = index or Index()
+        self.cache = cache or NewsCache(max_cache_age_days=1)
+        self.index = index or Index(max_index_age_days=1)
         self.max_range = max_range
 
     def get_archives(
@@ -100,8 +99,8 @@ class NYTApi:
     def get_monthly_archive(self, year, month) -> List[ArchiveItem]:
         """get archive from cache if present, else call the API and cache the results
         Args:
-            year (_type_): _description_
-            month (_type_): _description_
+            year (str): year in format 'YYYY'
+            month (str): month in format 'MM'
         """
         if cached_archive := self.cache.get_by_date(year, month):
             logger.info(f"Using cached archive for {year}-{month}")
