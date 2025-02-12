@@ -6,6 +6,7 @@ from cache import NewsCache
 
 def test_cache_age_is_expired(tmp_path):
     cache = NewsCache(max_cache_age_days=0)
+    cache.cache_path = tmp_path
     this_year = str(datetime.now().year)
     this_month = f"{datetime.now().month:02d}"
     cache.put_by_date(this_year, this_month, "test")

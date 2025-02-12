@@ -21,7 +21,7 @@ class Index:
         schema = ".[].headline"
         vector_store_name = f"{self.index_path}/{search_date}.faiss_index"
         index_file = os.path.join(vector_store_name, "index.faiss")
-        if os.path.exists(vector_store_name) and not file_is_expired(
+        if os.path.exists(index_file) and not file_is_expired(
             index_file, search_date, self.max_index_age_days
         ):
             logger.info(f"Index already exists for {search_date} and not expired")
