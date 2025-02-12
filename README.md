@@ -8,9 +8,12 @@
 
 ## MVP
 
-Currently able to download articles through a langgraph flow, starting with user request, ending with a list of articles presented in a nice format to the user.
+Currently able to download articles through a langgraph flow, starting with user request, ending with a list of articles presented in a nice format to the user. There are only two tools available:
 
-Next we may try to download articles, summarize them, etc.. TBD.
+- New York Time
+- Web Search
+
+Depending on what you ask it will use one or both of the tools.
 
 ### Langchain graph
 
@@ -35,6 +38,17 @@ Next we may try to download articles, summarize them, etc.. TBD.
   NYT_API_KEY=<you-get-this>
   NYT_API_SECRET=<you-get-this>
   ```
+
+#### Access to [Tavily API](https://tavily.com/)
+
+- You can create an account for free, and get an API key:
+
+  ```shell
+  TAVILY_API_KEY=<you-get-this>
+  ```
+
+  You can make up to 1000 requests per month for free.  They offer a pay as you go plan,
+  but I haven't used it enough to bother with that yet.
 
 #### Access to [OpenAPI Developer Platform](https://platform.openai.com/docs/overview)
 

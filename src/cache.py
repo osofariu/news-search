@@ -22,6 +22,7 @@ class NewsCache:
     def __init__(self, max_cache_age_days=5):
         self.cache_path = "cache"
         self.max_cache_age_days = max_cache_age_days
+        os.makedirs(self.cache_path, exist_ok=True)
 
     def get_by_date(self, year, month):
         """

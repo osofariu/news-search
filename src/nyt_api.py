@@ -168,6 +168,7 @@ class NYTApi:
 
 
 def main():
+    os.makedirs("logs", exist_ok=True)
     logging.basicConfig(filename="logs/nyt_api.log", level=logging.INFO)
 
     today = datetime.today().strftime("%Y-%m-%d")

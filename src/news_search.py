@@ -156,6 +156,7 @@ class NewsSearch:
 
 
 def main():
+    os.makedirs("logs", exist_ok=True)
     logging.basicConfig(
         filename="logs/news_search.log",
         level=logging.INFO,
