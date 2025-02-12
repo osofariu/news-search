@@ -2,24 +2,32 @@
 
 ## Motivation
 
-- Do something fun with Langchain Agents that's just complex enough to help me learn about what's involved
-- Use some public API that's easy to use, and free
-- Build something that is actually useful
+- Do something fun with Langchain Agents that's just complex enough to help me learn about what's involved in creating a multi-step agentic flow and evaluating the results.
+- Use some public APIs that are easy to use, and free
+- Build something that is potentially useful, though that is not a primary concern.
 
 ## MVP
 
-Currently able to download articles through a langgraph flow, starting with user request, ending with a list of articles presented in a nice format to the user. There are only two tools available:
+Currently we are able to download articles through a langgraph flow, starting with user request, clarifying the user's intent through some back and forth, and ending with a list of articles presented in a nice format to the user.
 
-- New York Time
+There are only two tools available:
+
+- New York Times Archive
 - Web Search
 
 Depending on what you ask it will use one or both of the tools.
 
+The App works well enough, but we need an evaluation framework to test how well the app works with different inputs.  Trying out RAGAs to see if how it can help with the evaluation.
+
+Tracking some of my ongoing work in [IMPROVEMENTS.md](IMPROVEMENTS.md).
+
 ### Langchain graph
+
+This is the current flow:
 
 ![Graph](graph.png)
 
-## Setup
+## Setup Instructions
 
 ### Requirements
 

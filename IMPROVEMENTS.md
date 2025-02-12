@@ -1,17 +1,15 @@
-# Things to do at some point (but not now)
+# Musings on current work
 
 ## Evaluations
 
-Changing the prompt can address an issue but cause other issues. I need a systematic way of evaluating changes.
+* Save the conversation history to a file after performing a variety of queries that use either, both or neither tool.  I need a way to generate data that needs to be evaluated. I can combine both single and multi-turn queries since both are possible, and treat all queries as multi-turn.
 
-Ideally I have some mechanism of evaluating the graph with different inputs, and can handle multi-turn prompts
-as part of the evaluation, so I can evaluate how the graph responds.  So I need to:
+* Create a reference set of tool calls for each query so I can evaluate if the model is using the tool correctly
 
-- expect model to prompt me for input in some cases, and have the ability to give it that
-- expect model to **not** prompt me for input in other cases, and penalize it if it does ask questions
-- expect model to use the tool correctly give the conversation history
+* Add other metrics that evaluate the agent's adnerence to my prompt for determining date ranges and tool usage.  Find some corner cases that the app struggles with and add them to the evaluation set.. probably need to organize my evaluation sets by intent?? 
 
-This was just for one tool.  Once I add more tools I can add more criteria to the evaluation.
+* Aggregate results by type of metric, and overall performance, so I can compare runs when I make
+changes to the app (likely the prompt).
 
 ## Prompt improvements
 
