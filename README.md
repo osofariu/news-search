@@ -97,11 +97,11 @@ LANGSMITH_API_KEY=<you-get-this>
 
 - [x] initially a basic filter against headline and abstract (lowercase)
 - [x] added a vector database which improved the search but added latench for indexing new results.. but we are caching this so we only pay a penalty once per API call.
-- [ ] re-download and re-index the current month, since the API could return new results since the last time we checked.
+- [x] re-download and re-index the current month, since the API could return new results since the last time we checked.
 
 ### 4. Figure out why the LLM thinks today is in the past
 
-- maybe done: It seems that the examples I have given the prompt are good. I have some other ideas about prompt improvements.
+- [x]  It seems that the examples I have given the prompt are good. I have some other ideas about prompt improvements, but it works well enough for now.
 
 ### 5. Evaluation
 
