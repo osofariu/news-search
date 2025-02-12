@@ -12,9 +12,9 @@ langchain = "*"
 numpy = "*"
 rich = "*"
 sentence-transformers = "*"
-faiss-cpu = "*"
 langchain-community = "*"
 jq = "*"
+faiss-cpu = "*"
 
 [dev-packages]
 pytest = "*"

@@ -2,13 +2,13 @@ from datetime import datetime, timedelta
 from typing import List
 import pytest
 from cache import NewsCache
-from unittest.mock import MagicMock
 
 
 def test_cache_age_is_expired(tmp_path):
     cache = NewsCache(max_cache_age_days=0)
+    cache.cache_path = tmp_path
     this_year = str(datetime.now().year)
-    this_month = str(datetime.now().month)
+    this_month = f"{datetime.now().month:02d}"
     cache.put_by_date(this_year, this_month, "test")
     assert cache.get_by_date(this_year, this_month) is None
 
