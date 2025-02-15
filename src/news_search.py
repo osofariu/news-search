@@ -1,3 +1,8 @@
+import logging
+import os
+import sys
+
+from dotenv import load_dotenv
 from pydantic import BaseModel, Field
 from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
 from langchain_openai import ChatOpenAI
@@ -8,18 +13,21 @@ from langgraph.checkpoint.memory import MemorySaver
 from langgraph.types import interrupt, Command
 from langsmith import utils
 from nyt_api import NYTApi, ArchiveResponse
-from tavily import TavilyClient
-import os
-import sys
-import logging
+from opentelemetry.sdk.trace.export import ConsoleSpanExporter, SimpleSpanProcessor
+from openinference.instrumentation.langchain import LangChainInstrumentor
+from opentelemetry.sdk.trace.export import SimpleSpanProcessor
+
+from opentelemetry import trace
+from phoenix.otel import register
 from rich.console import Console
 from rich.markdown import Markdown
 from rich.text import Text
-from datetime import datetime
-from dotenv import load_dotenv
+from tavily import TavilyClient
 
-from helpers import (
+
+from llm_helpers import (
     get_last_content,
+    get_last_message,
     last_message_has_tool_calls,
     last_message_is_ask_for_human_input,
     next_node_is_human,
@@ -34,6 +42,13 @@ nyt_news = NYTApi(os.getenv("NYT_API_KEY"), max_range=6)
 tavily_client = TavilyClient(api_key=os.getenv("TAVILY_API_KEY"))
 
 console = Console()
+
+tracer_provider = register(
+    project_name="news-search",  # Default is 'default'
+    endpoint="http://localhost:4317",  # Sends traces using gRPC
+)
+
+LangChainInstrumentor().instrument(tracer_provider=tracer_provider)
 
 
 class ArchiveQuery(BaseModel):
@@ -78,7 +93,7 @@ def nyt_archive_search(topic: str, start_date: str, end_date: str) -> ArchiveRes
         end_date: the beginning of the date range with format YYYY.MM.
     """
     fancy_print(
-        f'Searching for "{topic}" from {start_date} to {end_date}', "bright_cyan"
+        f'Searching NYT for "{topic}" from {start_date} to {end_date}', "bright_cyan"
     )
     response = nyt_news.get_archives(topic, start_date, end_date)
     return {"messages": [AIMessage(content=str(response))]}
@@ -160,7 +175,7 @@ def main():
     logging.basicConfig(
         filename="logs/news_search.log",
         level=logging.INFO,
-        format="%(asctime)s.%(levelname)s:%(message)s",
+        format="%(asctime)s.%(levelname)s.%(name)s:%(message)s",
         datefmt="%Y-%m-%d %H:%M:%S",
     )
     if sys.argv[1:]:

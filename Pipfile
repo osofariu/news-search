@@ -15,7 +15,9 @@ sentence-transformers = "*"
 langchain-community = "*"
 jq = "*"
 faiss-cpu = "*"
-ragas = "*"
+arize-phoenix = "*"
+openai = "*"
+openinference-instrumentation-openai = "*"
 
 [dev-packages]
 pytest = "*"

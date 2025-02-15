@@ -83,6 +83,15 @@ LANGSMITH_API_KEY=<you-get-this>
 
 ![Graph](langsmith.png)
 
+## ARIZE
+
+Will try switching to this for tracing and use their evaluation framework.
+
+```shell
+pipenv install arize-phoenix
+pipenv install openai openinference-instrumentation-openai 
+```
+
 ## Plans and Progress
 
 ### 1. LLM parses natural language to extract topic and date range

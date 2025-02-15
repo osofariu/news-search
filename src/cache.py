@@ -1,7 +1,6 @@
 from datetime import datetime
 import json
 import os
-import time
 
 from utils import file_is_expired
 
