@@ -19,19 +19,19 @@ class Index:
         os.makedirs(self.index_path, exist_ok=True)
 
     def create_vector_store(self, search_date):
-        schema = ".[].headline"
         vector_store_name = f"{self.index_path}/{search_date}.faiss_index"
         index_file = os.path.join(vector_store_name, "index.faiss")
         if os.path.exists(index_file) and not file_is_expired(
             index_file, search_date, self.max_index_age_days
         ):
-            logger.info(f"Index already exists for {search_date} and not expired")
+            logger.debug(f"Index already exists for {search_date} and not expired")
             return
         else:
-            logger.info(f"Indexing {search_date}")
+            logger.debug(f"Indexing {search_date}")
 
         # Load your document
         cached_data = self.cache.get_path(search_date)
+        schema = '.[]  | "\(.headline) \(.abstract)"'
         loader = JSONLoader(cached_data, jq_schema=schema)
         documents = loader.load()
 
@@ -50,7 +50,7 @@ class Index:
 
     def search_index(self, archive_date, topic):
         embeddings = OpenAIEmbeddings()
-        logger.info(
+        logger.debug(
             f"Looking for index: {f"{self.index_path}/{archive_date}.faiss_index"}"
         )
         get_vector_store = FAISS.load_local(
@@ -61,7 +61,7 @@ class Index:
 
         results = get_vector_store.similarity_search(topic, k=5)
 
-        logger.info(
+        logger.debug(
             f"index matches: for {topic} in {archive_date}: {[result.page_content for result in results]}"
         )
         return [result.page_content for result in results]

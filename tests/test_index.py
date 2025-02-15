@@ -6,7 +6,9 @@ from nyt_api import ArchiveItem
 
 
 def test_search_index(tmp_path):
-    cache = create_cache(tmp_path, [{"headline": "test headline"}])
+    cache = create_cache(
+        tmp_path, [{"headline": "test headline", "abstract": "abstract"}]
+    )
     index = Index(max_index_age_days=1)
     index.index_path = tmp_path
     index.cache = cache
@@ -17,7 +19,8 @@ def test_search_index(tmp_path):
     assert os.path.exists(f"{index.index_path}/{search_date}.faiss_index")
 
     result = index.search_index(search_date, "test")
-    assert result == ["test headline"]
+    # we concatenate heading and abstract in the index to capture embedding from both
+    assert result == ["test headline abstract"]
 
 
 def test_index_recreated_when_index_is_expired(tmp_path):
@@ -35,7 +38,10 @@ def test_index_recreated_when_index_is_expired(tmp_path):
     cache = create_cache(
         tmp_path,
         [
-            {"headline": "Chill in the Housing Market Seeps Into Other Industries"},
+            {
+                "headline": "Chill in the Housing Market Seeps Into Other Industries",
+                "abstract": "bad news",
+            },
         ],
     )
 
@@ -45,7 +51,7 @@ def test_index_recreated_when_index_is_expired(tmp_path):
     index.create_vector_store(search_date)
 
     result = index.search_index(search_date, "Housing Market")
-    assert "Chill in the Housing Market Seeps Into Other Industries" in result
+    assert "Chill in the Housing Market Seeps Into Other Industries bad news" in result
 
 
 def get_search_date():

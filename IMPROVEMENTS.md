@@ -6,7 +6,7 @@
 
 * Create a reference set of tool calls for each query so I can evaluate if the model is using the tool correctly
 
-* Add other metrics that evaluate the agent's adnerence to my prompt for determining date ranges and tool usage.  Find some corner cases that the app struggles with and add them to the evaluation set.. probably need to organize my evaluation sets by intent?? 
+* Add other metrics that evaluate the agent's adnerence to my prompt for determining date ranges and tool usage.  Find some corner cases that the app struggles with and add them to the evaluation set.. probably need to organize my evaluation sets by intent??
 
 * Aggregate results by type of metric, and overall performance, so I can compare runs when I make
 changes to the app (likely the prompt).

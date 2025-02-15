@@ -1,3 +1,4 @@
+import re
 from cache import NewsCache
 from index import Index
 from typing import Literal, TypedDict, List
@@ -92,7 +93,10 @@ class NYTApi:
 
             for archive_item in archive_items:
                 headline = archive_item.get("headline")
-                if headline in matched_items:
+                match_found = any(
+                    [headline in matched_item for matched_item in matched_items]
+                )
+                if match_found:
                     response.append(archive_item)
         return response
 
