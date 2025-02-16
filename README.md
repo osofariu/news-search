@@ -70,19 +70,6 @@ This is pay-per-use, but using `gpt-4o-mini`, as we are here, is really inexpens
 OPENAI_API_KEY=<you-get-this>
 ```
 
-#### Access to langsmith
-
-This is also free for non-commercial use. Tracing gives you access to a nice web interface that lets you trace your agentic calls and clearly see the inputs and outputs at every step. Very useful for troubleshooting.
-
-```shell
-LANGSMITH_TRACING=true
-LANGSMITH_API_KEY=<you-get-this>
-```
-
-**Here's an example of what Langsmith looks like:**
-
-![Graph](langsmith.png)
-
 ## ARIZE
 
 Will try switching to this for tracing and use their evaluation framework.
@@ -92,16 +79,18 @@ pipenv install arize-phoenix
 pipenv install openai openinference-instrumentation-openai 
 ```
 
+See: [Arize notes for setting up a local back-end](ARIZE.md).  I got an example from there for setting up tracing for langchain.
+
 ## Plans and Progress
 
 ### 1. LLM parses natural language to extract topic and date range
 
 ```json
-      {
-        topic,
-        start_date,
-        end_date
-      }
+{
+  topic,
+  start_date,
+  end_date
+}
 ```
 
 ### 2. search New York times Archive to get summary and url by date range
@@ -110,15 +99,15 @@ pipenv install openai openinference-instrumentation-openai
 - output:
 
 ```json
-      [
-        {
-          pub_date,
-          headline,
-          abstract,
-          lead_paragraph,
-          web_url: str
-       }
-      ]
+[
+  {
+    pub_date,
+    headline,
+    abstract,
+    lead_paragraph,
+    web_url: str
+  }
+]
 ```
 
 - [x] we download the news items with multiple calls as needed
