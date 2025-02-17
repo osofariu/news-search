@@ -1,23 +1,15 @@
 # News Search
 
-## Motivation
+Currently we are able to download articles through a langchain graph, starting with user request, clarifying the user's intent through some back and forth, calling the necessary tools, and ending with a list of articles presented in a nice format to the user.
 
-- Do something fun with Langchain Agents that's just complex enough to help me learn about what's involved in creating a multi-step agentic flow and evaluating the results.
-- Use some public APIs that are easy to use, and free
-- Build something that is potentially useful, though that is not a primary concern.
-
-## MVP
-
-Currently we are able to download articles through a langgraph flow, starting with user request, clarifying the user's intent through some back and forth, and ending with a list of articles presented in a nice format to the user.
-
-There are only two tools available:
+There are two tools available:
 
 - New York Times Archive
 - Web Search
 
 Depending on what you ask it will use one or both of the tools.
 
-The App works well enough, but we need an evaluation framework to test how well the app works with different inputs.  Trying out RAGAs to see if how it can help with the evaluation.
+The App works well enough, but we need an evaluation framework to test how well the app works with different inputs. In the process of using phonenix arize to evaluate the retrieval process (for the index), tool usage, and the interaction with the user.
 
 Tracking some of my ongoing work in [IMPROVEMENTS.md](IMPROVEMENTS.md).
 
@@ -58,7 +50,7 @@ This is the current flow:
   You can make up to 1000 requests per month for free.  They offer a pay as you go plan,
   but I haven't used it enough to bother with that yet.
 
-#### Access to [OpenAPI Developer Platform](https://platform.openai.com/docs/overview)
+#### Access to [OpenAI Developer Platform](https://platform.openai.com/docs/overview)
 
 This is pay-per-use, but using `gpt-4o-mini`, as we are here, is really inexpensive: For 1 million tokens as of 1/24/25, it costs:
 
@@ -70,9 +62,9 @@ This is pay-per-use, but using `gpt-4o-mini`, as we are here, is really inexpens
 OPENAI_API_KEY=<you-get-this>
 ```
 
-## ARIZE
+### ARIZE Phoenix
 
-Will try switching to this for tracing and use their evaluation framework.
+Will try switching to this for tracing and use their evaluation framework.  Phoenix is free for the things we are interested in
 
 ```shell
 pipenv install arize-phoenix
@@ -80,6 +72,20 @@ pipenv install openai openinference-instrumentation-openai
 ```
 
 See: [Arize notes for setting up a local back-end](ARIZE.md).  I got an example from there for setting up tracing for langchain.
+
+
+## Testing
+
+Using pytest for python code, specifically how we interact with the nyt_api, indexing, and caching operations
+
+There's a Warning from the FAISS library that will go away when they upgrade to use numpy 2.X. Until then 
+we can ask pytest to ignore warning:
+
+```shell
+pytest  -W ignore
+```
+
+
 
 ## Plans and Progress
 

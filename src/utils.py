@@ -31,9 +31,12 @@ def file_created_before_max_age(file_path, max_cache_age_milliseconds):
 
 
 def file_is_for_current_month(file_key):
+    current_date_key = get_current_date_key()
+    logger.debug(f"file is for current month: {file_key == current_date_key}")
+    return file_key == current_date_key
+
+
+def get_current_date_key():
     this_year = str(datetime.now().year)
     this_month = f"{datetime.now().month:02d}"
-    current_date_key = f"{this_year}-{this_month}"
-    logger.debug(f"file is for current month: {file_key == current_date_key}")
-
-    return file_key == current_date_key
+    return f"{this_year}-{this_month}"

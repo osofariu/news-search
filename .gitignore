@@ -26,3 +26,6 @@ env/
 logs/*
 cache/*
 index/*
+
+# evals
+eval/qa_pairs/

@@ -6,6 +6,7 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "openinference-instrumentation-langchain>=0.1.32",
+    "pandas>=2.2.3",
     "ruff>=0.9.4",
     "tavily-python>=0.5.0",
 ]

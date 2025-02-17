@@ -12,9 +12,9 @@ logger = logging.getLogger(__name__)
 
 
 class Index:
-    def __init__(self, cache=NewsCache(), max_index_age_days=5):
+    def __init__(self, cache=NewsCache(), max_index_age_days=5, index_path=None):
         self.max_index_age_days = max_index_age_days
-        self.index_path = "index"
+        self.index_path = index_path or "index"
         self.cache = cache
         os.makedirs(self.index_path, exist_ok=True)
 
