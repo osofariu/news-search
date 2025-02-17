@@ -21,13 +21,16 @@ Context information is below.
 Given the context information and not prior knowledge.
 generate only questions based on the below query.
 
-You are a Researcher who wants to index knowledge using just a few key terms so
-that it can be referenced easily by customers. Your task is to extract 2 to 5 key terms \
-as one string (call it key_germs) that capture then essence of the context information provided.
+You are a Researcher who wants to index knowledge using a question and the related contest to help us
+evaluate how good the Retriever is at finding the right context given each question.
+
+Your task is to generate one short question (call it question) that captures the essence of each context provided. Think
+of the question as a title for the context given, so we're just looking at a few words.
 
  Restrict the questions to the context information provided."
 
-**IMPORTANT:** Respond ONLY with valid JSON. Do NOT wrap your answer in markdown formatting, code blocks, or add any extra text. The JSON object must have exactly two keys: "key_terms" (containing the extracted key terms) and "context" (containing the original context).
+**IMPORTANT:** Respond ONLY with valid JSON. Do NOT wrap your answer in markdown formatting, code blocks, or add any extra text. 
+The JSON object must have exactly two keys: "question" (the generated question) and "context" (the original context).
 
 """
 
@@ -69,12 +72,12 @@ def list_files_by_date_reverse(directory):
 def main():
     """
     Loop over the JSON files in the `cache` folder and for each news story generate
-    a JSON entry with a set of key terms that an LLM has extracted from the context.
+    a JSON entry with a question that an LLM has extracted from the context.
 
     The context is the same as what is used by the index to perform a query, so querying
-    the index using the key terms extracted should find the appropriate context most of
-    the time.. and we will use the output from this program to evalute the quality
-    of the retriever.
+    the index using the question should find the appropriate context most of
+    the time.. and we will look at the ranking of the context (using index search)
+    to evalute the quality of the retriever.
     """
     cache_dir = os.path.join(os.path.dirname(__file__), "../..", "cache")
     current_cache_file = f"{get_current_date_key()}.json"
@@ -88,11 +91,14 @@ def main():
     os.makedirs(eval_qa_dir, exist_ok=True)
 
     for cache_file in cache_files:
-        questions_df = gen_qa_pair_file(cache_file)
         output_file = os.path.join(
             eval_qa_dir,
             f"{os.path.basename(cache_file).replace('.json', '')}_qa_pairs.json",
         )
+        if os.path.exists(output_file):
+            continue
+        questions_df = gen_qa_pair_file(cache_file)
+
         questions_df.to_json(output_file, orient="records", lines=True)
 
 

@@ -1,6 +1,8 @@
 import json
 import os
 import sys
+import numpy as np
+import tqdm
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 other_folder_path = os.path.join(current_dir, "../..", "src")
@@ -28,21 +30,28 @@ def main():
         with open(eval_qa_file_path, "r") as file:
             archive_date = eval_qa_file.split("_")[0]
             scores = []
-            for line in file:
+            num_lines = sum(1 for _ in file)
+            file.seek(0)  # Reset file pointer to the beginning of the file
+            for line in tqdm.tqdm(file, total=num_lines):
                 qa_pair = json.loads(line)
-                key_terms = qa_pair.get("key_terms", "")
+                question = qa_pair.get("question", "")
                 context = qa_pair.get("context", "")
-                if key_terms and context:
-                    key_terms_list = key_terms.split(", ")
-                    for term in key_terms_list:
-                        create_index_if_not_exist(index, index_dir, archive_date)
-                        results = index.search_index(archive_date, term)
-                        try:
-                            rank = results.index(context)
-                        except ValueError:
-                            rank = -1
-                        scores.append(rank)
-                        print(f"term: {term} rank: {rank}")
+                if question and context:
+                    create_index_if_not_exist(index, index_dir, archive_date)
+                    results = index.search_index(archive_date, question)
+                    try:
+                        search_rank = results.index(context)
+                    except ValueError:
+                        search_rank = index.k  # 1 + max records from index
+                    scores.append(search_rank)
+
+            unique_values, counts = np.unique(scores, return_counts=True)
+            total_counts = sum(counts)
+            print(f"File: {eval_qa_file}")
+            for value, count in sorted(zip(unique_values, counts)):
+                print(
+                    f"rank: {value}, count: {count}, percent: {100 * count / total_counts}"
+                )
 
 
 def create_index_if_not_exist(index, index_dir, archive_date):

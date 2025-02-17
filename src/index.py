@@ -16,6 +16,7 @@ class Index:
         self.max_index_age_days = max_index_age_days
         self.index_path = index_path or "index"
         self.cache = cache
+        self.k = 5
         os.makedirs(self.index_path, exist_ok=True)
 
     def create_vector_store(self, search_date):
@@ -59,7 +60,7 @@ class Index:
             allow_dangerous_deserialization=True,
         )
 
-        results = get_vector_store.similarity_search(topic, k=5)
+        results = get_vector_store.similarity_search(topic, k=self.k)
 
         logger.debug(
             f"index matches: for {topic} in {archive_date}: {[result.page_content for result in results]}"
