@@ -1,6 +1,9 @@
+from dataclasses import dataclass
 import json
 import os
+import random
 import sys
+from typing import List
 import numpy as np
 import tqdm
 
@@ -9,8 +12,12 @@ other_folder_path = os.path.join(current_dir, "../..", "src")
 sys.path.append(other_folder_path)
 from index import Index
 
+# None if you don't want to sample
+type SampleSize = None | int
+type QAPairs = List[(str, str)]
 
-def main():
+
+def main(sample_size: SampleSize):
     """
     - loop over the files in the `qa_pairs` folder
         - loop over each line
@@ -29,13 +36,14 @@ def main():
         eval_qa_file_path = os.path.join(eval_qa_dir, eval_qa_file)
         with open(eval_qa_file_path, "r") as file:
             archive_date = eval_qa_file.split("_")[0]
+            qa_pairs = read_qa_pairs_from_file(file, sample_size)
             scores = []
             num_lines = sum(1 for _ in file)
             file.seek(0)  # Reset file pointer to the beginning of the file
-            for line in tqdm.tqdm(file, total=num_lines):
-                qa_pair = json.loads(line)
-                question = qa_pair.get("question", "")
-                context = qa_pair.get("context", "")
+            for question, context in tqdm.tqdm(
+                read_qa_pairs_from_file(file, sample_size),
+                total=sample_size or num_lines,
+            ):
                 if question and context:
                     create_index_if_not_exist(index, index_dir, archive_date)
                     results = index.search_index(archive_date, question)
@@ -61,5 +69,22 @@ def create_index_if_not_exist(index, index_dir, archive_date):
         index.create_vector_store(archive_date)
 
 
+def read_qa_pairs_from_file(file, sample_size):
+    res = []
+    for line in file:
+        qa_pair = json.loads(line)
+        question = qa_pair.get("question", "")
+        context = qa_pair.get("context", "")
+        res.append((question, context))
+    if sample_size is None:
+        return res
+    else:
+        sample_size_random_indexes = [
+            random.randint(0, len(res) - 1) for _ in range(sample_size)
+        ]
+        return list(map(lambda i: res[i], sample_size_random_indexes))
+
+
 if __name__ == "__main__":
-    main()
+    sample_size = 100
+    main(sample_size=100)

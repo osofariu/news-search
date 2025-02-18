@@ -13,9 +13,9 @@ The App works well enough, but we need an evaluation framework to test how well 
 
 Tracking some of my ongoing work in [IMPROVEMENTS.md](IMPROVEMENTS.md).
 
-### Langchain graph
+## Langchain Graph
 
-This is the current flow:
+This is the current graph. The dotted connections are conditional:
 
 ![Graph](graph.png)
 
@@ -73,19 +73,16 @@ pipenv install openai openinference-instrumentation-openai
 
 See: [Arize notes for setting up a local back-end](ARIZE.md).  I got an example from there for setting up tracing for langchain.
 
-
 ## Testing
 
 Using pytest for python code, specifically how we interact with the nyt_api, indexing, and caching operations
 
-There's a Warning from the FAISS library that will go away when they upgrade to use numpy 2.X. Until then 
+There's a Warning from the FAISS library that will go away when they upgrade to use numpy 2.X. Until then
 we can ask pytest to ignore warning:
 
 ```shell
 pytest  -W ignore
 ```
-
-
 
 ## Plans and Progress
 
