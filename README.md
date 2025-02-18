@@ -71,7 +71,8 @@ pipenv install arize-phoenix
 pipenv install openai openinference-instrumentation-openai 
 ```
 
-See: [Arize notes for setting up a local back-end](ARIZE.md).  I got an example from there for setting up tracing for langchain.
+See [ARIZE.md](ARIZE.md) for notes on using Phonenix Arize for tracing calls and
+performing evaluations.
 
 ## Testing
 
