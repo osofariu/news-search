@@ -28,9 +28,17 @@ Your task is to generate one short question (call it question) that captures the
 of the question as a title for the context given, so we're just looking at a few words.
 
  Restrict the questions to the context information provided."
+ 
+ Once you have generated the question, reflect on the degree to which the answer to the question is found in the context.
+ Explain why you feel the question is relevant to the context (self_reflection), and provide a confidence level 
+ (confidence_level) as a float between 0 and 1 where 0 means no confidence, and 1 means complete confidence.
 
 **IMPORTANT:** Respond ONLY with valid JSON. Do NOT wrap your answer in markdown formatting, code blocks, or add any extra text. 
-The JSON object must have exactly two keys: "question" (the generated question) and "context" (the original context).
+The JSON object must have exactly the following keys: 
+- "question" (the generated question)
+- "context" (the original context)
+- "self_reflection" (the degree to which the question is relevant for the given context)
+- "confidence_level" (how confident you are in the questi)
 
 """
 
@@ -55,10 +63,10 @@ def gen_qa_pair_file(filename):
         dataframe=cache_context_df,
         template=generate_questions_template,
         model=OpenAIModel(
-            model="gpt-4o-mini",
+            model="gpt-3.5-turbo",
         ),
         output_parser=output_parser,
-        concurrency=20,
+        concurrency=5,
     )
     return questions_df
 
@@ -69,7 +77,7 @@ def list_files_by_date_reverse(directory):
     return filenames
 
 
-def main():
+def main(max_files_to_process: int):
     """
     Loop over the JSON files in the `cache` folder and for each news story generate
     a JSON entry with a question that an LLM has extracted from the context.
@@ -89,8 +97,9 @@ def main():
 
     eval_qa_dir = os.path.join(os.path.dirname(__file__), "..", "qa_pairs")
     os.makedirs(eval_qa_dir, exist_ok=True)
-
+    files_processed = 0
     for cache_file in cache_files:
+        files_processed += 1
         output_file = os.path.join(
             eval_qa_dir,
             f"{os.path.basename(cache_file).replace('.json', '')}_qa_pairs.json",
@@ -100,7 +109,9 @@ def main():
         questions_df = gen_qa_pair_file(cache_file)
 
         questions_df.to_json(output_file, orient="records", lines=True)
+        if files_processed >= max_files_to_process:
+            break
 
 
 if __name__ == "__main__":
-    main()
+    main(max_files_to_process=1)

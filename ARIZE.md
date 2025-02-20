@@ -37,6 +37,8 @@ This seems to add traces very similar to Langsmith, though the nesting looks bet
     * given the (question, context) pairs generated before, use the index retriever
     to see what it retrieves, and in what order when asked that question.
 
+#### Initial results
+
 Example Outputs:
 
 ```text
@@ -51,15 +53,49 @@ rank: 5, count: 353, percent: 8.522452921294061
 
 One issue is performance: for 4-6k stories it take around 20 minutes, and that's just for one month's worth of stories.
 
-Possible solution: sample batches of N questions, and see if the results are comparable with the enture set.  If this is
+Solution: randomly sample batches of N questions, and see if the results are comparable with the enture set.  If this is
 comparable we can use a sample for re-runs.
 
 Here's a run with a sample size of 100:
 
 ```text
-File: 2025-01_qa_pairs.json
 rank: 0, count: 77, percent: 77.0
 rank: 1, count: 10, percent: 10.0
 rank: 2, count: 2, percent: 2.0
 rank: 5, count: 11, percent: 11.0
 ```
+
+### Changed the gen_qa_pairs prompt to reflect on the quality of the question
+
+Asked it to reason about how relevant the question was given the context, and introduced a confidence_level.
+Maybe because it had to reflect, the confidence level comes out very high: either 0.9 or 1.0.
+
+It appears that this extra self-reflection step did improve the quality of the questions as it relates
+to the index we created (using the search_index method): it went up by about 10%.
+
+After changing the prompt to evaluate the quality of the question, we get something like this:
+
+```text
+rank: 0, count: 86, percent: 86.0
+rank: 1, count: 3, percent: 3.0
+rank: 2, count: 1, percent: 1.0
+rank: 3, count: 1, percent: 1.0
+rank: 5, count: 9, percent: 9.0
+```
+
+Need to look closer at the rank 5 questions -- these were not found in any contexts.
+
+Finally, we changing the threshold to 1.0 (perfect match), to use better questions, and we get this output:
+
+```text
+rank: 0, count: 90, percent: 90.0
+rank: 1, count: 3, percent: 3.0
+rank: 3, count: 3, percent: 3.0
+rank: 5, count: 4, percent: 4.0
+```
+
+There are still 4 questions that were not matched.. should add some logging to see why.
+
+So between asking the LLM to self-reflect on the question generation and picking the questions that it
+believes are a perfect match according to the context we are *always* able to retrieve the expected context,
+and 90% of the time it's the first answer, while the rest 10% come up as later matches (rank is 5)
